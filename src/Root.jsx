@@ -5,7 +5,7 @@ export default function Root() {
     const [count, setCount] = useState(0);
     return (
         <div>
-            app component ok.
+           Minor changes:;:;
         </div>
     );
 }
