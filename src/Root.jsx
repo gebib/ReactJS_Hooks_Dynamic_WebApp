@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import './App.css';
+import './Root.scss';
 
-export default function App() {
+export default function Root() {
     const [count, setCount] = useState(0);
     return (
         <div>
