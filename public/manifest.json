@@ -1,25 +1,62 @@
 {
-  "short_name": "Silverlining",
+  "short_name": "SL",
   "name": "SILVERLINING IT",
-  "icons": [
-    {
-      "src": "sl.svg",
-      "sizes": "",
-      "type": "image/x-icon"
+
+  "start_url": ".",
+
+  "masterPicture": "./sl.svg",
+  "iconsPath": ".",
+  "design": {
+    "ios": {
+      "pictureAspect": "noChange",
+      "assets": {
+        "ios6AndPriorIcons": false,
+        "ios7AndLaterIcons": false,
+        "precomposedIcons": false,
+        "declareOnlyDefaultIcon": true
+      }
     },
-    {
-      "src": "",
-      "type": "",
-      "sizes": ""
+    "desktopBrowser": {
+      "design": "raw"
     },
-    {
-      "src": "",
-      "type": "",
-      "sizes": ""
+    "windows": {
+      "pictureAspect": "noChange",
+      "backgroundColor": "#da532c",
+      "onConflict": "override",
+      "assets": {
+        "windows80Ie10Tile": false,
+        "windows10Ie11EdgeTiles": {
+          "small": false,
+          "medium": true,
+          "big": false,
+          "rectangle": false
+        }
+      }
+    },
+    "androidChrome": {
+      "pictureAspect": "noChange",
+      "themeColor": "#ffffff",
+      "manifest": {
+        "display": "standalone",
+        "orientation": "notSet",
+        "onConflict": "override",
+        "declared": true
+      },
+      "assets": {
+        "legacyIcon": false,
+        "lowResolutionIcons": false
+      }
+    },
+    "safariPinnedTab": {
+      "pictureAspect": "silhouette",
+      "themeColor": "#5bbad5"
     }
-  ],
-  "start_url": "",
-  "display": "",
-  "theme_color": "",
-  "background_color": ""
+  },
+  "settings": {
+    "scalingAlgorithm": "Mitchell",
+    "errorOnImageTooSmall": false,
+    "readmeFile": false,
+    "htmlCodeFile": false,
+    "usePathAsIs": false
+  }
 }

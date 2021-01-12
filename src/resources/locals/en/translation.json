@@ -1,0 +1,17 @@
+{
+  "sign_in": {
+    "login": "Log in",
+    "or": "or",
+    "create_an_account": "create an account",
+    "forgot_password": "Forgot password ?",
+    "remember_me": "Remember me",
+    "or_login_with": "or log in using",
+    "with_google": "Google",
+    "with_facebook": "Facebook",
+    "place_holder_mail": "Email address",
+    "place_holder_pass": "Password"
+  },
+  "sign_out": {
+    "logout": "Log out"
+  }
+}

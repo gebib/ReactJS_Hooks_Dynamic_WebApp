@@ -1,14 +1,40 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.scss';
-import Root from './Root';
+import Main from './Main';
 import reportWebVitals from './reportWebVitals';
+import {BrowserRouter} from "react-router-dom";
+import i18next from "i18next";
+
+import language_en from "./resources/locals/en/translation.json";
+import language_no from "./resources/locals/no/translation.json";
+import {I18nextProvider} from "react-i18next";
+
+
+
+//i18next init
+i18next.init({
+    interpolation: {escapeValue: false}, // React already does escaping
+    lng: 'en',                             // language to use
+    resources: {
+        en: {
+            SL_languages: language_en
+        },
+        no: {
+            SL_languages: language_no
+        },
+    },
+}).then(r => console.log(r));
 
 ReactDOM.render(
-  <React.StrictMode>
-    <Root />
-  </React.StrictMode>,
-  document.getElementById('root')
+    <React.StrictMode>
+        <I18nextProvider i18n={i18next}>
+            <BrowserRouter>
+                    <Main/>
+            </BrowserRouter>
+        </I18nextProvider>
+    </React.StrictMode>,
+    document.getElementById('Main')
 );
 
 // If you want to start measuring performance in your app, pass a function

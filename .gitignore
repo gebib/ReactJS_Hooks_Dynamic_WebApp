@@ -9,7 +9,6 @@ dist/
 
 # Compiled Java class files
 *.class
-
 # Compiled Python bytecode
 *.py[cod]
 
@@ -69,4 +68,5 @@ Thumbs.db
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-
+#////////////////////////other temp file might not needed to be added to git.
+.eslintcache
