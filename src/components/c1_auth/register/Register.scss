@@ -19,14 +19,14 @@ $new-shadow-active: 0px 0px 10px 6px rgba(0, 0, 0, 0.1);
   }
 }
 
-.login_page_container {
+.register_page_container {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100%;
 }
 
-.login-main-container {
+.register-main-container {
   //grid layout
   display: grid;
   grid-template-columns: auto auto; // i need 2 columns 1fraction each
@@ -41,17 +41,17 @@ $new-shadow-active: 0px 0px 10px 6px rgba(0, 0, 0, 0.1);
   max-width: 454px;
 
   grid-template-areas:
-"lbl_login lbl_or"
-"inpt_mail inpt_mail"
+"lbl_register lbl_or"
+"inpt_name inpt_name"
 "inpt_pass inpt_pass"
-"cb_login lbl_forgot"
-"btn_login btn_login"
+"cb_register lbl_forgot"
+"btn_register btn_register"
 "hr_centered hr_centered"
 "sm_buttons sm_buttons";
 
 
-  .label_login {
-    grid-area: lbl_login;
+  .label_register {
+    grid-area: lbl_register;
     color: $darkest_gray;
     font-family: 'Poppins', sans-serif;
     font-size: 19px;
@@ -71,8 +71,8 @@ $new-shadow-active: 0px 0px 10px 6px rgba(0, 0, 0, 0.1);
     line-height: 20px;
   }
 
-  .input_mail {
-    grid-area: inpt_mail;
+  .input_name {
+    grid-area: inpt_name;
 
     &::placeholder {
       font-family: 'Poppins', sans-serif;
@@ -91,8 +91,8 @@ $new-shadow-active: 0px 0px 10px 6px rgba(0, 0, 0, 0.1);
     }
   }
 
-  .login_cb {
-    grid-area: cb_login;
+  .register_cb {
+    grid-area: cb_register;
     color: $dark_gray;
   }
 
@@ -103,8 +103,8 @@ $new-shadow-active: 0px 0px 10px 6px rgba(0, 0, 0, 0.1);
     line-height: 20px;
   }
 
-  .mail_login_btn {
-    grid-area: btn_login;
+  .name_register_btn {
+    grid-area: btn_register;
   }
 
   // ///////////////////////

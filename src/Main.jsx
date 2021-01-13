@@ -3,6 +3,7 @@ import './Main.scss';
 import {Row, Col} from "react-bootstrap";
 import {Login} from "./components/c1_auth/login/Login";
 import {FullPageLoader} from "./resources/miscellaneous/FullPageLoader";
+import {Register} from "./components/c1_auth/register/Register";
 
 
 export default function Main() {
@@ -10,7 +11,8 @@ export default function Main() {
     return (
         <main className={"container_main"}>
             <Suspense fallback={FullPageLoader}>
-                <Login/>
+                    {/*<Login/>*/}
+                    <Register/>
             </Suspense>
         </main>
     );
