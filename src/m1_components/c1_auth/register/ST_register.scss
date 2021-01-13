@@ -1,0 +1,150 @@
+$margin: 0px;
+$light_gray: #9da9bb;
+$lightest_gray: #B6C1D2;
+$dark_gray: #5E6E82;
+$darkest_gray: #344050;
+
+$neu-shadow: 9px 9px 16px rgba(163, 177, 198, 0.6), -9px -9px 16px rgba(255, 255, 255, 0.5);
+$new-shadow-active: 0px 0px 10px 6px rgba(0, 0, 0, 0.1);
+
+.long_logo_container {
+  grid-area: logo_svg;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+
+  #logo_image {
+    width: 60%;
+  }
+}
+
+.register_page_container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.register-main-container {
+  //grid layout
+  display: grid;
+  grid-template-columns: auto auto; // i need 2 columns 1fraction each
+  grid-template-rows: auto auto auto auto auto 20px 19px auto; // i need 18 rows 1fraction each
+  align-items: center;
+  grid-column-gap: 5px;
+  grid-row-gap: 15px;
+  border-radius: 6px;
+  padding: 40px;
+  //background-image: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  background: white;
+  max-width: 454px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+
+  grid-template-areas:
+  "lbl_register lbl_have_acc"
+"input_name input_name"
+"input_mail input_mail"
+"input_pass input_pass"
+"cb_register cb_register"
+"btn_register btn_register"
+"hr_centered hr_centered"
+"sm_buttons sm_buttons";
+
+
+  .label_register {
+    grid-area: lbl_register;
+    color: $darkest_gray;
+    font-family: 'Poppins', sans-serif;
+    font-size: 19px;
+    line-height: 23px;
+  }
+
+  .right_items {
+    place-self: end;
+    align-self: center;
+  }
+
+  .label_or {
+    grid-area: lbl_have_acc;
+    color: $dark_gray;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 13px;
+    line-height: 20px;
+  }
+
+  .input_name {
+    grid-area: input_name;
+
+    &::placeholder {
+      font-family: 'Poppins', sans-serif;
+      color: $lightest_gray;
+      letter-spacing: 0.5px;
+    }
+  }
+
+  .input_mail {
+    grid-area: input_mail;
+
+    &::placeholder {
+      font-family: 'Poppins', sans-serif;
+      color: $lightest_gray;
+      letter-spacing: 0.5px;
+    }
+  }
+
+  .register_pass {
+    grid-area: input_pass;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    grid-column-gap: 5px;
+    grid-row-gap: 15px;
+
+    .input_pass1 {
+
+      &::placeholder {
+        font-family: 'Poppins', sans-serif;
+        color: $lightest_gray;
+        letter-spacing: 0.5px;
+      }
+    }
+
+    .input_pass2 {
+
+      &::placeholder {
+        font-family: 'Poppins', sans-serif;
+        color: $lightest_gray;
+        letter-spacing: 0.5px;
+      }
+    }
+  }
+
+
+  .register_cb {
+    grid-area: cb_register;
+    color: $dark_gray;
+  }
+
+  .lbl_forgot_ps {
+    grid-area: lbl_forgot;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 13px;
+    line-height: 20px;
+  }
+
+  .mail_register_btn {
+    grid-area: btn_register;
+  }
+
+  .btn {
+    width: 100%;
+  }
+}
+
+
+
+
+
+
+
+

@@ -1,0 +1,89 @@
+$light_gray: #9da9bb;
+/////////////////////social media buttons////////////////////////////
+.social_media_buttons {
+  grid-area: sm_buttons;
+  display: grid;
+  grid-column-gap: 10px;
+  grid-row-gap: 15px;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  //grid-template-rows: repeat(auto-fill, minmax(35px, 1fr));
+  //grid-template-areas:
+  //"g_btn f_btn"
+  //"t_btn i_btn";
+
+  .sm_b {
+    border-radius: 3px;
+    text-decoration: none;
+    height: 35px;
+    color: white;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    column-gap: 5px;
+    padding: 0px;
+    font-size: 17px;
+    //max-width: 50%;
+    //min-width: 35%;
+  }
+
+  .ico_div {
+    height: 33px;
+    width: 35px;
+    border-radius: 3px 0px 0px 3px;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .icon_text {
+    width: 75%;
+    padding-right: 15px;
+  }
+
+  .sm_button_google {
+    //grid-area: g_btn;
+    border-radius: 3px;
+    height: 35px;
+    border: 1px solid #4489F1;
+    background: #ffffff;
+    color: $light_gray;
+
+    &:hover {
+      color: white;
+      background: #4489F1;
+    }
+  }
+
+  .sm_button_facebook {
+    //grid-area: f_btn;
+    border: 1px solid #3b5998;
+    background: #ffffff;
+    color: #3b5998;
+
+    &:hover {
+      background: #3b5998;
+      color: white;
+    }
+  }
+
+  .sm_button_in {
+    //grid-area: t_btn;
+    border: 1px solid #0A66C2;
+    background: #ffffff;
+    color: #0070AF;
+    &:hover {
+      color: white;
+      background: #0A66C2;
+    }
+  }
+
+  .sm_button_instagram {
+    //grid-area: i_btn;
+    border: 1px solid #5851DB;
+    background: #ffffff;
+    &:hover {
+      background: linear-gradient(135deg, #405de6, #5851db, #833ab4, #c13584, #e1306c, #fd1d1d);
+    }
+  }
+}
