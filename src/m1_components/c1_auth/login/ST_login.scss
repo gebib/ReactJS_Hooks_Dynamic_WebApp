@@ -30,7 +30,7 @@ $new-shadow-active: 0px 0px 10px 6px rgba(0, 0, 0, 0.1);
   //grid layout
   display: grid;
   grid-template-columns: auto auto; // i need 2 columns 1fraction each
-  grid-template-rows: auto auto auto auto auto 20px 19px auto; // i need 10 rows 1fraction each
+  grid-template-rows: auto auto auto auto auto 19px auto ; // i need 10 rows 1fraction each
   align-items: center;
   grid-column-gap: 5px;
   grid-row-gap: 15px;

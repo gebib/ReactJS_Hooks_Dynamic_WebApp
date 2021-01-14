@@ -76,5 +76,14 @@
     "": "",
     "": "",
     "": ""
+  },
+  "forgot": {
+    "lbl_forgot": "Forgot your password?",
+    "info_txt": "Enter your email and we'll send you a reset link.",
+    "info_txt2": "I can't recover my account using this page \uD83E\uDC52",
+    "send_reset_link": "Send reset link",
+    "": "",
+    "": "",
+    "": ""
   }
 }
