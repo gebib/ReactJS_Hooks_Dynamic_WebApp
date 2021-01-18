@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.scss';
-import Main from './Main';
+import UI_Main_pages_wrapper from './UI_Main_pages_wrapper';
 import reportWebVitals from './reportWebVitals';
 import {BrowserRouter} from "react-router-dom";
 import i18next from "i18next";
@@ -9,8 +9,6 @@ import i18next from "i18next";
 import language_en from "./resources/locals/en/translation.json";
 import language_no from "./resources/locals/no/translation.json";
 import {I18nextProvider} from "react-i18next";
-
-
 
 //i18next init
 i18next.init({
@@ -26,15 +24,17 @@ i18next.init({
     },
 }).then(r => console.log(r));
 
+
+
 ReactDOM.render(
     <React.StrictMode>
         <I18nextProvider i18n={i18next}>
             <BrowserRouter>
-                    <Main/>
+                    <UI_Main_pages_wrapper/>
             </BrowserRouter>
         </I18nextProvider>
     </React.StrictMode>,
-    document.getElementById('Main')
+document.getElementById('UI_Main_pages_wrapper')
 );
 
 // If you want to start measuring performance in your app, pass a function

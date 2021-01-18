@@ -5,7 +5,7 @@ import silverlining_logo from "../../../resources/images/SL_logo.svg";
 import {useTranslation} from "react-i18next";
 import {Link} from "react-router-dom";
 import {UI_sm_buttons} from "../a0_auth_common/sm_buttons/UI_sm_buttons";
-import {UI_divider} from "../a0_auth_common/hl_divider/UI_divider";
+import {UI_hl_divider} from "../a0_auth_common/hl_divider/UI_hl_divider";
 
 
 export const UI_register = () => {
@@ -60,7 +60,7 @@ export const UI_register = () => {
                     </div>
 
                     {/*hr divider line*/}
-                    <UI_divider middleText={t("register.lbl_or_register_with")}/>
+                    <UI_hl_divider middleText={t("register.lbl_or_register_with")}/>
 
                     {/*/SocialMedia buttons*/}
                     <UI_sm_buttons/>
