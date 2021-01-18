@@ -11,9 +11,10 @@ export const UI_nav_bar = (props) => {
     return (
         <div ref={ref} className={"nav_bar_main_wrapper"}>
             <div className={(inView ? "top_bar_1" : "top_bar_0")}>
+
             </div>
 
-            <div  className={(inView ? "bottom_bar" : "bottom_bar fixed-top")}>
+            <div  className={(inView ? "bottom_bar" : "bottom_bar_fixed")}>
                 I stay here.
             </div>
         </div>

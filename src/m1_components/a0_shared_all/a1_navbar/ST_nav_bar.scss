@@ -6,14 +6,14 @@
 
   .top_bar_1 {
     background-color: #d46f6f;
-    width: 100%;
+    width: 1440px;
     height: 41px;
     transition: height 0.4s;
   }
 
   .top_bar_0 {
     background-color: #d46f6f;
-    width: 100%;
+    width: 1440px;
     height: 0;
   }
 
@@ -21,6 +21,13 @@
     background-color: #469590;
     width: 100%;
     height: 54px;
+  }
+
+  .bottom_bar_fixed{
+    background-color: #469590;
+    width: 1440px;
+    height: 54px;
+    position: fixed;
   }
 }
 
