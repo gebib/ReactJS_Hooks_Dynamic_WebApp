@@ -40,17 +40,19 @@ export default function UI_Main_pages_wrapper() {
     return (
         // main container width = 1440 for all res >= that.
         // else container width === body width.
-        <div className={"main_pages_wrapper"}>
+        <div className={"main_wrapper"}>
             <UI_nav_bar/>
             <UI_logo_with_image/>
-            <UI_divider/>
-            <UI_body_wrapper/>
-            <UI_footer/>
-            <Suspense fallback={FullPageLoader}>
-                {/*<UI_login/>*/}
-                {/*<UI_register/>*/}
-                {/*<UI_forgot_password/>*/}
-            </Suspense>
+            <div className={"page_content_wrapper"}>
+                {/*<UI_divider/>*/}
+                <UI_body_wrapper/>
+                <UI_footer/>
+                <Suspense fallback={FullPageLoader}>
+                    {/*<UI_login/>*/}
+                    {/*<UI_register/>*/}
+                    {/*<UI_forgot_password/>*/}
+                </Suspense>
+            </div>
         </div>
     );
 }

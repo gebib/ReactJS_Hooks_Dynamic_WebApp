@@ -1,8 +1,60 @@
 {
   "sign_in": {
-    "login": "Logg inn"
+    "login": "Logg inn",
+    "or": "eller",
+    "create_an_account": "lag ny konto",
+    "forgot_password": "Glemt passord ?",
+    "remember_me": "Husk meg",
+    "or_login_with": "eller logg inn med",
+    "with_google": "Google",
+    "with_facebook": "Facebook",
+    "place_holder_mail": "Mailadresse",
+    "place_holder_pass": "Passord",
+    "": "",
+    "": "",
+    "": "",
+    "": ""
+  },
+  "register": {
+    "lbl_register": "Registrer",
+    "have_account": "Har konto?",
+    "pl_hl_name": "Navn",
+    "i_accept_the": "Jeg godtar",
+    "terms": "vilkår",
+    "and": "og",
+    "privacy_policy": "personvernregler",
+    "lbl_or_register_with": "eller registrer med",
+    "input_name": "Navn",
+    "password": "Passord",
+    "c_password": "Gjenta Passord",
+    "": "",
+    "": "",
+    "": "",
+    "": ""
   },
   "sign_out": {
-    "logout": "Logg ut"
+    "logout": "Logg ut",
+    "": "",
+    "": "",
+    "": "",
+    "": ""
+  },
+  "forgot": {
+    "lbl_forgot": "Glemt passord?",
+    "info_txt": "Skriv inn ditt mail for å få tilsendt gjenopprettings link.",
+    "info_txt2": "Jeg får ikke gjenoprettet på denne måten \uD83E\uDC52",
+    "send_reset_link": "Send meg link",
+    "": "",
+    "": "",
+    "": ""
+  },
+  "nav": {
+    "home": "Hjem",
+    "av_positions": "Jobb",
+    "services": "Tjeneste",
+    "blog": "Blog",
+    "about": "Om oss",
+    "lang": "Norsk",
+    "": ""
   }
 }
