@@ -28,6 +28,8 @@ $lineT: 0px;
       justify-content: flex-end;
       color: white;
 
+      height: 54px;//////////////////////////////////////////
+
       .top_elems {
         border: $lineT solid #22ff00;
         padding: 0 5px 0 5px;
@@ -46,7 +48,7 @@ $lineT: 0px;
         letter-spacing: 1px;
       }
       .fb_ico{
-        color: #3b5998;
+        color: white;
         &:hover{
           cursor: pointer;
         }
@@ -56,7 +58,7 @@ $lineT: 0px;
       }
 
       .in_ico{
-        color: #0070AF;
+        color: white;
         &:hover{
           cursor: pointer;
         }
@@ -66,7 +68,8 @@ $lineT: 0px;
       }
 
       .insta_ico {
-        margin-right: 45px;
+        margin-right: 40px;
+        color: white;
         &:hover{
           cursor: pointer;
         }
@@ -94,16 +97,25 @@ $lineT: 0px;
     display: flex;
     flex-direction: row;
     justify-content: center;
+    height: 54px;
 
     .bottom_bar_elems {
       border: $lineT solid #9700ff;
       width: 100%;
       max-width: 1440px;
       display: grid;
-      grid-template-columns: auto 2fr auto;
+      grid-template-columns: 1fr 1fr 1fr;
       justify-items: center;
       @media (max-width: 645px) {
         justify-items: start;
+      }
+      @media (max-width: 950px) {
+        grid-template-columns: auto 1fr 1fr;
+      }
+
+      .small_logo_wrapper{
+        border: $lineT solid #ff00aa;
+        justify-self: start;
       }
 
       .img_self {
@@ -188,11 +200,12 @@ $lineT: 0px;
       }
 
       .language {
-        border: $lineT solid #2bff00;
-        display: grid;
-        grid-template-columns: auto auto;
-        justify-items: center;
+        border: $lineT solid #58ff00;
+        justify-self: end;
+        display: flex;
         align-items: center;
+        justify-content: flex-end;
+        max-width: 310px;
         @media (max-width: 228px) {
           display: none;
         }
@@ -249,7 +262,7 @@ $lineT: 0px;
 
   ///////////////drop down//////////////////////////////
   .drop_down_wrapper {
-    background: linear-gradient(-90deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0) 100%), rgba(29, 29, 29, 0.8);
+    //background: linear-gradient(-90deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0) 100%), rgba(29, 29, 29, 0.8);
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -262,14 +275,19 @@ $lineT: 0px;
     }
 
     .li_d {
-      border: 3px solid rgba(0, 0, 0, 0); //////change all back to 0!
-      width: 100%;
+      width: 95%;
       list-style: none;
-      margin-top: 10px;
       margin-left: 10px;
+      padding: 5px;
+      background: linear-gradient(-90deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0) 100%), rgba(29, 29, 29, 0.8);
+      margin-top: 2px;
+      @media (max-width: 228px) {
+        width: 90%;
+      }
 
       &:hover {
         background-color: #202020;
+        border-radius: 2px;
         cursor: pointer;
 
         .lnk_b {
@@ -294,7 +312,13 @@ $lineT: 0px;
       grid-template-columns: auto auto;
       align-items: center;
       @media (max-width: 228px) {
-        display: grid;
+        display: flex;
+        background: linear-gradient(-90deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0) 100%), rgba(29, 29, 29, 0.8);
+        padding: 5px;
+        margin-top: 2px;
+        width: 90%;
+        margin-left: 10px;
+        height: 40px;
       }
 
       color: white;

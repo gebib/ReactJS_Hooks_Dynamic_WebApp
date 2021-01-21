@@ -15,7 +15,6 @@ import {MdPhone} from "react-icons/md";
 import {FaFacebookF} from "react-icons/fa";
 import {ImLinkedin2} from "react-icons/im";
 import {FaInstagramSquare} from "react-icons/fa";
-import instaIconImage from "../../../resources/images/insta_ico.png";
 
 
 export const UI_nav_bar = (props) => {
@@ -59,9 +58,7 @@ export const UI_nav_bar = (props) => {
                         <div className={"tlf_nr top_elems"}><div>+47 98 255 131</div></div>
                         <div className={"fb_ico top_elems"}><FaFacebookF/></div>
                         <div className={"in_ico top_elems"}><ImLinkedin2/></div>
-                        <div className={"insta_ico top_elems"}>
-                            <img className={"tb_insta_ico"} style={{cursor: "pointer"}} onClick={() => history.push("/home")}
-                                                                    id={"logo"} src={instaIconImage} alt={"insta icon"}/></div>
+                        <div className={"insta_ico top_elems"}><FaInstagramSquare/></div>
                     </div>
                 </div>
             </div>
