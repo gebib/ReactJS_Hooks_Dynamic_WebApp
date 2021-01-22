@@ -1,63 +1,18 @@
-
-//@mixin respond($media) {
-//  @if $media == phone {
-//    @media (max-width: 600px) { // - 600px: small devices
-//      @content
-//    }
-//  }
-//  @if $media == tab_port {
-//    @media (min-width: 600px) { // 600px - 900px:      Phone
-//      @content
-//    }
-//  }
-//  @if $media == tab_land {
-//    @media (min-width: 1200px) {
-//      @content
-//    }
-//  }
-//  @if $media == big_desktop {
-//    @media (min-width: 1800px) {
-//      @content
-//    }
-//  }
-//}
-
-//@include respond(phone) {
-//  .main_pages_wrapper {
-//    //background-color: lightgreen;
-//  }
-//}
-//
-//@include respond(tab_port) {
-//  .main_pages_wrapper {
-//    //background-color: yellow;
-//  }
-//}
-//
-//@include respond(tab_land) {
-//  .main_pages_wrapper {
-//    //background-color: red;
-//  }
-//}
-//
-//@include respond(big_desktop) {
-//  .main_pages_wrapper {
-//    //background-color: darkgreen;
-//  }
-//}
+$lineT: 1px;
 
 .main_wrapper {
+  border: $lineT solid #ff0000;
   display: flex;
   flex-direction: column;
-  //flex-wrap: nowrap;
-  //justify-content: center;
   align-items: center;
-
-  min-height: 100%;
-  width: 100%;
+  min-height: 100vh;
+  min-width: 100vw;
 
   .page_content_wrapper{
     max-width: 1440px;
+    width: 100%;
+    border: $lineT solid #57ff00;
+    flex-grow: 1;
   }
 }
 
