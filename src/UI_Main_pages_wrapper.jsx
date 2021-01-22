@@ -46,13 +46,13 @@ export default function UI_Main_pages_wrapper() {
             <div className={"page_content_wrapper"}>
                 {/*<UI_divider/>*/}
                 <UI_body_wrapper/>
-                <UI_footer/>
                 <Suspense fallback={FullPageLoader}>
                     {/*<UI_login/>*/}
                     {/*<UI_register/>*/}
                     {/*<UI_forgot_password/>*/}
                 </Suspense>
             </div>
+            <UI_footer/>
         </div>
     );
 }

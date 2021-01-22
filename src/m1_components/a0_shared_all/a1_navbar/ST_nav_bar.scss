@@ -1,4 +1,4 @@
-$lineT: 0px;
+//$lineT: 1px;
 
 .nav_bar_main_wrapper {
   width: 100%;
@@ -6,7 +6,7 @@ $lineT: 0px;
   z-index: 1;
   //////////////top bar//////////////////////
   .top_bar_1 {
-    border: $lineT solid #22ff00;
+    //border: $lineT solid #22ff00;
     width: 100%;
     height: 41px;
     background: rgba(0, 0, 0, 0.8);
@@ -20,7 +20,7 @@ $lineT: 0px;
     }
 
     .top_bar_elems {
-      border: $lineT solid red;
+      //border: $lineT solid red;
       max-width: 1440px;
       flex-grow: 1;
       display: flex;
@@ -31,7 +31,7 @@ $lineT: 0px;
       height: 54px;//////////////////////////////////////////
 
       .top_elems {
-        border: $lineT solid #22ff00;
+        //border: $lineT solid #22ff00;
         padding: 0 5px 0 5px;
         height: 100%;
 
@@ -42,7 +42,7 @@ $lineT: 0px;
       }
 
       .tlf_nr {
-        border: $lineT solid #ff5500;
+        //border: $lineT solid #ff5500;
         font-size: 15px;
         font-family: 'Roboto', sans-serif;
         letter-spacing: 1px;
@@ -53,7 +53,7 @@ $lineT: 0px;
           cursor: pointer;
         }
         &:active{
-          color: red;
+           color: #ff7a7a;
         }
       }
 
@@ -63,7 +63,7 @@ $lineT: 0px;
           cursor: pointer;
         }
         &:active{
-          color: red;
+           color: #ff7a7a;
         }
       }
 
@@ -74,7 +74,7 @@ $lineT: 0px;
           cursor: pointer;
         }
         &:active{
-          color: red;
+           color: #ff7a7a;
         }
         .tb_insta_ico{
           height: 15px;
@@ -90,17 +90,17 @@ $lineT: 0px;
   //////////////////////////////////////////
   ////////////////////bottom bar//////////////
   .bottom_bar {
-    //border: $lineT solid #41ff00;
+    ////border: $lineT solid #41ff00;
     width: 100%;
     //height: 54px; ////////////////////////////////////////////////////////////
     background: linear-gradient(-90deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0) 100%), rgba(29, 29, 29, 0.8);
     display: flex;
     flex-direction: row;
     justify-content: center;
-    height: 54px;
+    //height: 35px;
 
     .bottom_bar_elems {
-      border: $lineT solid #9700ff;
+      //border: $lineT solid #9700ff;
       width: 100%;
       max-width: 1440px;
       display: grid;
@@ -114,12 +114,12 @@ $lineT: 0px;
       }
 
       .small_logo_wrapper{
-        border: $lineT solid #ff00aa;
+        //border: $lineT solid #ff00aa;
         justify-self: start;
       }
 
       .img_self {
-        border: $lineT solid #00c5ff;
+        //border: $lineT solid #00c5ff;
         object-fit: contain;
         height: 100%;
         width: 100%;
@@ -132,19 +132,19 @@ $lineT: 0px;
       }
 
       .nav_links {
-        border: $lineT solid #003fff;
+        //border: $lineT solid #003fff;
         max-width: 650px;
         height: 100%;
         padding: 0;
         display: flex;
         flex-direction: row;
         @media (max-width: 645px) {
-          border: $lineT solid #ff0011;
+          //border: $lineT solid #ff0011;
           margin: 0;
         }
 
         .burger_menu_li {
-          border: $lineT solid #fff100;
+          //border: $lineT solid #fff100;
           display: none;
           flex-direction: row;
           justify-content: center;
@@ -200,7 +200,7 @@ $lineT: 0px;
       }
 
       .language {
-        border: $lineT solid #58ff00;
+        //border: $lineT solid #58ff00;
         justify-self: end;
         display: flex;
         align-items: center;
@@ -216,13 +216,13 @@ $lineT: 0px;
         font-size: 10px;
 
         .flag_div {
-          border: $lineT solid #00d1ff;
+          //border: $lineT solid #00d1ff;
           height: 30px;
           width: 40px;
           justify-self: end;
 
           .flag_img_self {
-            border: $lineT solid #00c5ff;
+            //border: $lineT solid #00c5ff;
             object-fit: contain;
             height: 100%;
             width: 100%;
@@ -230,7 +230,7 @@ $lineT: 0px;
         }
 
         .text_div {
-          border: $lineT solid #bb00ff;
+          //border: $lineT solid #bb00ff;
           height: 35px;
           justify-self: start;
           width: 100px;
@@ -246,7 +246,7 @@ $lineT: 0px;
           }
 
           .text_self {
-            border: $lineT solid #953d3d;
+            //border: $lineT solid #953d3d;
             height: 100%;
             width: 100%;
 
@@ -307,7 +307,7 @@ $lineT: 0px;
     }
 
     .language2 {
-      border: $lineT solid #6cbd64;
+      //border: $lineT solid #6cbd64;
       display: none;
       grid-template-columns: auto auto;
       align-items: center;
@@ -327,13 +327,13 @@ $lineT: 0px;
       font-size: 10px;
 
       .flag_div2 {
-        border: $lineT solid #00d1ff;
+        //border: $lineT solid #00d1ff;
         height: 30px;
         width: 40px;
         justify-self: end;
 
         .flag_img_self2 {
-          border: $lineT solid #00c5ff;
+          //border: $lineT solid #00c5ff;
           object-fit: contain;
           height: 100%;
           width: 100%;
@@ -341,7 +341,7 @@ $lineT: 0px;
       }
 
       .text_div2 {
-        border: $lineT solid #583b5e;
+        //border: $lineT solid #583b5e;
         height: 35px;
         width: 100px;
         margin-right: 10px;
@@ -356,7 +356,7 @@ $lineT: 0px;
         }
 
         .text_self2 {
-          border: $lineT solid #00d4ff;
+          //border: $lineT solid #00d4ff;
           height: 100%;
           width: 100%;
 

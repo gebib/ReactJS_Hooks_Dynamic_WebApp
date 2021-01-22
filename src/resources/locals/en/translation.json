@@ -56,5 +56,14 @@
     "about": "About us",
     "lang": "English",
     "": ""
+  },
+  "footer": {
+    "tlf1": "Telephone 1",
+    "tlf2": "Telephone 2",
+    "learn_more": "LEARN MORE",
+    "recent_posts": "RECENT POSTS",
+    "terms_and_conditions": "Terms and Conditions",
+    "legal": "Legal",
+    "site_map": "Site Map"
   }
 }
