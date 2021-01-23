@@ -25,7 +25,7 @@ export const UI_login = () => {
                     <div className={"label_login"}>{t("sign_in.login")}</div>
 
                     <div className={"label_or right_items"}>{t("sign_in.or")} <Link style={{textDecoration: 'none'}}
-                                                                                               to={`/router/path`}>{t("sign_in.create_an_account")}</Link>
+                                                                                               to={"/register"}>{t("sign_in.create_an_account")}</Link>
                     </div>
 
                     <input type="email" className="form-control input_mail" id="formGroupExampleInput"
@@ -42,7 +42,7 @@ export const UI_login = () => {
                     </div>
 
                     <div className={"lbl_forgot_ps right_items"}><Link style={{textDecoration: 'none'}}
-                                                                       to={`/router/path`}>{t("sign_in.forgot_password")}</Link>
+                                                                       to={"/forgot_password"}>{t("sign_in.forgot_password")}</Link>
                     </div>
 
                     <div className="mail_login_btn">

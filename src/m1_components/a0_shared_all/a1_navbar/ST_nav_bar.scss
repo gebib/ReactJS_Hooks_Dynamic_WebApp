@@ -1,4 +1,4 @@
-//$lineT: 1px;
+//$lineT: 0px;
 
 .nav_bar_main_wrapper {
   width: 100%;
@@ -14,9 +14,8 @@
     flex-direction: row;
     justify-content: center;
     transition: height 0.4s;
-    @media (max-width: 293px) {
+    @media (max-width: 315px) {
       display: none;
-      transition: 1s;
     }
 
     .top_bar_elems {
@@ -27,8 +26,7 @@
       flex-direction: row;
       justify-content: flex-end;
       color: white;
-
-      height: 54px; //////////////////////////////////////////
+      //height: 100%;
 
       .top_elems {
         //border: $lineT solid #22ff00;
@@ -73,7 +71,7 @@
       }
 
       .insta_ico {
-        margin-right: 40px;
+        margin-right: 10px;
         color: white;
 
         &:hover {
@@ -87,6 +85,37 @@
         .tb_insta_ico {
           height: 15px;
           width: 15px;
+        }
+      }
+    }
+    .sign_in{
+      //border: $lineT solid #ffe100;
+      height: 100%;
+      margin-right: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      .sign_in_lbl{
+        ////border: $lineT solid #00f2ff;
+        width: 100%;
+        height: 60%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 1em;
+        font-weight: 500;
+        color: rgba(36, 140, 157,0.7);
+        border: 1px solid rgba(36, 140, 157,0.7);
+        border-radius: 5px;
+        padding: 0 3px 3px 3px;
+        cursor: pointer;
+        &:active{
+          color: #ff7a7a;
+          border: 1px solid #ff7a7a;
+        }
+        &:hover {
+          cursor: pointer;
+          color: #248c9d;
         }
       }
     }
@@ -223,14 +252,14 @@
           display: none;
         }
 
-        color: white;
+        color: #248c9d;
         font-family: 'Roboto', sans-serif;
         letter-spacing: 2px;
-        font-size: 10px;
+        font-size: 13px;
 
         .flag_div {
           //border: $lineT solid #00d1ff;
-          height: 30px;
+          height: 100%;
           width: 40px;
           justify-self: end;
 
@@ -243,11 +272,15 @@
         }
 
         .text_div {
-          //border: $lineT solid #bb00ff;
-          height: 35px;
+          ////border: $lineT solid #bb00ff;
+          //height: 100%;
           justify-self: start;
-          width: 100px;
+          width: 80px;
           margin-right: 10px;
+          color: rgba(36, 140, 157,0.7);
+          border: 1px solid rgba(36, 140, 157,0.7);
+          border-radius: 5px;
+          height: 30px;
 
           &:hover {
             cursor: pointer;
@@ -255,17 +288,18 @@
           }
 
           &:active {
-            color: red;
+            color: #ff7a7a;
           }
 
           .text_self {
             //border: $lineT solid #953d3d;
             height: 100%;
             width: 100%;
+            padding: 5px;
 
             display: flex;
             flex-direction: row;
-            justify-content: flex-start;
+            justify-content: flex-end;
             align-items: center;
           }
         }

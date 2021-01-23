@@ -15,6 +15,8 @@ import {MdPhone} from "react-icons/md";
 import {FaFacebookF} from "react-icons/fa";
 import {ImLinkedin2} from "react-icons/im";
 import {FaInstagramSquare} from "react-icons/fa";
+import {ImArrowUp} from "react-icons/im";
+
 
 
 export const UI_nav_bar = (props) => {
@@ -55,10 +57,17 @@ export const UI_nav_bar = (props) => {
                 <div className={(inView ? "top_bar_1" : "top_bar_0")}>
                     <div className={"top_bar_elems"}>
                         <div className={"tlf_ico top_elems"}><MdPhone/></div>
-                        <div className={"tlf_nr top_elems"}><div>+47 98 255 131</div></div>
+                        <div className={"tlf_nr top_elems"}>
+                            <div>+47 98 255 131</div>
+                        </div>
                         <div className={"fb_ico top_elems"}><FaFacebookF/></div>
                         <div className={"in_ico top_elems"}><ImLinkedin2/></div>
                         <div className={"insta_ico top_elems"}><FaInstagramSquare/></div>
+                        <div className={"sign_in"}>
+                            <IconContext.Provider value={{size: "1em"}}>
+                                <div className={"sign_in_lbl"} onClick={() => history.push("/login")}>{t("sign_in.login")}<ImArrowUp/></div>
+                            </IconContext.Provider>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -67,7 +76,7 @@ export const UI_nav_bar = (props) => {
                 <div className={"bottom_bar_elems"}>
 
                     <div className={"small_logo_wrapper"}>
-                        <img className={"img_self"} style={{cursor: "pointer"}} onClick={() => history.push("/home")}
+                        <img className={"img_self"} style={{cursor: "pointer"}} onClick={() => history.push("/")}
                              id={"logo"} src={silverlining_logo} alt={"SILVERLINING logo"}/>
                     </div>
 
@@ -76,15 +85,16 @@ export const UI_nav_bar = (props) => {
                             <li className={"burger_menu_li"} onClick={handleBtnClick}><GiHamburgerMenu/></li>
                         </IconContext.Provider>
                         <li className={"li_s"}><Link className={"lnk"} to={"/"}>{t("nav.home")}</Link></li>
-                        <li className={"li_s"}><Link className={"lnk"} to={`/router/path`}>{t("nav.jobs")}</Link></li>
-                        <li className={"li_s"}><Link className={"lnk"} to={`/router/path`}>{t("nav.services")}</Link></li>
-                        <li className={"li_s"}><Link className={"lnk"} to={`/router/path`}>{t("nav.blog")}</Link></li>
-                        <li className={"li_s"}><Link className={"lnk"} to={`/router/path`}>{t("nav.about")}</Link></li>
+                        <li className={"li_s"}><Link className={"lnk"} to={"/jobs"}>{t("nav.jobs")}</Link></li>
+                        <li className={"li_s"}><Link className={"lnk"} to={"/services"}>{t("nav.services")}</Link></li>
+                        <li className={"li_s"}><Link className={"lnk"} to={"/blog"}>{t("nav.blog")}</Link></li>
+                        <li className={"li_s"}><Link className={"lnk"} to={"/about"}>{t("nav.about")}</Link></li>
                     </ul>
 
                     <div className={"language"}>
                         <div className={"flag_div"}>
-                            <img className={"flag_img_self"} src={(i18n.language === "en") ? englishFlag : norskFlag} alt={"language flag"}/>
+                            <img className={"flag_img_self"} src={(i18n.language === "en") ? englishFlag : norskFlag}
+                                 alt={"language flag"}/>
                         </div>
                         <div className={"text_div"} onClick={handleLanguageChange}>
                             <IconContext.Provider value={{size: "1.5em"}}>

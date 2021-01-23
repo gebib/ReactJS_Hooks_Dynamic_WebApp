@@ -26,7 +26,7 @@ export const UI_register = () => {
 
                     <div className={"label_or right_items"}>{t("register.have_account")} <Link
                         style={{textDecoration: 'none'}}
-                        to={`/router/path`}>{t("sign_in.login")}</Link>
+                        to={"/login"}>{t("sign_in.login")}</Link>
                     </div>
 
                     <input type="text" className="form-control input_name" id="register_name_input"

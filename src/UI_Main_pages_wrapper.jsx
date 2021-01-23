@@ -11,8 +11,8 @@ import {UI_logo_with_image} from "./m1_components/a0_shared_all/a2_logo_with_ima
 import {UI_body_wrapper} from "./m1_components/a0_shared_all/a4_body_wrapper/UI_body_wrapper";
 import {UI_footer} from "./m1_components/a0_shared_all/a5_footer/UI_footer";
 import {UI_divider} from "./m1_components/a0_shared_all/a3_animated_divider/UI_divider";
-import{BrowserRouter,Switch,Route,Link, NavLink}from "react-router-dom";
-
+import {BrowserRouter, Switch, Route, Link, NavLink} from "react-router-dom";
+import {HomeContent} from "./m0_pages_routes/HomeContent";
 
 
 // custom hook: to add event window event listener once.
@@ -41,19 +41,12 @@ export default function UI_Main_pages_wrapper() {
     const [height, width] = useWindowSize();
 
     return (
-        // main container width = 1440 for all res >= that.
-        // else container width === body width.
         <div className={"main_wrapper"}>
             <UI_nav_bar/>
             <UI_logo_with_image/>
             <div className={"page_content_wrapper"}>
                 {/*<UI_divider/>*/}
                 <UI_body_wrapper/>
-                <Suspense fallback={FullPageLoader}>
-                    {/*<UI_login/>*/}
-                    {/*<UI_register/>*/}
-                    {/*<UI_forgot_password/>*/}
-                </Suspense>
             </div>
             <UI_footer/>
         </div>
