@@ -1,13 +1,17 @@
+//$lineT: 1px;
 body {
+  //border: $lineT solid #ff0000;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
   sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
   background-image: linear-gradient(30deg, #111111 0%, #282828 100%);
+
   margin: 0;
   padding: 0;
   width: 100%;
-  height: 100%;
+  height: 100vh;
+  //overflow-y: scroll; /* Show vertical scrollbar */
 }

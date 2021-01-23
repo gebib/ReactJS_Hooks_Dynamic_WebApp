@@ -28,7 +28,7 @@
       justify-content: flex-end;
       color: white;
 
-      height: 54px;//////////////////////////////////////////
+      height: 54px; //////////////////////////////////////////
 
       .top_elems {
         //border: $lineT solid #22ff00;
@@ -47,36 +47,44 @@
         font-family: 'Roboto', sans-serif;
         letter-spacing: 1px;
       }
-      .fb_ico{
+
+      .fb_ico {
         color: white;
-        &:hover{
+
+        &:hover {
           cursor: pointer;
         }
-        &:active{
-           color: #ff7a7a;
+
+        &:active {
+          color: #ff7a7a;
         }
       }
 
-      .in_ico{
+      .in_ico {
         color: white;
-        &:hover{
+
+        &:hover {
           cursor: pointer;
         }
-        &:active{
-           color: #ff7a7a;
+
+        &:active {
+          color: #ff7a7a;
         }
       }
 
       .insta_ico {
         margin-right: 40px;
         color: white;
-        &:hover{
+
+        &:hover {
           cursor: pointer;
         }
-        &:active{
-           color: #ff7a7a;
+
+        &:active {
+          color: #ff7a7a;
         }
-        .tb_insta_ico{
+
+        .tb_insta_ico {
           height: 15px;
           width: 15px;
         }
@@ -86,7 +94,12 @@
 
   .top_bar_0 {
     height: 0;
+
+    .top_elems{
+      display: none;
+    }
   }
+
   //////////////////////////////////////////
   ////////////////////bottom bar//////////////
   .bottom_bar {
@@ -113,7 +126,7 @@
         grid-template-columns: auto 1fr 1fr;
       }
 
-      .small_logo_wrapper{
+      .small_logo_wrapper {
         //border: $lineT solid #ff00aa;
         justify-self: start;
       }
