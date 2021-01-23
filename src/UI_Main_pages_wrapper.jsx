@@ -11,6 +11,8 @@ import {UI_logo_with_image} from "./m1_components/a0_shared_all/a2_logo_with_ima
 import {UI_body_wrapper} from "./m1_components/a0_shared_all/a4_body_wrapper/UI_body_wrapper";
 import {UI_footer} from "./m1_components/a0_shared_all/a5_footer/UI_footer";
 import {UI_divider} from "./m1_components/a0_shared_all/a3_animated_divider/UI_divider";
+import{BrowserRouter,Switch,Route,Link, NavLink}from "react-router-dom";
+
 
 
 // custom hook: to add event window event listener once.
@@ -35,6 +37,7 @@ const useWindowSize = () => {
 
 
 export default function UI_Main_pages_wrapper() {
+
     const [height, width] = useWindowSize();
 
     return (

@@ -47,11 +47,11 @@ export const UI_footer = (props) => {
                         <p>{t("footer.recent_posts")}</p>
                         <ul>
                             <li className={"cm_txt"}><MdKeyboardArrowRight/><Link className={"lnk_posts"} to={`/router/path`}><strong>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab at debitis enim expedita illum labore natus nisi quam quo sapiente.</strong></Link></li>
-                            <li className={"first_line cm_txt"}>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis, harum.</li>
+                            <div className={"first_line cm_txt"}>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis, harum.</div>
                             <li className={"cm_txt"}><MdKeyboardArrowRight/><Link className={"lnk_posts"} to={`/router/path`}><strong>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores cupiditate dolor facere ipsum itaque non repellendus rerum temporibus, voluptatem voluptatibus!</strong></Link></li>
-                            <li className={"first_line cm_txt"}>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut, modi!</li>
+                            <div className={"first_line cm_txt"}>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut, modi!</div>
                             <li className={"cm_txt"}><MdKeyboardArrowRight/><Link className={"lnk_posts"} to={`/router/path`}><strong>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Assumenda atque consequatur dolor doloremque harum impedit ipsam itaque officia quia quisquam?</strong></Link></li>
-                            <li className={"first_line cm_txt"}>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid, iusto.</li>
+                            <div className={"first_line cm_txt"}>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid, iusto.</div>
                         </ul>
                         <div className={"bottom_sm"}>
                             <IconContext.Provider value={{size: "1.5em"}}>

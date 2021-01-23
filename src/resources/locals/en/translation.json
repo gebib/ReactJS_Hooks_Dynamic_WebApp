@@ -50,8 +50,8 @@
   },
   "nav": {
     "home": "Home",
-    "av_positions": "Job",
-    "services": "Service",
+    "jobs": "Jobs",
+    "services": "Services",
     "blog": "Blog",
     "about": "About us",
     "lang": "English",

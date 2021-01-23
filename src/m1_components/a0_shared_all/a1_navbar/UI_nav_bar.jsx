@@ -63,7 +63,7 @@ export const UI_nav_bar = (props) => {
                 </div>
             </div>
 
-            <div className={(inView ? "bottom_bar" : "bottom_bar fixed-top")}>
+            <nav className={(inView ? "bottom_bar" : "bottom_bar fixed-top")}>
                 <div className={"bottom_bar_elems"}>
 
                     <div className={"small_logo_wrapper"}>
@@ -75,8 +75,8 @@ export const UI_nav_bar = (props) => {
                         <IconContext.Provider value={{size: "1.5em"}}>
                             <li className={"burger_menu_li"} onClick={handleBtnClick}><GiHamburgerMenu/></li>
                         </IconContext.Provider>
-                        <li className={"li_s"}><Link className={"lnk"} to={`/router/path`}>{t("nav.home")}</Link></li>
-                        <li className={"li_s"}><Link className={"lnk"} to={`/router/path`}>{t("nav.av_positions")}</Link></li>
+                        <li className={"li_s"}><Link className={"lnk"} to={"/"}>{t("nav.home")}</Link></li>
+                        <li className={"li_s"}><Link className={"lnk"} to={`/router/path`}>{t("nav.jobs")}</Link></li>
                         <li className={"li_s"}><Link className={"lnk"} to={`/router/path`}>{t("nav.services")}</Link></li>
                         <li className={"li_s"}><Link className={"lnk"} to={`/router/path`}>{t("nav.blog")}</Link></li>
                         <li className={"li_s"}><Link className={"lnk"} to={`/router/path`}>{t("nav.about")}</Link></li>
@@ -94,7 +94,7 @@ export const UI_nav_bar = (props) => {
                     </div>
 
                 </div>
-            </div>
+            </nav>
             {/*///////////////drop down*/}
             <div className={(inView ? "dropdown" : "dropdown fixed-top")} style={{marginTop: inView ? "0px" : "35px"}}
                  ref={refb}>

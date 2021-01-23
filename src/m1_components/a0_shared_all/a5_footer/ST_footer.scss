@@ -1,8 +1,8 @@
-$lineT: 0px;
-$footer_bgc: #141A19;
+//$lineT: 1px;
+$footer_bgc: #141a19;
 
 .UI_footer_wrapper {
-  border: $lineT solid #ff0000;
+  //border: $lineT solid #ff0000;
   display: flex;
   flex-direction: row;
   background-color: $footer_bgc;
@@ -10,9 +10,10 @@ $footer_bgc: #141A19;
   width: 100%;
   //min-height: 300px;
   .footer_inner {
+    border-left: 1px solid #248C9D;
     padding-left: 10px;
     padding-right: 10px;
-    border: $lineT solid #c300ff;
+    ////border: $lineT solid #c300ff;
     color: #7F8A88;
     max-width: 1440px;
     flex-grow: 1;
@@ -31,16 +32,16 @@ $footer_bgc: #141A19;
     }
 
     .left_div {
-      border: $lineT solid #39ff00;
+      //border: $lineT solid #39ff00;
       text-transform: uppercase;
       line-height: 23px;
 
       .footer_sl_logo {
-        border: $lineT solid #ffb600;
+        //border: $lineT solid #ffb600;
         max-height: 50px;
 
         .img_self {
-          border: $lineT solid #00c5ff;
+          //border: $lineT solid #00c5ff;
           object-fit: contain;
           height: 100%;
           width: 40%;
@@ -50,7 +51,7 @@ $footer_bgc: #141A19;
     }
 
     .middle_div {
-      border: $lineT solid #ffb600;
+      //border: $lineT solid #ffb600;
       line-height: 2em;
       color: #7F8A88;
 
@@ -69,7 +70,7 @@ $footer_bgc: #141A19;
     }
 
     .right_div {
-      border: $lineT solid red;
+      //border: $lineT solid red;
       font-weight: 400;
 
       li {
@@ -79,7 +80,7 @@ $footer_bgc: #141A19;
       }
 
       .cm_txt {
-        border: $lineT solid #8f7c4d;
+        //border: $lineT solid #8f7c4d;
         width: 600px;
         overflow: hidden;
         white-space: nowrap;
@@ -109,7 +110,7 @@ $footer_bgc: #141A19;
 
       li {
         list-style-type: none;
-        line-height: 1.7em;
+        line-height: 1.5em;
       }
 
       .lnk_posts {
@@ -119,7 +120,7 @@ $footer_bgc: #141A19;
       }
 
       .bottom_sm {
-        border: $lineT solid #ffb600;
+        //border: $lineT solid #ffb600;
         display: flex;
         flex-direction: row;
         justify-content: flex-end;
@@ -130,7 +131,7 @@ $footer_bgc: #141A19;
       }
 
       .lnk_footer_sm {
-        border: $lineT solid #00ebff;
+        //border: $lineT solid #00ebff;
         border-radius: 25px;
         padding: 3px;
         margin-left: 2px;
@@ -147,7 +148,7 @@ $footer_bgc: #141A19;
   }
 
   .footer_outer {
-    border: $lineT solid #00ebff;
+    //border: $lineT solid #00ebff;
     max-width: 1440px;
     flex-grow: 1;
     background-color: #1D2625;
@@ -157,8 +158,9 @@ $footer_bgc: #141A19;
     flex-direction: column;
 
     .footer_bottom {
-      border: $lineT solid #0008ff;
+      //border: $lineT solid #0008ff;
       text-transform: uppercase;
+      border-left: 1px solid #248C9D;
 
       .last_footer_div{
         background-color: #161d1d;
