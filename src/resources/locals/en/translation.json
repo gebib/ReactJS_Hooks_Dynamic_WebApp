@@ -17,7 +17,7 @@
   },
   "register": {
     "lbl_register": "Register",
-    "have_account": "Have an account?",
+    "have_account": "Have an account? ",
     "pl_hl_name": "Name",
     "i_accept_the": "I accept the",
     "terms": "terms",
@@ -27,9 +27,13 @@
     "input_name": "Name",
     "password": "Password",
     "c_password": "Confirm Password",
-    "": "",
-    "": "",
-    "": "",
+    "typeInYourName": "Please type in your name",
+    "typeInYourEmail": "Please type in your email",
+    "addPassword": "Please add password",
+    "confirmPassword": "Please confirm password",
+    "passwordDontMatch": "The password do not match",
+    "checkAgreement": "Please check agreement",
+    "passwordIsTooShort": "Password is too short!",
     "": ""
   },
   "sign_out": {

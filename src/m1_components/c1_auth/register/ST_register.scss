@@ -1,4 +1,5 @@
-$margin: 0px;
+//$lineT: 1px;
+
 $light_gray: #9da9bb;
 $lightest_gray: #B6C1D2;
 $dark_gray: #5E6E82;
@@ -32,8 +33,8 @@ $new-shadow-active: 0px 0px 10px 6px rgba(0, 0, 0, 0.1);
   grid-template-columns: auto auto; // i need 2 columns 1fraction each
   grid-template-rows: auto auto auto auto auto 20px 19px auto; // i need 18 rows 1fraction each
   align-items: center;
-  grid-column-gap: 5px;
-  grid-row-gap: 15px;
+  //grid-column-gap: 5px;
+  grid-row-gap: 17px;
   border-radius: 6px;
   padding: 40px;
   //background-image: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
@@ -43,13 +44,45 @@ $new-shadow-active: 0px 0px 10px 6px rgba(0, 0, 0, 0.1);
 
   grid-template-areas:
   "lbl_register lbl_have_acc"
-"input_name input_name"
-"input_mail input_mail"
-"input_pass input_pass"
-"cb_register cb_register"
-"btn_register btn_register"
-"hr_centered hr_centered"
-"sm_buttons sm_buttons";
+  "input_name input_name"
+  "input_mail input_mail"
+  "input_pass input_pass"
+  "cb_register cb_register"
+  "btn_register btn_register"
+  "hr_centered hr_centered"
+  "sm_buttons sm_buttons";
+
+  .input_wrappers { //by default no text!
+    //border: $lineT solid #00e1ff;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+
+    .show_error {
+      //border: $lineT solid #73ff00;
+      color: #FF7A7A;
+      width: 100%;
+      font-size: 14px;
+
+    }
+  }
+
+  .terms_indv {
+    grid-area: cb_register;
+    //border: $lineT solid #ff00aa;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+
+    .show_error {
+      //border: $lineT solid #73ff00;
+      color: #FF7A7A;
+      width: 100%;
+      font-size: 14px;
+    }
+  }
 
 
   .label_register {

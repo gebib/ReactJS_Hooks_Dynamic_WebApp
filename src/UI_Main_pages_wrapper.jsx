@@ -1,18 +1,9 @@
-import React, {Suspense, useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import './ST_Main_pages_wrapper.scss';
-
-import {Row, Col} from "react-bootstrap";
-import {UI_login} from "./m1_components/c1_auth/login/UI_login";
-import {FullPageLoader} from "./resources/miscellaneous/FullPageLoader";
-import {UI_register} from "./m1_components/c1_auth/register/UI_register";
-import {UI_forgot_password} from "./m1_components/c1_auth/a0_auth_common/forgot_password/UI_forgot_password";
 import {UI_nav_bar} from "./m1_components/a0_shared_all/a1_navbar/UI_nav_bar";
 import {UI_logo_with_image} from "./m1_components/a0_shared_all/a2_logo_with_image/UI_logo_with_image";
 import {UI_body_wrapper} from "./m1_components/a0_shared_all/a4_body_wrapper/UI_body_wrapper";
 import {UI_footer} from "./m1_components/a0_shared_all/a5_footer/UI_footer";
-import {UI_divider} from "./m1_components/a0_shared_all/a3_animated_divider/UI_divider";
-import {BrowserRouter, Switch, Route, Link, NavLink} from "react-router-dom";
-import {HomeContent} from "./m0_pages_routes/HomeContent";
 
 
 // custom hook: to add event window event listener once.
