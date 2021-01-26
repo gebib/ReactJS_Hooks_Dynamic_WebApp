@@ -132,8 +132,7 @@ export const UI_register = () => {
                                            message: t("register.checkAgreement")
                                        },
                                    })}
-                                   type="checkbox"
-                                   id="flexCheckIndeterminate"/>
+                                   type="checkbox"/>
                             <label className="form-check-label"
                                    htmlFor="flexCheckIndeterminate">{t("register.i_accept_the")}
                                 <Link style={{textDecoration: 'none'}}

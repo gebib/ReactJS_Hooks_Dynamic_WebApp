@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import './ST_login.scss'
 import silverlining_logo from "../../../resources/images/SL_logo.svg";
@@ -6,37 +6,81 @@ import {useTranslation} from "react-i18next";
 import {Link} from "react-router-dom";
 import {UI_sm_buttons} from "../a0_auth_common/sm_buttons/UI_sm_buttons";
 import {UI_hl_divider} from "../a0_auth_common/hl_divider/UI_hl_divider";
+import {useForm} from "react-hook-form";
 
 
 export const UI_login = () => {
     const {t, i18n} = useTranslation("SL_languages");
-    let isRegisterButtonDisabled = true;
+
+
+    const {handleSubmit, register, errors, watch, formState} = useForm({mode: "onChange"});
+    const password = useRef({});
+    password.current = watch("password", "");
+
+    const signInValidUser = (formData) => {
+        console.log(" ::////", formData);
+    }
 
     return (
         <div className={"login_page_container"}>
 
-            <div>
+            <form onSubmit={handleSubmit((formData) => {
+                signInValidUser(formData);
+            })} noValidate={true}>
                 <div className={"long_logo_container"}>
                     <img id={"logo_image"} src={silverlining_logo} alt={"SILVERLINING logo"}/>
                 </div>
 
                 <div className={"login-main-container"}>
-
                     <div className={"label_login"}>{t("sign_in.login")}</div>
-
                     <div className={"label_or right_items"}>{t("sign_in.or")} <Link style={{textDecoration: 'none'}}
-                                                                                               to={"/register"}>{t("sign_in.create_an_account")}</Link>
+                                                                                    to={"/register"}>{t("sign_in.create_an_account")}</Link>
                     </div>
 
-                    <input type="email" className="form-control input_mail" id="formGroupExampleInput"
-                           placeholder={t("sign_in.place_holder_mail")}/>
+                    <div className={"input_wrappers input_mail"}>
+                        <input name={"email"}
+                               ref={register({
+                                   required: {
+                                       value: true,
+                                       message: t("register.typeInYourEmail")
+                                   },
+                                   pattern: {
+                                       value: /^[ÆØÅæøåA-Za-z0-9._%+-]+@(?:[ÆØÅæøåA-Za-z0-9-]+\.)+[A-Za-z]{2,15}$/,
+                                       message: "Please type in a valid email"
+                                   }
+                               })}
+                               type="email"
+                               className="form-control input_mail"
+                               id="register_email_input"
+                               placeholder={t("sign_in.place_holder_mail")}/>
+                        <div className={"show_error"}>{errors.email ? <div>{errors.email.message}</div> : null}</div>
+                    </div>
 
-                    <input type="password" className="form-control input_pass" id="formGroupExampleInput2"
-                           placeholder={t("sign_in.place_holder_pass")}/>
+                    <div className={"input_wrappers input_pass"}>
+                        <input name={"password"} type="password"
+                               ref={register({
+                                   required: {
+                                       value: true,
+                                       message: t("sign_in.please_type_in_password")
+                                   },
+                                   minLength: {
+                                       value: 6,
+                                       message: t("register.passwordIsTooShort")
+                                   }
+                               })}
+                               className="form-control input_pass"
+                               placeholder={t("sign_in.place_holder_pass")}/>
+                        <div className={"show_error"}>{errors.password ?
+                            <div>{errors.password.message}</div> : null}</div>
+                    </div>
 
-                    <div className="login_cb form-check">
-                        <input className="form-check-input" type="checkbox" value="" id="flexCheckIndeterminate"/>
-                        <label className="form-check-label" htmlFor="flexCheckIndeterminate">
+                    <div className="login_checkBox form-check">
+                        <input className="form-check-input"
+                               name={"remember"}
+                                ref={register}
+                               type="checkbox"/>
+                        <label className="form-check-label"
+                               htmlFor="flexCheckIndeterminate">
                             {t("sign_in.remember_me")}
                         </label>
                     </div>
@@ -46,15 +90,16 @@ export const UI_login = () => {
                     </div>
 
                     <div className="mail_login_btn">
-                        <button className="btn btn-primary" type="button"
-                                disabled={isRegisterButtonDisabled}>{t("sign_in.login")}</button>
+                        <button className="btn btn-primary"
+                                type="submit"
+                                disabled={!formState.isValid}>{t("sign_in.login")}</button>
                     </div>
                     {/*hr divider line*/}
                     <UI_hl_divider middleText={t("sign_in.or_login_with")}/>
                     {/*/SocialMedia buttons*/}
                     <UI_sm_buttons/>
                 </div>
-            </div>
+            </form>
 
         </div>);
 }
