@@ -3,7 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import './ST_register.scss'
 import silverlining_logo from "../../../resources/images/SL_logo.svg";
 import {useTranslation} from "react-i18next";
-import {Link} from "react-router-dom";
+import {Link, useHistory} from "react-router-dom";
 import {UI_sm_buttons} from "../a0_auth_common/sm_buttons/UI_sm_buttons";
 import {UI_hl_divider} from "../a0_auth_common/hl_divider/UI_hl_divider";
 import {useAuth} from "../../a0_shared_all/context/AuthProvider";
@@ -18,6 +18,7 @@ export const UI_register = () => {
     /*{reValidateMode: "onSubmit"} // if needed to validate only on submit*/
     const {handleSubmit, register, errors, watch, formState} = useForm({mode: "onChange"});
     const password = useRef({});
+    const history = useHistory();
     password.current = watch("password", "");
 
     // const {signup} = useAuth();
@@ -33,7 +34,8 @@ export const UI_register = () => {
                 registerValidUser(formData);
             })} noValidate={true}>
                 <div className={"long_logo_container"}>
-                    <img id={"logo_image"} src={silverlining_logo} alt={"SILVERLINING logo"}/>
+                    <img id={"logo_image"} src={silverlining_logo} alt={"SILVERLINING logo"}
+                         onClick={() => history.push("/")} style={{cursor: "pointer"}}/>
                 </div>
 
                 <div className={"register-main-container"}>
@@ -89,7 +91,7 @@ export const UI_register = () => {
                                            value: true,
                                            message: t("register.addPassword")
                                        },
-                                       minLength:{
+                                       minLength: {
                                            value: 6,
                                            message: t("register.passwordIsTooShort")
                                        }
@@ -145,7 +147,7 @@ export const UI_register = () => {
                     </div>
 
                     <div className="mail_register_btn">
-                        <button className="btn btn-primary"
+                        <button className={!formState.isValid ? "btn btn-danger" : "btn btn-success"}
                                 type="submit"
                                 disabled={!formState.isValid}>{t("register.lbl_register")}</button>
                     </div>

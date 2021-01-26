@@ -12,10 +12,10 @@ import {UI_register} from "../../c1_auth/register/UI_register";
 import {FullPageLoader} from "../../../resources/miscellaneous/FullPageLoader";
 import {UI_forgot_password} from "../../c1_auth/a0_auth_common/forgot_password/UI_forgot_password";
 
-export const UI_body_wrapper = () => {
+export const UI_body_wrapper = (props) => {
     return (
         <div className={"body_outer"}>
-            <div className={"body_wrapper"}>
+            <div className={"body_wrapper"} style={{height: props.wrapperHeight}}>
                 <Switch>
                     {/*navigation links*/}
                     <Route exact path={"/"}><HomeContent/></Route>

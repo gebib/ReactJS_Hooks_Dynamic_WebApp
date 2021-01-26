@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.scss';
 import UI_Main_pages_wrapper from './UI_Main_pages_wrapper';
 import reportWebVitals from './reportWebVitals';
-import {BrowserRouter} from "react-router-dom";
+import {BrowserRouter, useParam} from "react-router-dom";
 import i18next from "i18next";
 
 import language_en from "./resources/locals/en/translation.json";

@@ -1,7 +1,7 @@
 {
   "sign_in": {
     "login": "Logg inn",
-    "or": "eller",
+    "or": "eller ",
     "create_an_account": "lag ny konto",
     "forgot_password": "Glemt passord ?",
     "remember_me": "Husk meg",
@@ -17,7 +17,7 @@
   },
   "register": {
     "lbl_register": "Registrer",
-    "have_account": "Har konto?",
+    "have_account": "Har konto? ",
     "pl_hl_name": "Navn",
     "i_accept_the": "Jeg godtar",
     "terms": "vilkår",

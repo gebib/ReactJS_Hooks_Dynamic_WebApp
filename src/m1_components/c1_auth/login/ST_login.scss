@@ -1,4 +1,4 @@
-$lineT: 1px;
+//$lineT: 1px;
 $light_gray: #9da9bb;
 $lightest_gray: #B6C1D2;
 $dark_gray: #5E6E82;
@@ -51,14 +51,14 @@ $new-shadow-active: 0px 0px 10px 6px rgba(0, 0, 0, 0.1);
 "sm_buttons sm_buttons";
 
   .input_wrappers { //by default no text!
-    border: $lineT solid #00e1ff;
+    //border: $lineT solid #00e1ff;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
 
     .show_error {
-      border: $lineT solid #73ff00;
+      //border: $lineT solid #73ff00;
       color: #FF7A7A;
       width: 100%;
       font-size: 14px;
@@ -68,14 +68,14 @@ $new-shadow-active: 0px 0px 10px 6px rgba(0, 0, 0, 0.1);
 
   .terms_indv {
     grid-area: cb_register;
-    border: $lineT solid #ff00aa;
+    //border: $lineT solid #ff00aa;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
 
     .show_error {
-      border: $lineT solid #73ff00;
+      //border: $lineT solid #73ff00;
       color: #FF7A7A;
       width: 100%;
       font-size: 14px;
@@ -142,6 +142,7 @@ $new-shadow-active: 0px 0px 10px 6px rgba(0, 0, 0, 0.1);
   }
   .btn {
     width: 100%;
+    transition: 1s;
   }
 }
 

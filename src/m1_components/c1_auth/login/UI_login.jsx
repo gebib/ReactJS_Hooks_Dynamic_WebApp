@@ -3,7 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import './ST_login.scss'
 import silverlining_logo from "../../../resources/images/SL_logo.svg";
 import {useTranslation} from "react-i18next";
-import {Link} from "react-router-dom";
+import {Link, useHistory} from "react-router-dom";
 import {UI_sm_buttons} from "../a0_auth_common/sm_buttons/UI_sm_buttons";
 import {UI_hl_divider} from "../a0_auth_common/hl_divider/UI_hl_divider";
 import {useForm} from "react-hook-form";
@@ -15,6 +15,7 @@ export const UI_login = () => {
 
     const {handleSubmit, register, errors, watch, formState} = useForm({mode: "onChange"});
     const password = useRef({});
+    const history = useHistory();
     password.current = watch("password", "");
 
     const signInValidUser = (formData) => {
@@ -28,13 +29,15 @@ export const UI_login = () => {
                 signInValidUser(formData);
             })} noValidate={true}>
                 <div className={"long_logo_container"}>
-                    <img id={"logo_image"} src={silverlining_logo} alt={"SILVERLINING logo"}/>
+                    <img id={"logo_image"} src={silverlining_logo} alt={"SILVERLINING logo"} style={{cursor: "pointer"}}
+                         onClick={() => history.push("/")}/>
                 </div>
 
                 <div className={"login-main-container"}>
                     <div className={"label_login"}>{t("sign_in.login")}</div>
-                    <div className={"label_or right_items"}>{t("sign_in.or")} <Link style={{textDecoration: 'none'}}
-                                                                                    to={"/register"}>{t("sign_in.create_an_account")}</Link>
+                    <div className={"label_or right_items"}>{t("sign_in.or")}
+                        <Link style={{textDecoration: 'none'}}
+                              to={"/register"}>{t("sign_in.create_an_account")}</Link>
                     </div>
 
                     <div className={"input_wrappers input_mail"}>
@@ -77,7 +80,7 @@ export const UI_login = () => {
                     <div className="login_checkBox form-check">
                         <input className="form-check-input"
                                name={"remember"}
-                                ref={register}
+                               ref={register}
                                type="checkbox"/>
                         <label className="form-check-label"
                                htmlFor="flexCheckIndeterminate">
@@ -90,7 +93,7 @@ export const UI_login = () => {
                     </div>
 
                     <div className="mail_login_btn">
-                        <button className="btn btn-primary"
+                        <button className={!formState.isValid ? "btn btn-danger" : "btn btn-success"}
                                 type="submit"
                                 disabled={!formState.isValid}>{t("sign_in.login")}</button>
                     </div>
