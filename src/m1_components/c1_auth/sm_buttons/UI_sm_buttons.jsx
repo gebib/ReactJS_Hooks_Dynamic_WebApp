@@ -1,9 +1,9 @@
-import React, {useState} from "react";
+import React from "react";
 import {IconContext} from "react-icons";
 import {FcGoogle} from "react-icons/fc";
 import {ImFacebook} from "react-icons/im";
-import instaIconLogo from "../../../../resources/images/insta_icon.webp";
-import instaTextLogo from "../../../../resources/images/insta_txt_logo.svg";
+import instaIconLogo from "../../../resources/images/insta_icon.webp";
+import instaTextLogo from "../../../resources/images/insta_txt_logo.svg";
 import {GrLinkedinOption} from "react-icons/gr";
 import "./ST_sm_buttons.scss";
 

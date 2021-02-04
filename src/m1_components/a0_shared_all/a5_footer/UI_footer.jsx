@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React from "react";
 import "./ST_footer.scss";
 import silverlining_logo from "../../../resources/images/SL_logo.svg";
 import {Link, useHistory} from "react-router-dom";
@@ -10,7 +10,7 @@ import {FaFacebookF, FaLinkedinIn, FaInstagramSquare} from "react-icons/fa";
 
 
 
-export const UI_footer = (props) => {
+export const UI_footer = () => {
     const {t, i18n} = useTranslation("SL_languages");
     const history = useHistory();
     return (

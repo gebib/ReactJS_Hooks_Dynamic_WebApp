@@ -1,4 +1,4 @@
-import React, {Suspense, useState} from "react";
+import React, {Suspense } from "react";
 import "./ST_body_wrapper.scss";
 import {Route, Switch} from "react-router-dom";
 import {HomeContent} from "../../../m0_pages_routes/HomeContent";
@@ -10,7 +10,7 @@ import {AboutContent} from "../../../m0_pages_routes/AboutContent";
 import {UI_login} from "../../c1_auth/login/UI_login";
 import {UI_register} from "../../c1_auth/register/UI_register";
 import {FullPageLoader} from "../../../resources/miscellaneous/FullPageLoader";
-import {UI_forgot_password} from "../../c1_auth/a0_auth_common/forgot_password/UI_forgot_password";
+import {UI_forgot_password} from "../../c1_auth/forgot_password/UI_forgot_password";
 
 export const UI_body_wrapper = (props) => {
     return (

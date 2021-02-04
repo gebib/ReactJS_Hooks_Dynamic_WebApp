@@ -11,9 +11,11 @@
     "place_holder_mail": "Email address",
     "place_holder_pass": "Password",
     "please_type_in_password": "Please type in your password",
-    "": "",
-    "": "",
-    "": ""
+    "logout": "Logout",
+    "log_out_ok": "You have logged out!",
+    "log_out_fail": "Failed to logout! Please try again",
+    "try_again": "Failed to login, make sure your email and password are correct and please try again",
+    "typeInValidEmail": "Please type in a valid email"
   },
   "register": {
     "lbl_register": "Register",
@@ -34,22 +36,17 @@
     "passwordDontMatch": "The password do not match",
     "checkAgreement": "Please check agreement",
     "passwordIsTooShort": "Password is too short!",
-    "": ""
-  },
-  "sign_out": {
-    "logout": "Log out",
-    "": "",
-    "": "",
-    "": "",
-    "": ""
+    "registeredOk": "You've successfully registered!",
+    "inUse": "The email address is already in use by another account.",
+    "tryAgain": "Could not register: please refresh your browser and try again."
   },
   "forgot": {
     "lbl_forgot": "Forgot your password?",
     "info_txt": "Enter your email and we'll send you a reset link.",
     "info_txt2": "I can't recover my account using this page \uD83E\uDC52",
     "send_reset_link": "Send reset link",
-    "": "",
-    "": "",
+    "resendMeLink": "Failed to send reset link! \n Make sure email is correct and try again",
+    "resetLinkInfo": "Password reset link has been sent to your email!. Please use the link and follow instruction to reset your password",
     "": ""
   },
   "nav": {

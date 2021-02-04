@@ -1,12 +1,14 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {useRef, useState} from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import './ST_login.scss'
 import silverlining_logo from "../../../resources/images/SL_logo.svg";
 import {useTranslation} from "react-i18next";
 import {Link, useHistory} from "react-router-dom";
-import {UI_sm_buttons} from "../a0_auth_common/sm_buttons/UI_sm_buttons";
-import {UI_hl_divider} from "../a0_auth_common/hl_divider/UI_hl_divider";
+import {UI_sm_buttons} from "../sm_buttons/UI_sm_buttons";
+import {UI_hl_divider} from "../hl_divider/UI_hl_divider";
 import {useForm} from "react-hook-form";
+import {showToast} from "../../../UI_Main_pages_wrapper";
+import {useAuth} from "../a0_auth_common/firebase/AuthContext";
 
 
 export const UI_login = () => {
@@ -17,16 +19,26 @@ export const UI_login = () => {
     const password = useRef({});
     const history = useHistory();
     password.current = watch("password", "");
+    const [loading, setLoading] = useState(false);
 
-    const signInValidUser = (formData) => {
-        console.log(" ::////", formData);
+    const {login} = useAuth();
+
+    const signInValidUser = async (formData) => {
+        try {
+            setLoading(true);
+            await login(formData.email, formData.password);
+            history.push("/");
+        } catch { // in case signup has failed
+            showToast(t("sign_in.try_again"), "error");
+        }
     }
 
     return (
         <div className={"login_page_container"}>
-
             <form onSubmit={handleSubmit((formData) => {
-                signInValidUser(formData);
+                signInValidUser(formData).then(r => {
+                    setLoading(false);
+                });
             })} noValidate={true}>
                 <div className={"long_logo_container"}>
                     <img id={"logo_image"} src={silverlining_logo} alt={"SILVERLINING logo"} style={{cursor: "pointer"}}
@@ -49,7 +61,7 @@ export const UI_login = () => {
                                    },
                                    pattern: {
                                        value: /^[ÆØÅæøåA-Za-z0-9._%+-]+@(?:[ÆØÅæøåA-Za-z0-9-]+\.)+[A-Za-z]{2,15}$/,
-                                       message: "Please type in a valid email"
+                                       message: t("sign_in.typeInValidEmail")
                                    }
                                })}
                                type="email"
@@ -95,7 +107,11 @@ export const UI_login = () => {
                     <div className="mail_login_btn">
                         <button className={!formState.isValid ? "btn btn-danger" : "btn btn-success"}
                                 type="submit"
-                                disabled={!formState.isValid}>{t("sign_in.login")}</button>
+                                disabled={!formState.isValid || loading}>
+                            {loading ? <span className="spinner-border mx-1 text-info spinner-border-sm" role="status"
+                                             aria-hidden="true"/> : null}
+                            {t("sign_in.login")}
+                        </button>
                     </div>
                     {/*hr divider line*/}
                     <UI_hl_divider middleText={t("sign_in.or_login_with")}/>
@@ -103,6 +119,5 @@ export const UI_login = () => {
                     <UI_sm_buttons/>
                 </div>
             </form>
-
         </div>);
 }

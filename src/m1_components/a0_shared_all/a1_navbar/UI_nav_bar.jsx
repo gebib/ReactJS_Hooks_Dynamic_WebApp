@@ -1,4 +1,4 @@
-import React, {useState, useRef, useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import "./ST_nav_bar.scss";
 import {InView, useInView} from 'react-intersection-observer';
 import silverlining_logo from "../../../resources/images/SL_logo.svg";
@@ -16,7 +16,8 @@ import {FaFacebookF} from "react-icons/fa";
 import {ImLinkedin2} from "react-icons/im";
 import {FaInstagramSquare} from "react-icons/fa";
 import {ImArrowUp} from "react-icons/im";
-
+import {useAuth} from "../../c1_auth/a0_auth_common/firebase/AuthContext";
+import {showToast} from "../../../UI_Main_pages_wrapper";
 
 
 export const UI_nav_bar = (props) => {
@@ -25,6 +26,8 @@ export const UI_nav_bar = (props) => {
         threshold: 0,
     });
     const history = useHistory();
+    const {currentUser, logout} = useAuth();
+    // const {error, setError} = useState();
 
     const handleLanguageChange = () => {
         if (i18n.language === "en") {
@@ -35,6 +38,13 @@ export const UI_nav_bar = (props) => {
             });
         }
     }
+
+    useEffect(() => {
+        //effect
+        return () => {
+            //cleanup
+        }
+    }, [/*input*/]);
 
     //drop down
     const [openMenu, setOpenMenu] = React.useState(false);
@@ -47,12 +57,24 @@ export const UI_nav_bar = (props) => {
     const refb = useOnclickOutside(() => {
         closeMenu();
     });
-    /////////
+
+    const handleLoginLogout = async () => {
+        try {
+            if (currentUser !== null) {
+                await logout();
+                showToast(t("sign_in.log_out_ok"), "info");
+                history.push("/");
+            } else {
+                history.push("/login");
+            }
+        } catch {
+            showToast(t("sign_in.log_out_fail"), "error");
+        }
+    }
 
 
     return (
         <div className={"nav_bar_main_wrapper"}>
-
             <div ref={ref}>
                 <div className={(inView ? "top_bar_1" : "top_bar_0")}>
                     <div className={"top_bar_elems"}>
@@ -65,7 +87,10 @@ export const UI_nav_bar = (props) => {
                         <div className={"insta_ico top_elems"}><FaInstagramSquare/></div>
                         <div className={"sign_in"}>
                             <IconContext.Provider value={{size: "1em"}}>
-                                <div className={"sign_in_lbl"} onClick={() => history.push("/login")}>{t("sign_in.login")}<ImArrowUp/></div>
+                                <div className={"sign_in_lbl"} onClick={() => handleLoginLogout()}
+                                     style={currentUser !== null ? {color: "#24818D"} : {color: "#24818D"}
+                                     }>{currentUser !== null ? t("sign_in.logout") : t("sign_in.login")}<ImArrowUp/>
+                                </div>
                             </IconContext.Provider>
                         </div>
                     </div>
