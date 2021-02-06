@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from "react";
 import "./ST_nav_bar.scss";
 import {InView, useInView} from 'react-intersection-observer';
-import silverlining_logo from "../../../resources/images/SL_logo.svg";
+import silverlining_logo from "../../resources/images/SL_logo.svg";
 import {Link} from "react-router-dom";
 import {useTranslation} from "react-i18next";
 import {useHistory} from "react-router-dom";
-import englishFlag from "../../../resources/images/ukf.png";
-import norskFlag from "../../../resources/images/nof.png";
+import englishFlag from "../../resources/images/ukf.png";
+import norskFlag from "../../resources/images/nof.png";
 import {BsArrowUpDown} from "react-icons/bs";
 import {GiHamburgerMenu} from "react-icons/gi";
 import {IconContext} from "react-icons";
@@ -16,8 +16,8 @@ import {FaFacebookF} from "react-icons/fa";
 import {ImLinkedin2} from "react-icons/im";
 import {FaInstagramSquare} from "react-icons/fa";
 import {ImArrowUp} from "react-icons/im";
-import {useAuth} from "../../c1_auth/a0_auth_common/firebase/AuthContext";
-import {showToast} from "../../../UI_Main_pages_wrapper";
+import {useAuth} from "../c1_auth/a0_auth_common/firebase/AuthContext";
+import {showToast} from "../../UI_Main_pages_wrapper";
 
 
 export const UI_nav_bar = (props) => {

@@ -4,7 +4,7 @@ import './ST_login.scss'
 import silverlining_logo from "../../../resources/images/SL_logo.svg";
 import {useTranslation} from "react-i18next";
 import {Link, useHistory} from "react-router-dom";
-import {UI_sm_buttons} from "../sm_buttons/UI_sm_buttons";
+import {UI_sm_buttons} from "../../a0_shared_all/sm_buttons/UI_sm_buttons";
 import {UI_hl_divider} from "../hl_divider/UI_hl_divider";
 import {useForm} from "react-hook-form";
 import {showToast} from "../../../UI_Main_pages_wrapper";
@@ -15,11 +15,12 @@ export const UI_login = () => {
     const {t, i18n} = useTranslation("SL_languages");
 
 
-    const {handleSubmit, register, errors, watch, formState} = useForm({mode: "onChange"});
+    const {handleSubmit, register, errors, watch, formState} = useForm({mode: "onSubmit"});
     const password = useRef({});
     const history = useHistory();
     password.current = watch("password", "");
     const [loading, setLoading] = useState(false);
+    const [smButtonsDisabled, setSMbuttonsDisabled] = useState(true);
 
     const {login} = useAuth();
 
@@ -54,6 +55,8 @@ export const UI_login = () => {
 
                     <div className={"input_wrappers input_mail"}>
                         <input name={"email"}
+                               style={{transition: "1s"}}
+                               disabled={!smButtonsDisabled || loading}
                                ref={register({
                                    required: {
                                        value: true,
@@ -73,6 +76,8 @@ export const UI_login = () => {
 
                     <div className={"input_wrappers input_pass"}>
                         <input name={"password"} type="password"
+                               style={{transition: "1s"}}
+                               disabled={!smButtonsDisabled || loading}
                                ref={register({
                                    required: {
                                        value: true,
@@ -89,25 +94,25 @@ export const UI_login = () => {
                             <div>{errors.password.message}</div> : null}</div>
                     </div>
 
-                    <div className="login_checkBox form-check">
-                        <input className="form-check-input"
-                               name={"remember"}
-                               ref={register}
-                               type="checkbox"/>
-                        <label className="form-check-label"
-                               htmlFor="flexCheckIndeterminate">
-                            {t("sign_in.remember_me")}
-                        </label>
-                    </div>
+                    {/*<div className="login_checkBox form-check">*/}
+                    {/*    <input className="form-check-input"*/}
+                    {/*           name={"remember"}*/}
+                    {/*           ref={register}*/}
+                    {/*           type="checkbox"/>*/}
+                    {/*    <label className="form-check-label"*/}
+                    {/*           htmlFor="flexCheckIndeterminate">*/}
+                    {/*        {t("sign_in.remember_me")}*/}
+                    {/*    </label>*/}
+                    {/*</div>*/}
 
                     <div className={"lbl_forgot_ps right_items"}><Link style={{textDecoration: 'none'}}
                                                                        to={"/forgot_password"}>{t("sign_in.forgot_password")}</Link>
                     </div>
 
                     <div className="mail_login_btn">
-                        <button className={!formState.isValid ? "btn btn-danger" : "btn btn-success"}
+                        <button className={!(formState.isValid || !smButtonsDisabled) ? "btn btn-danger" : "btn btn-success"}
                                 type="submit"
-                                disabled={!formState.isValid || loading}>
+                                disabled={!smButtonsDisabled || loading}>
                             {loading ? <span className="spinner-border mx-1 text-info spinner-border-sm" role="status"
                                              aria-hidden="true"/> : null}
                             {t("sign_in.login")}
@@ -115,8 +120,41 @@ export const UI_login = () => {
                     </div>
                     {/*hr divider line*/}
                     <UI_hl_divider middleText={t("sign_in.or_login_with")}/>
+
+                    {/*<div className="accept_term_cb form-check">*/}
+                    {/*    <input className="form-check-input"*/}
+                    {/*           name={"remember"}*/}
+                    {/*           ref={register}*/}
+
+                    {/*           type="checkbox"/>*/}
+                    {/*    <label className="form-check-label"*/}
+                    {/*           htmlFor="flexCheckIndeterminate">*/}
+                    {/*        {t("register.i_accept_the")}*/}
+                    {/*        {t("register.terms")}  {t("register.and")}*/}
+                    {/*        <Link style={{textDecoration: 'none'}}*/}
+                    {/*              to={`/router/path`}> {t("register.privacy_policy")}</Link>*/}
+                    {/*    </label>*/}
+                    {/*</div>*/}
+                    <div className={"terms_indv"}>
+                        <div className="register_cb form-check">
+                            <input name={"terms"}
+                                   onChange={(e) => {
+                                       setSMbuttonsDisabled(!e.target.checked);
+                                   }}
+                                   className="form-check-input"
+                                   type="checkbox"/>
+                            <label className="form-check-label"
+                                   htmlFor="flexCheckIndeterminate">{t("register.i_accept_the")}
+                                {t("register.terms")}  {t("register.and")}
+                                <Link style={{textDecoration: 'none'}}
+                                      to={`/router/path`}> {t("register.privacy_policy")} </Link>
+                            </label>
+                        </div>
+                        <div className={"show_error mb-2"}>{errors.terms ?
+                            <div>{errors.terms.message}</div> : null}</div>
+                    </div>
                     {/*/SocialMedia buttons*/}
-                    <UI_sm_buttons/>
+                    <UI_sm_buttons isDisabled={smButtonsDisabled}/>
                 </div>
             </form>
         </div>);

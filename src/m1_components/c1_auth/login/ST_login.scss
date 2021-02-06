@@ -30,7 +30,7 @@ $new-shadow-active: 0px 0px 10px 6px rgba(0, 0, 0, 0.1);
   //grid layout
   display: grid;
   grid-template-columns: auto auto; // i need 2 columns 1fraction each
-  grid-template-rows: auto auto auto auto auto 19px auto ; // i need 10 rows 1fraction each
+  grid-template-rows: auto auto auto auto auto 19px auto auto ; // i need 10 rows 1fraction each
   align-items: center;
   grid-column-gap: 5px;
   grid-row-gap: 15px;
@@ -45,9 +45,10 @@ $new-shadow-active: 0px 0px 10px 6px rgba(0, 0, 0, 0.1);
 "lbl_login lbl_or"
 "inpt_mail inpt_mail"
 "inpt_pass inpt_pass"
-"cb_login lbl_forgot"
 "btn_login btn_login"
+"lbl_forgot lbl_forgot"
 "hr_centered hr_centered"
+"cb_privacy cb_privacy"
 "sm_buttons sm_buttons";
 
   .input_wrappers { //by default no text!
@@ -67,7 +68,7 @@ $new-shadow-active: 0px 0px 10px 6px rgba(0, 0, 0, 0.1);
   }
 
   .terms_indv {
-    grid-area: cb_register;
+    grid-area: cb_privacy;
     //border: $lineT solid #ff00aa;
     display: flex;
     flex-direction: column;
@@ -81,8 +82,6 @@ $new-shadow-active: 0px 0px 10px 6px rgba(0, 0, 0, 0.1);
       font-size: 14px;
     }
   }
-
-
 
   .label_login {
     grid-area: lbl_login;
@@ -125,10 +124,10 @@ $new-shadow-active: 0px 0px 10px 6px rgba(0, 0, 0, 0.1);
     }
   }
 
-  .login_checkBox {
-    grid-area: cb_login;
-    color: $dark_gray;
-  }
+  //.login_checkBox {
+  //  grid-area: cb_login;
+  //  color: $dark_gray;
+  //}
 
   .lbl_forgot_ps {
     grid-area: lbl_forgot;
@@ -140,9 +139,9 @@ $new-shadow-active: 0px 0px 10px 6px rgba(0, 0, 0, 0.1);
   .mail_login_btn {
     grid-area: btn_login;
   }
-  .btn {
+  .btn{
     width: 100%;
-    transition: 1s;
+    transition: 0.5s;
   }
 }
 

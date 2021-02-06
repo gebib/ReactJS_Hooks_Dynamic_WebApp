@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from "react";
 import './ST_Main_pages_wrapper.scss';
-import {UI_nav_bar} from "./m1_components/a0_shared_all/a1_navbar/UI_nav_bar";
-import {UI_logo_with_image} from "./m1_components/a0_shared_all/a2_logo_with_image/UI_logo_with_image";
-import {UI_body_wrapper} from "./m1_components/a0_shared_all/a4_body_wrapper/UI_body_wrapper";
-import {UI_footer} from "./m1_components/a0_shared_all/a5_footer/UI_footer";
+import {UI_nav_bar} from "./m1_components/a1_navbar/UI_nav_bar";
+import {UI_logo_with_image} from "./m1_components/a2_logo_with_image/UI_logo_with_image";
+import {UI_body_wrapper} from "./m1_components/a4_body_wrapper_router/UI_body_wrapper";
+import {UI_footer} from "./m1_components/a5_footer/UI_footer";
 import {useLocation} from 'react-router-dom';
 
 // toast.error("toast test: ERROR");
@@ -13,7 +13,6 @@ import {useLocation} from 'react-router-dom';
 import {ToastContainer, toast,} from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import {useAuth} from "./m1_components/c1_auth/a0_auth_common/firebase/AuthContext";
-
 
 
 // custom hook: to add event window event listener once/render and remove on exit.
@@ -66,10 +65,8 @@ export const showToast = (message, type) => {
 }
 
 export default function UI_Main_pages_wrapper() {
-    const [height, width] = useWindowSize();
     const [shouldHideNavEtc, setShouldHideNavEtc] = useState(false);
     const location = useLocation();
-    const {currentUser} = useAuth();
 
     //should fire only when routing path changes:
     useEffect(() => {
@@ -82,10 +79,23 @@ export default function UI_Main_pages_wrapper() {
         }
     }, [location.pathname]);
 
+    const {addUserDataToList} = useAuth(); ////////////////////temp
+    const {currentUser} = useAuth();
 
     return (
         <div className={"main_wrapper"}
              style={shouldHideNavEtc ? {backgroundColor: "#24818d", transition: "2s"} : null}>
+            <button onClick={() => {
+                // let userInfo = {
+                //     userName: currentUser.displayName,
+                //     userPhotoUrl: currentUser.photoURL,
+                //     userUid: currentUser.uid,
+                //     verified: currentUser.emailVerified
+                // }
+                // console.log("////: ", userInfo);
+                console.log("////: ", currentUser);
+            }}>TEST
+            </button>
             <ToastContainer className={"pop"}/>
             {shouldHideNavEtc ? null : <UI_nav_bar/>}
             {shouldHideNavEtc ? null : <UI_logo_with_image/>}

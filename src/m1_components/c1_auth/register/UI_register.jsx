@@ -5,7 +5,7 @@ import silverlining_logo from "../../../resources/images/SL_logo.svg";
 import avatar from "../../../resources/images/avatar.svg";
 import {useTranslation} from "react-i18next";
 import {Link, useHistory} from "react-router-dom";
-import {UI_sm_buttons} from "../sm_buttons/UI_sm_buttons";
+import {UI_sm_buttons} from "../../a0_shared_all/sm_buttons/UI_sm_buttons";
 import {UI_hl_divider} from "../hl_divider/UI_hl_divider";
 import {useForm} from "react-hook-form";
 import {useAuth} from "../a0_auth_common/firebase/AuthContext";
@@ -16,7 +16,8 @@ import {showToast} from "../../../UI_Main_pages_wrapper";
 import ReactCrop from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
 import {useResizeObserver} from "./useResizeObserver";
-import {storage} from "../a0_auth_common/firebase/firebase";
+
+
 
 export const UI_register = () => {
     const {t, i18n} = useTranslation("SL_languages");
@@ -28,10 +29,12 @@ export const UI_register = () => {
     password.current = watch("password", "");
     const [loading, setLoading] = useState(false);
     const [editImage, setEditImage] = useState(true);
+    const [terms, setTerms] = useState(false);
 
     const {signup} = useAuth();
-    const {addNewUserProfileInfo} = useAuth();
-    const {currentUser} = useAuth();
+    const {getFbStorage} = useAuth();
+    // const {currentUser} = useAuth();/////////////////////////////////////////////////////////////current user
+    const {addUserDataToList} = useAuth();
 
     /////////////////imgc///////////////////////////////////
     const [upImg, setUpImg] = useState();
@@ -67,31 +70,33 @@ export const UI_register = () => {
             await signup(formData.email, formData.password).then(auth => {
                 setLoading(false);
                 showToast(t("register.registeredOk"), "info");
-                //add additional user info/avatar etc.
-                const storage = addNewUserProfileInfo(); //formData.name, tempProfileImg, auth
-                storage.ref("profile_imgs/" + auth.user.uid + "/profile.png").put(tempProfileImg).on(
-                    "state_changed",
-                    snapshot => {
-                        const progress = Math.round(
-                            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-                        );
-                        setProgressNr(progress);
-                    }, error => {
-                        console.log(error);
-                    }, () => {
-                        storage.ref("profile_imgs/" + auth.user.uid + "/profile.png").getDownloadURL().then(url => {
-                            // console.log("////downloadURL: ", url);
-                            setLoading(false);
-                            setTimeout(() => {
-                                console.log("////: OKOKOKOK");
-                                history.push("/")
-                            }, 2000);
-                        });
-                    }
-                );
+                //add additional user info etc.
+                addUserDataToList(formData.name, auth); //no need to set profile img url since they use uid.
+                if (tempProfileImg) {
+                    // console.log("////: attempt adding img");
+                    const storage = getFbStorage(); //formData.name, tempProfileImg, auth
+                    storage.ref("profile_imgs/" + auth.user.uid + "/profile.png").put(tempProfileImg).on(
+                        "state_changed",
+                        snapshot => {
+                            const progress = Math.round(
+                                (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+                            );
+                            setProgressNr(progress);
+                        }, error => {
+                            console.log(error);
+                        }, () => {
+                            // .getDownloadURL().then(url =>
+                            storage.ref("profile_imgs/" + auth.user.uid + "/profile.png");
+                            clearRegisteringProcess();
+                        }
+                    );
+                } else {
+                    // console.log("////: no image selected");
+                    clearRegisteringProcess();
+                }
             });
         } catch (e) { // in case signup has failed
-            console.log("/////FAIL", e.message);
+            console.log("///Failed some: ", e.message);
             setLoading(false);
             if (e.message === "The email address is already in use by another account.") {
                 showToast(t("register.inUse"), "error");
@@ -99,6 +104,13 @@ export const UI_register = () => {
                 showToast(t("register.tryAgain"), "error");
             }
         }
+    }
+
+    const clearRegisteringProcess = () => {
+        setLoading(false);
+        setTimeout(() => {
+            history.push("/")
+        }, 1000);
     }
 
     function getCroppedImage(canvas, crop) {
@@ -174,7 +186,7 @@ export const UI_register = () => {
     const [email, setEmail] = useState("");
     const [p1, setP1] = useState("");
     const [p2, setP2] = useState("");
-    const [terms, setTerms] = useState(false);
+
 
     useEffect(() => {
         let tempData = localStorage.getItem("tempFormData");
@@ -192,8 +204,8 @@ export const UI_register = () => {
             setP2(JSON.parse(tempData)[3]);
             setValue("confirm_password", JSON.parse(tempData)[3]);
 
-            setTerms(JSON.parse(tempData)[4]);
-            setValue("terms", JSON.parse(tempData)[4]);
+            setP2(JSON.parse(tempData)[4]);
+            setValue("confirm_password", JSON.parse(tempData)[3]);
 
             localStorage.removeItem("tempFormData");
         }
@@ -244,8 +256,6 @@ export const UI_register = () => {
                                     }}
                             />
                         }
-
-
                     </div>
                     <div className={"input_wrappers input_name"}>
                         <input name={"name"}
@@ -336,7 +346,7 @@ export const UI_register = () => {
                                 <div>{errors.confirm_password.message}</div> : null}</div>
                         </div>
                     </div>
-
+                    {/*privacy policy agree check box*/}
                     <div className={"terms_indv"}>
                         <div className="register_cb form-check">
                             <input name={"terms"}
@@ -353,8 +363,7 @@ export const UI_register = () => {
                                    type="checkbox"/>
                             <label className="form-check-label"
                                    htmlFor="flexCheckIndeterminate">{t("register.i_accept_the")}
-                                <Link style={{textDecoration: 'none'}}
-                                      to={`/router/path`}> {t("register.terms")} </Link> {t("register.and")}
+                                {t("register.terms")}  {t("register.and")}
                                 <Link style={{textDecoration: 'none'}}
                                       to={`/router/path`}> {t("register.privacy_policy")} </Link>
                             </label>
@@ -372,10 +381,10 @@ export const UI_register = () => {
                         </button>
                     </div>
 
-                    {/*hr divider line*/}
-                    <UI_hl_divider middleText={t("register.lbl_or_register_with")}/>
-                    {/*SocialMedia buttons*/}
-                    <UI_sm_buttons/>
+                    {/*/!*hr divider line*!/*/}
+                    {/*<UI_hl_divider middleText={t("register.lbl_or_register_with")}/>*/}
+                    {/*/!*SocialMedia buttons*!/*/}
+                    {/*<UI_sm_buttons/>*/}
 
                     <div className={"progress_wrapper"}>
                         <div className="progress">

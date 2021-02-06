@@ -1,7 +1,7 @@
 import React from "react";
 import "./ST_logo_with_image.scss";
 import largeSL_logo from "./sl_logo_big.svg";
-import silver_lining_bgi from "./sl_pt.PNG";
+
 
 
 export const UI_logo_with_image = () => {

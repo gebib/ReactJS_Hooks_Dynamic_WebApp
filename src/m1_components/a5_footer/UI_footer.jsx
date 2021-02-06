@@ -1,6 +1,6 @@
 import React from "react";
 import "./ST_footer.scss";
-import silverlining_logo from "../../../resources/images/SL_logo.svg";
+import silverlining_logo from "../../resources/images/SL_logo.svg";
 import {Link, useHistory} from "react-router-dom";
 import {useTranslation} from "react-i18next";
 import {MdKeyboardArrowRight} from "react-icons/md";
