@@ -13,6 +13,7 @@ import {useLocation} from 'react-router-dom';
 import {ToastContainer, toast,} from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import {useAuth} from "./m1_components/c1_auth/a0_auth_common/firebase/AuthContext";
+import {UI_PrivacyPolicy} from "./m1_components/z_privacy_policy/UI_PrivacyPolicy";
 
 
 // custom hook: to add event window event listener once/render and remove on exit.
@@ -72,6 +73,7 @@ export default function UI_Main_pages_wrapper() {
     useEffect(() => {
         if (location.pathname === "/login" ||
             location.pathname === "/register" ||
+            location.pathname === "/privacypolicy" ||
             location.pathname === "/forgot_password") {
             setShouldHideNavEtc(true);
         } else {
@@ -85,23 +87,25 @@ export default function UI_Main_pages_wrapper() {
     return (
         <div className={"main_wrapper"}
              style={shouldHideNavEtc ? {backgroundColor: "#24818d", transition: "2s"} : null}>
-            <button onClick={() => {
-                // let userInfo = {
-                //     userName: currentUser.displayName,
-                //     userPhotoUrl: currentUser.photoURL,
-                //     userUid: currentUser.uid,
-                //     verified: currentUser.emailVerified
-                // }
-                // console.log("////: ", userInfo);
-                console.log("////: ", currentUser);
-            }}>TEST
-            </button>
+            {/*<button onClick={() => {*/}
+            {/*    let userInfo = {*/}
+            {/*        userName: currentUser.displayName,*/}
+            {/*        userPhotoUrl: currentUser.photoURL,*/}
+            {/*        userUid: currentUser.uid,*/}
+            {/*        verified: currentUser.emailVerified*/}
+            {/*    }*/}
+            {/*    console.log("////:userInfo ", userInfo, "\n\n");*/}
+            {/*    console.log("////:currentUser ", currentUser);*/}
+            {/*}}>TEST*/}
+            {/*</button>*/}
             <ToastContainer className={"pop"}/>
             {shouldHideNavEtc ? null : <UI_nav_bar/>}
             {shouldHideNavEtc ? null : <UI_logo_with_image/>}
             <div className={"page_content_wrapper"}>
                 {/*<UI_divider/>*/}
-                {shouldHideNavEtc ? <UI_body_wrapper wrapperHeight={"100vh"}/> : <UI_body_wrapper/>}
+                {shouldHideNavEtc ? ((location.pathname === "/privacypolicy") ?
+                    <UI_body_wrapper wrapperHeight={"auto"}/> : <UI_body_wrapper wrapperHeight={"100vh"}/>) :
+                    <UI_body_wrapper/>}
             </div>
             {shouldHideNavEtc ? null : <UI_footer/>}
         </div>

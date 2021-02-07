@@ -17,7 +17,7 @@ export const UI_sm_buttons = (props) => {
     const facebookAuthProvider = new firebase.auth.FacebookAuthProvider();
 
     return (
-        <div className={"social_media_buttons"}>
+        <div onClick={props.handleClick} className={"social_media_buttons"}>
             <button disabled={props.isDisabled} onClick={() => {
                 loginWithGoogle(googleAuthProvider);
             }} className='sm_b sm_button_google'>
@@ -40,26 +40,26 @@ export const UI_sm_buttons = (props) => {
                 </IconContext.Provider>
             </button>
 
-            <button disabled={props.isDisabled} onClick={() => {
-            }} className='sm_b sm_button_instagram'>
-                <IconContext.Provider value={{size: "20px", color: "#9c1c65"}}>
-                    <div className={"ico_div"}>
-                        <img height={"24px"} src={instaIconLogo} alt={"insta text logo"}/>
-                    </div>
-                    <span className={"icon_text"}><img height={"24px"} src={instaTextLogo}
-                                                       alt={"insta text logo"}/></span>
-                </IconContext.Provider>
-            </button>
+            {/*<button disabled={props.isDisabled} onClick={() => {*/}
+            {/*}} className='sm_b sm_button_instagram'>*/}
+            {/*    <IconContext.Provider value={{size: "20px", color: "#9c1c65"}}>*/}
+            {/*        <div className={"ico_div"}>*/}
+            {/*            <img height={"24px"} src={instaIconLogo} alt={"insta text logo"}/>*/}
+            {/*        </div>*/}
+            {/*        <span className={"icon_text"}><img height={"24px"} src={instaTextLogo}*/}
+            {/*                                           alt={"insta text logo"}/></span>*/}
+            {/*    </IconContext.Provider>*/}
+            {/*</button>*/}
 
-            <button disabled={props.isDisabled} onClick={() => {
-            }} className='sm_b sm_button_in'>
-                <IconContext.Provider value={{size: "20px", color: "#1DA0F1"}}>
-                    <div className={"ico_div"}>
-                        <GrLinkedinOption/>
-                    </div>
-                    <span className={"icon_text"}>Linkedin</span>
-                </IconContext.Provider>
-            </button>
+            {/*<button disabled={props.isDisabled} onClick={() => {*/}
+            {/*}} className='sm_b sm_button_in'>*/}
+            {/*    <IconContext.Provider value={{size: "20px", color: "#1DA0F1"}}>*/}
+            {/*        <div className={"ico_div"}>*/}
+            {/*            <GrLinkedinOption/>*/}
+            {/*        </div>*/}
+            {/*        <span className={"icon_text"}>Linkedin</span>*/}
+            {/*    </IconContext.Provider>*/}
+            {/*</button>*/}
         </div>
     );
 }

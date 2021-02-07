@@ -1,12 +1,12 @@
-//$lineT: 1px;
+//$lineT: 5px;
 
 .main_wrapper {
-  //border: $lineT solid #00e1ff;
+  //border: $lineT solid #ff0000;
   display: flex;
   flex-direction: column;
   align-items: center;
   min-width: 100%;
-  min-height: 100vh;
+  //min-height: 100vh;
 
   .page_content_wrapper {
     max-width: 1440px;

@@ -13,6 +13,7 @@ import {FullPageLoader} from "../../resources/miscellaneous/FullPageLoader";
 import {UI_forgot_password} from "../c1_auth/forgot_password/UI_forgot_password";
 import {UI_PrivacyPolicy} from "../z_privacy_policy/UI_PrivacyPolicy";
 
+
 export const UI_body_wrapper = (props) => {
     return (
         <div className={"body_outer"}>
@@ -25,12 +26,7 @@ export const UI_body_wrapper = (props) => {
                     <Route path={"/blog"}><BlogContent/></Route>
                     <Route path={"/about"}><AboutContent/></Route>
 
-                    {/*other pages links*/}
-                    <Suspense fallback={FullPageLoader}>
-                        <Route path={"/login"}><UI_login/></Route>
-                        <Route path={"/register"}><UI_register/></Route>
-                        <Route path={"/forgot_password"}><UI_forgot_password/></Route>
-                    </Suspense>
+                    {/*normail pages*/}
                     <Route path={"/privacypolicy"}><UI_PrivacyPolicy/></Route>
                     {/*<Route path={""}>< /></Route>*/}
                     {/*<Route path={""}>< /></Route>*/}
@@ -52,6 +48,13 @@ export const UI_body_wrapper = (props) => {
                     {/*<Route path={""}>< /></Route>*/}
                     {/*<Route path={""}>< /></Route>*/}
                     {/*<Route path={""}>< /></Route>*/}
+
+                    {/*other pages links*/}
+                    <Suspense fallback={FullPageLoader}>
+                        <Route path={"/login"}><UI_login/></Route>
+                        <Route path={"/register"}><UI_register/></Route>
+                        <Route path={"/forgot_password"}><UI_forgot_password/></Route>
+                    </Suspense>
                     <Route path={"*"}><ErrorPage/></Route>
                 </Switch>
             </div>

@@ -15,7 +15,8 @@
     "log_out_ok": "You have logged out!",
     "log_out_fail": "Failed to logout! Please try again",
     "try_again": "Failed to login, make sure your email and password are correct and please try again",
-    "typeInValidEmail": "Please type in a valid email"
+    "typeInValidEmail": "Please type in a valid email",
+    "sm_consent": "Please consent, to use social media login options."
   },
   "register": {
     "lbl_register": "Register",

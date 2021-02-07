@@ -365,7 +365,7 @@ export const UI_register = () => {
                                    htmlFor="flexCheckIndeterminate">{t("register.i_accept_the")}
                                 {t("register.terms")}  {t("register.and")}
                                 <Link style={{textDecoration: 'none'}}
-                                      to={`/router/path`}> {t("register.privacy_policy")} </Link>
+                                      to={`/privacypolicy`}> {t("register.privacy_policy")} </Link>
                             </label>
                         </div>
                         <div className={"show_error mb-2"}>{errors.terms ?

@@ -17,10 +17,14 @@ export const UI_login = () => {
 
     const {handleSubmit, register, errors, watch, formState} = useForm({mode: "onSubmit"});
     const password = useRef({});
-    const history = useHistory();
     password.current = watch("password", "");
+    const history = useHistory();
     const [loading, setLoading] = useState(false);
     const [smButtonsDisabled, setSMbuttonsDisabled] = useState(true);
+    const [showPrivacyConsentError, setShowPrivacyConsentError] = useState(false);
+
+    const checkBoxRef = useRef();
+
 
     const {login} = useAuth();
 
@@ -32,6 +36,13 @@ export const UI_login = () => {
         } catch { // in case signup has failed
             showToast(t("sign_in.try_again"), "error");
         }
+    }
+
+    const handleSMclick = () =>{
+            if(smButtonsDisabled){
+                setShowPrivacyConsentError(true);
+                checkBoxRef.current.focus();
+            }
     }
 
     return (
@@ -94,16 +105,6 @@ export const UI_login = () => {
                             <div>{errors.password.message}</div> : null}</div>
                     </div>
 
-                    {/*<div className="login_checkBox form-check">*/}
-                    {/*    <input className="form-check-input"*/}
-                    {/*           name={"remember"}*/}
-                    {/*           ref={register}*/}
-                    {/*           type="checkbox"/>*/}
-                    {/*    <label className="form-check-label"*/}
-                    {/*           htmlFor="flexCheckIndeterminate">*/}
-                    {/*        {t("sign_in.remember_me")}*/}
-                    {/*    </label>*/}
-                    {/*</div>*/}
 
                     <div className={"lbl_forgot_ps right_items"}><Link style={{textDecoration: 'none'}}
                                                                        to={"/forgot_password"}>{t("sign_in.forgot_password")}</Link>
@@ -121,25 +122,13 @@ export const UI_login = () => {
                     {/*hr divider line*/}
                     <UI_hl_divider middleText={t("sign_in.or_login_with")}/>
 
-                    {/*<div className="accept_term_cb form-check">*/}
-                    {/*    <input className="form-check-input"*/}
-                    {/*           name={"remember"}*/}
-                    {/*           ref={register}*/}
-
-                    {/*           type="checkbox"/>*/}
-                    {/*    <label className="form-check-label"*/}
-                    {/*           htmlFor="flexCheckIndeterminate">*/}
-                    {/*        {t("register.i_accept_the")}*/}
-                    {/*        {t("register.terms")}  {t("register.and")}*/}
-                    {/*        <Link style={{textDecoration: 'none'}}*/}
-                    {/*              to={`/router/path`}> {t("register.privacy_policy")}</Link>*/}
-                    {/*    </label>*/}
-                    {/*</div>*/}
                     <div className={"terms_indv"}>
                         <div className="register_cb form-check">
                             <input name={"terms"}
+                                   ref={checkBoxRef}
                                    onChange={(e) => {
                                        setSMbuttonsDisabled(!e.target.checked);
+                                       setShowPrivacyConsentError(false);
                                    }}
                                    className="form-check-input"
                                    type="checkbox"/>
@@ -147,14 +136,13 @@ export const UI_login = () => {
                                    htmlFor="flexCheckIndeterminate">{t("register.i_accept_the")}
                                 {t("register.terms")}  {t("register.and")}
                                 <Link style={{textDecoration: 'none'}}
-                                      to={`/router/path`}> {t("register.privacy_policy")} </Link>
+                                      to={`/privacypolicy`}> {t("register.privacy_policy")} </Link>
                             </label>
                         </div>
-                        <div className={"show_error mb-2"}>{errors.terms ?
-                            <div>{errors.terms.message}</div> : null}</div>
+                        <div className={"show_error mb-2"}>{showPrivacyConsentError ? <div>{t("sign_in.sm_consent")}</div> : null}</div>
                     </div>
                     {/*/SocialMedia buttons*/}
-                    <UI_sm_buttons isDisabled={smButtonsDisabled}/>
+                    <UI_sm_buttons handleClick={handleSMclick} isDisabled={smButtonsDisabled}/>
                 </div>
             </form>
         </div>);

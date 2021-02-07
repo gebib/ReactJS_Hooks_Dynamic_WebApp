@@ -62,7 +62,7 @@ $light_gray: #9da9bb;
   .sm_button_facebook {
     //grid-area: f_btn;
     border: 1px solid #3b5998;
-    background: #3b5998;
+    background: #3A63BE;
     color: white;
 
     &:hover {
@@ -75,33 +75,33 @@ $light_gray: #9da9bb;
     }
   }
 
-  .sm_button_in {
-    //grid-area: t_btn;
-    border: 1px solid #0A66C2;
-    color: white;
-    background: #0A66C2;
+  //.sm_button_in {
+  //  //grid-area: t_btn;
+  //  border: 1px solid #0A66C2;
+  //  color: white;
+  //  background: #0A66C2;
+  //
+  //  &:hover {
+  //    cursor: pointer;
+  //  }
+  //
+  //  &:disabled {
+  //    background: #ffffff;
+  //    color: #0070AF;
+  //  }
+  //}
 
-    &:hover {
-      cursor: pointer;
-    }
-
-    &:disabled {
-      background: #ffffff;
-      color: #0070AF;
-    }
-  }
-
-  .sm_button_instagram {
-    //grid-area: i_btn;
-    border: 1px solid #5851DB;
-    background: linear-gradient(135deg, #405de6, #5851db, #833ab4, #c13584, #e1306c, #fd1d1d);
-
-    &:hover {
-      cursor: pointer;
-    }
-
-    &:disabled {
-      background: #ffffff;
-    }
-  }
+  //.sm_button_instagram {
+  //  //grid-area: i_btn;
+  //  border: 1px solid #5851DB;
+  //  background: linear-gradient(135deg, #405de6, #5851db, #833ab4, #c13584, #e1306c, #fd1d1d);
+  //
+  //  &:hover {
+  //    cursor: pointer;
+  //  }
+  //
+  //  &:disabled {
+  //    background: #ffffff;
+  //  }
+  //}
 }
