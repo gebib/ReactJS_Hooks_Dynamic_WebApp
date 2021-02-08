@@ -1,0 +1,67 @@
+//$lineT: 2px;
+
+
+.mc1 {
+  //border: $lineT solid #08ff00;
+
+  .wecome_header {
+    text-align: center;
+
+    h3 {
+      font-weight: 400;
+    }
+  }
+
+  h3 {
+    color: #2f2f35;
+  }
+
+  p {
+    font-size: 18px;
+    line-height: 28px;
+    color: #2f2f35;
+    text-align: justify;
+    text-justify: inter-word;
+  }
+
+  .section_with_images {
+    .img_with_text {
+      //border: $lineT solid #22ff00;
+      figure {
+        //border: $lineT solid #ff0063;
+        width: 100%;
+
+        img {
+          width: 100%;
+        }
+      }
+    }
+  }
+
+  .img_txt_header {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+
+    .x_p {
+      display: flex;
+      flex-direction: row;
+    }
+  }
+
+  .card {
+    box-shadow: 0px 0px 10px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .iframe {
+    box-shadow: 0px 0px 10px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .can_w_h_you{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #151515;
+  }
+}
+

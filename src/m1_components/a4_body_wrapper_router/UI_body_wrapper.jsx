@@ -1,23 +1,23 @@
-import React, {Suspense } from "react";
+import React, {Suspense, useEffect, useRef, useState} from 'react';
 import "./ST_body_wrapper.scss";
 import {Route, Switch} from "react-router-dom";
-import {HomeContent} from "../../m0_pages_routes/HomeContent";
+import {HomeContent} from "./p1_home/HomeContent";
 import {ErrorPage} from "../../m0_pages_routes/ErrorPage";
-import {JobsContent} from "../../m0_pages_routes/Jobs";
-import {ServiceContent} from "../../m0_pages_routes/ServiceContent";
-import {BlogContent} from "../../m0_pages_routes/BlogContent";
-import {AboutContent} from "../../m0_pages_routes/AboutContent";
+import {JobsContent} from "./p2_jobs/Jobs";
+import {ServiceContent} from "./p3_services/ServiceContent";
+import {BlogContent} from "./p4_blog/BlogContent";
+import {AboutContent} from "./p5_about/AboutContent";
 import {UI_login} from "../c1_auth/login/UI_login";
 import {UI_register} from "../c1_auth/register/UI_register";
 import {FullPageLoader} from "../../resources/miscellaneous/FullPageLoader";
 import {UI_forgot_password} from "../c1_auth/forgot_password/UI_forgot_password";
 import {UI_PrivacyPolicy} from "../z_privacy_policy/UI_PrivacyPolicy";
 
-
 export const UI_body_wrapper = (props) => {
+
     return (
         <div className={"body_outer"}>
-            <div className={"body_wrapper"} style={{height: props.wrapperHeight}}>
+            <div  className={"body_wrapper"} style={{height: props.wrapperHeight}}>
                 <Switch>
                     {/*navigation links*/}
                     <Route exact path={"/"}><HomeContent/></Route>
