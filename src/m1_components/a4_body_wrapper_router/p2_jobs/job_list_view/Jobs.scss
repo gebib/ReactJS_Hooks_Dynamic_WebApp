@@ -1,0 +1,123 @@
+$lineT: 0px;
+$uiBg: #151515;
+$slColor: #248c9d;
+
+
+p {
+  font-size: 18px;
+  line-height: 28px;
+  color: #2f2f35;
+  text-align: justify;
+  text-justify: inter-word;
+}
+
+ul {
+  list-style-type: none;
+}
+
+.jobs_list_main_wrapper {
+  border: $lineT solid #59ff00;
+  color: white;
+
+  .top_bar {
+    border: $lineT solid #615ce5;
+    //background: linear-gradient(-90deg, rgb(21, 21, 21) 10%, rgba(0, 0, 0, 0) 100%), rgb(21, 21, 21);
+    background: $uiBg;
+    height: 50px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    border-radius: 0 6px 0 0;
+    margin-bottom: 5px;
+    @media (max-width: 1200px) {
+      border-radius: 0;
+    }
+    //@media (min-width: 1318px) {
+    //  border-radius: 0 6px 0 0;
+    //}
+
+
+    .job_names {
+      border: $lineT solid #16501d;
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      align-items: center;
+
+      .list_header_textDiv {
+        font-weight: 500;
+        font-size: 17px;
+        padding-left: 20px;
+        color: #2f2f35;
+      }
+
+      .icon_div {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+
+      }
+    }
+
+
+    .type_tag {
+      border: $lineT solid #ff0000;
+      font-weight: 500;
+      font-size: 17px;
+      color: #2f2f35;
+      text-align: center;
+      white-space: nowrap;
+      min-width: 140px;
+      //@media (max-width: 423px) {
+      //  display: none;
+      //}
+    }
+
+
+  }
+
+  .wortby_wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  //  //////////////////////////////////////////////
+  .asidePmainRow {
+    border: $lineT solid #ff00ea;
+
+    .asideRow_wrapper {
+      border: $lineT solid #0059ff;
+      //background: linear-gradient(90deg, rgb(240, 240, 240) 10%, rgba(0, 0, 0, 0) 100%), rgb(240, 240, 240);
+      background: $uiBg;
+      padding-left: 3em;
+      border-radius: 6px 0 0 0;
+      @media (max-width: 1200px) {
+        border-radius: 6px 6px 0 0;
+      }
+
+
+
+      .asideRow {
+        border: $lineT solid #ff8800;
+        max-height: 500px;
+      }
+
+      .as1 {
+        border: $lineT solid #535e00;
+
+      }
+
+      .as2 {
+        border: $lineT solid #00ff10;
+      }
+    }
+
+    .bmain {
+      border: $lineT solid #000000;
+
+    }
+  }
+}

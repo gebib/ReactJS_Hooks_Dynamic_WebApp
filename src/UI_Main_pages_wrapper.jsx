@@ -3,7 +3,7 @@ import './ST_Main_pages_wrapper.scss';
 import {UI_nav_bar} from "./m1_components/a1_navbar/UI_nav_bar";
 import {UI_logo_with_image} from "./m1_components/a2_logo_with_image/UI_logo_with_image";
 import {UI_body_wrapper} from "./m1_components/a4_body_wrapper_router/UI_body_wrapper";
-import {UI_footer} from "./m1_components/a5_footer/UI_footer";
+import {UI_footer} from "./m1_components/zz_footer/UI_footer";
 import {useLocation} from 'react-router-dom';
 
 // toast.error("toast test: ERROR");
@@ -70,7 +70,7 @@ export default function UI_Main_pages_wrapper() {
     const [shouldHideNavEtc, setShouldHideNavEtc] = useState(false);
     const location = useLocation();
 
-    const [bodyWrapperPageHeight, setBodyWrapperPageHeight] = useState(null);
+    const [hideHomeBgi, setHideHomeBgi] = useState(false);
     const sizeHW = useWindowSize();
 
     //should fire only when routing path changes:
@@ -82,6 +82,12 @@ export default function UI_Main_pages_wrapper() {
             setShouldHideNavEtc(true);
         } else {
             setShouldHideNavEtc(false);
+        }
+        if (location.pathname === "/about" ||
+            location.pathname === "/") {
+            setHideHomeBgi(false);
+        } else {
+            setHideHomeBgi(true);
         }
     }, [location.pathname]);
 
@@ -96,7 +102,8 @@ export default function UI_Main_pages_wrapper() {
     return (
         <div className={"main_wrapper"}
              style={shouldHideNavEtc ? {backgroundColor: "#24818d", transition: "2s"} : null}>
-            <div style={shouldHideNavEtc ? {opacity:"0"} :{opacity:"1", transition: "10s"}} className="custom-shape-divider-top-1612728068">
+            <div style={(shouldHideNavEtc || hideHomeBgi) ? {opacity: "0"} : {opacity: "1", transition: "10s"}}
+                 className="custom-shape-divider-top-1612728068">
                 <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120"
                      preserveAspectRatio="none">
                     <path
@@ -123,7 +130,7 @@ export default function UI_Main_pages_wrapper() {
             {/*</button>*/}
             <ToastContainer className={"pop"}/>
             {shouldHideNavEtc ? null : <UI_nav_bar/>}
-            {shouldHideNavEtc ? null : <UI_logo_with_image/>}
+            {(shouldHideNavEtc || hideHomeBgi) ? null : <UI_logo_with_image/>}
             {/*<UI_divider/>*/}
             <div className={"page_content_wrapper"}>
                 <UI_body_wrapper wrapperHeight={"auto"}/>

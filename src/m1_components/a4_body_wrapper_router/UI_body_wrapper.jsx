@@ -3,7 +3,7 @@ import "./ST_body_wrapper.scss";
 import {Route, Switch} from "react-router-dom";
 import {HomeContent} from "./p1_home/HomeContent";
 import {ErrorPage} from "../../m0_pages_routes/ErrorPage";
-import {JobsContent} from "./p2_jobs/Jobs";
+import {JobsContent} from "./p2_jobs/job_list_view/Jobs";
 import {ServiceContent} from "./p3_services/ServiceContent";
 import {BlogContent} from "./p4_blog/BlogContent";
 import {AboutContent} from "./p5_about/AboutContent";

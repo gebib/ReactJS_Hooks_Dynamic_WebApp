@@ -7,6 +7,8 @@ import sl4 from "../../../resources/images/sl4.webp";
 import sl5 from "../../../resources/images/sl5.webp";
 import dw from "../../../resources/images/dont_worry.jpg";
 import {Link} from "react-router-dom";
+import {IconContext} from "react-icons";
+import {FaArrowRight} from "react-icons/fa";
 
 export const HomeContent = () => {
     const {t, i18n} = useTranslation("SL_languages");
@@ -104,8 +106,14 @@ export const HomeContent = () => {
                                 <p className="card-text">This is a wider card with supporting text below as a
                                     natural lead-in to additional content. This content is a little bit longer.</p>
                             </div>
-                            <div className="card-footer">
-                                <small className="text-muted">Last updated 3 mins ago</small>
+                            <div className="card-footer d-flex justify-content-center">
+                                <div className={"sign_in"}>
+                                    <IconContext.Provider value={{size: "1em"}}>
+                                        <div className={"cards_btn"} onClick={() => {
+                                        }}>{t("home.read_btn")}< FaArrowRight style={{marginLeft: "10px", color: "#248c9d"}}/>
+                                        </div>
+                                    </IconContext.Provider>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -117,8 +125,14 @@ export const HomeContent = () => {
                                 <p className="card-text">This card has supporting text below as a natural lead-in to
                                     additional content.</p>
                             </div>
-                            <div className="card-footer">
-                                <small className="text-muted">Last updated 3 mins ago</small>
+                            <div className="card-footer d-flex justify-content-center">
+                                <div className={"sign_in"}>
+                                    <IconContext.Provider value={{size: "1em"}}>
+                                        <div className={"cards_btn"} onClick={() => {
+                                        }}>{t("home.read_btn")}< FaArrowRight style={{marginLeft: "10px", color: "#248c9d"}}/>
+                                        </div>
+                                    </IconContext.Provider>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -131,8 +145,14 @@ export const HomeContent = () => {
                                     natural lead-in to additional content. This card has even longer content than
                                     the first to show that equal height action.</p>
                             </div>
-                            <div className="card-footer">
-                                <small className="text-muted">Last updated 3 mins ago</small>
+                            <div className="card-footer d-flex justify-content-center">
+                                <div className={"sign_in"}>
+                                    <IconContext.Provider value={{size: "1em"}}>
+                                        <div className={"cards_btn"} onClick={() => {
+                                        }}>{t("home.read_btn")}< FaArrowRight style={{marginLeft: "10px", color: "#248c9d"}}/>
+                                        </div>
+                                    </IconContext.Provider>
+                                </div>
                             </div>
                         </div>
                     </div>

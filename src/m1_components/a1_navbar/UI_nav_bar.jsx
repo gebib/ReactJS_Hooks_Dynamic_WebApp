@@ -121,10 +121,8 @@ export const UI_nav_bar = (props) => {
                             <img className={"flag_img_self"} src={(i18n.language === "en") ? englishFlag : norskFlag}
                                  alt={"language flag"}/>
                         </div>
-                        <div className={"text_div"} onClick={handleLanguageChange}>
-                            <IconContext.Provider value={{size: "1.5em"}}>
-                                <p className={"text_self"}>{t("nav.lang")}<BsArrowUpDown/></p>
-                            </IconContext.Provider>
+                        <div style={{backgroundColor: "black"}} className={"text_div"} onClick={handleLanguageChange}>
+                            <p style={{color: "#24818D"}} className={"text_self d-flex justify-content-center"}>{t("nav.lang")}</p>
                         </div>
                     </div>
 
@@ -153,16 +151,12 @@ export const UI_nav_bar = (props) => {
                                          alt={"language flag"}/>
                                 </div>
                                 <div className={"text_div2"} onClick={handleLanguageChange}>
-                                    <IconContext.Provider value={{size: "1.5em"}}>
-                                        <p className={"text_self2"}>{t("nav.lang")}<BsArrowUpDown/></p>
-                                    </IconContext.Provider>
+                                    <p style={{color: "#24818D"}} className={"text_self2"}>{t("nav.lang")}</p>
                                 </div>
                             </div>
                         </ul>
 
                     </div>
-
-
                 )}
 
             </div>

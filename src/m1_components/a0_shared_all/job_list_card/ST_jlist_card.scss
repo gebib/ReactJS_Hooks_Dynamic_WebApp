@@ -1,0 +1,85 @@
+$lineT: 0px;
+////////////////job list card stuff//////////////
+.top_bar_list {
+  border: $lineT solid #615ce5;
+  max-height: 200px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  background-color: #ffffff;
+  border-bottom: 1px solid #eaeaea;
+  //box-shadow: 0px 0px 10px 6px rgba(0, 0, 0, 0.1);
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* number of lines to show */
+  -webkit-box-orient: vertical;
+
+
+  .job_text {
+    font-size: 16px;
+    color: #2f2f35;
+    font-weight: 500;
+  }
+
+  &:hover {
+    background-color: #EAFAF3;
+    cursor: pointer;
+  }
+
+  &:active {
+    background-color: #F3F4F7;
+  }
+
+
+  @media (max-width: 1200px) {
+    border-radius: 0;
+  }
+
+  .job_names_list {
+    border: $lineT solid #16501d;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+
+
+    .list_header_textDiv_list {
+      font-weight: 500;
+      font-size: 17px;
+      padding-left: 20px;
+      color: #2f2f35;
+
+
+    }
+
+    .icon_div_list {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      align-items: center;
+
+    }
+  }
+
+
+  .type_tag_list {
+    border: $lineT solid #ff0000;
+    font-weight: 500;
+    font-size: 17px;
+    color: #2f2f35;
+    text-align: center;
+    min-width: 140px;
+  }
+
+  .job_icon_div {
+    border: $lineT solid #002aff;
+    width: 150px;
+
+    .job_cards_img_self {
+      width: 100%;
+    }
+  }
+}
