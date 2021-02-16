@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import "./ST_forgot_password.scss";
-import silverlining_logo from "../../../resources/images/SL_logo.svg";
+import silverlining_logo from "../../../resources/images/SL_logoBLK.svg";
 import {useTranslation} from "react-i18next";
 import {Link, useHistory} from "react-router-dom";
 import {useForm} from "react-hook-form";

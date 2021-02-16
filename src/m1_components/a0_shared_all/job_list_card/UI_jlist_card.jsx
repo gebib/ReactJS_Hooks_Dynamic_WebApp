@@ -8,11 +8,15 @@ import "./ST_jlist_card.scss";
 import devImg from "../../../resources/images/developer.png";
 import archiImg from "../../../resources/images/architect.jpg";
 import projMngr from "../../../resources/images/project-manager.jpg";
+import {useHistory} from "react-router-dom";
 
 
 export const UI_jlist_card = () => {
+    const history = useHistory();
     return (
-        <div className={"col bmain"}>
+        <div className={"col bmain"} onClick={() => {
+            history.push("jobs/jobview/123");
+        }}>
             <section className={"col2 col"}>
                 <header className={"top_bar_list row py-3"}>
                     {/*take up 6 for lg else 8 for md*/}

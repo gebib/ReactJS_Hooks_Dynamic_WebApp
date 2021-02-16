@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import "./Jobs.scss";
+import "./ST_Jobs.scss";
 import {useTranslation} from "react-i18next";
 import {IconContext} from "react-icons";
 import {MdWork} from "react-icons/md";
@@ -10,21 +10,44 @@ import {UI_jlist_card} from "../../../a0_shared_all/job_list_card/UI_jlist_card"
 import Dropdown from "react-bootstrap/Dropdown";
 import SelectSearch from 'react-select-search';
 import {UI_drop_down} from "../../../a0_shared_all/drop_down/UI_drop_down";
+import projMngr from "../../../../resources/images/project-manager.jpg";
+import {BsPlusCircleFill} from "react-icons/bs";
+import {Link, useHistory, useParams} from "react-router-dom";
+import {MdEmail} from "react-icons/md";
 
 
-export const JobsContent = () => {
+export const UI_Jobs = () => {
     const {t, i18n} = useTranslation("SL_languages");
+    const history = useHistory();
+    const [isAdminSignedIn, setIsAdminSignedIn] = useState(true);
+
+    const handleJobAddition = () => {
+        if (isAdminSignedIn) {
+            history.push("jobs/jobeditor");
+            // history.push("jobs/jobeditor/123");
+        } else {
+            alert("Get in touch with us!");
+        }
+    }
 
     return (
         <main className={"container jobs_list_main_wrapper "}>
-            <header className={"jobs_header col-12 d-flex justify-content-center py-5"}
-                    style={{fontWeight: "600", color: "#151515"}}>
-                <h3 style={{fontWeight: "400"}}>{t("jobs.t1")}</h3>
+            <header className={"jobs_header row"}>
+                {
+                    isAdminSignedIn ? <div className={"manage_job_List"} onClick={handleJobAddition}>
+                        <h3 style={{color: "#248C9D"}}>{t("jobs.t1")}</h3>
+                    </div> : <div className={"manage_job_List"} onClick={handleJobAddition}>
+                        <IconContext.Provider value={{size: "3em"}}>
+                            <MdEmail style={{color: "#248C9D", marginRight: "10px"}}/>
+                        </IconContext.Provider>
+                        <h3>{t("jobs.t2")}</h3>
+                    </div>
+                }
             </header>
 
             <section className={"row asidePmainRow d-flex justify-content-center"}>
 
-                <div className={"asideRow_wrapper col-xl-3 mx-1 py-2"}>
+                <div className={"asideRow_wrapper col-xl-3 py-2"}>
                     <div className={"row asideRow "}>
 
                         <div className={"as1  col-xl-12 col-md-6 col-sm-12 "}>

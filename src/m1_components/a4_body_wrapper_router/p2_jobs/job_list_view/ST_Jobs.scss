@@ -16,8 +16,44 @@ ul {
 }
 
 .jobs_list_main_wrapper {
-  border: $lineT solid #59ff00;
+  border: $lineT solid #7e9c6d;
   color: white;
+
+
+  .jobs_header {
+    border: $lineT solid #ff9900;
+    background-image: url("../../../../resources/images/headerImgIt2.png");
+    background-size: cover;
+    height: 300px;
+    margin-bottom: -10px;
+    display: flex;
+    align-content: flex-end;
+    justify-content: center;
+
+    .manage_job_List {
+      margin-bottom: 10px;
+      border: $lineT solid #37ff00;
+      display: flex;
+      min-height: 60px;
+      align-items: flex-end;
+      justify-content: center;
+      background-color: #151515;
+      //border-radius: 60px 60px 0 0;
+      //width: %;
+      cursor: pointer;
+      transition: 0.5s;
+      opacity: 0.8;
+
+      &:hover {
+        background-color: #EAFAF3;
+        color: #151515;
+      }
+      &:active{
+        background-color: #E34934;
+      }
+
+    }
+  }
 
   .top_bar {
     border: $lineT solid #615ce5;
@@ -28,7 +64,7 @@ ul {
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
-    border-radius: 0 6px 0 0;
+    //border-radius: 0 6px 0 0;
     margin-bottom: 5px;
     @media (max-width: 1200px) {
       border-radius: 0;
@@ -93,11 +129,10 @@ ul {
       //background: linear-gradient(90deg, rgb(240, 240, 240) 10%, rgba(0, 0, 0, 0) 100%), rgb(240, 240, 240);
       background: $uiBg;
       padding-left: 3em;
-      border-radius: 6px 0 0 0;
-      @media (max-width: 1200px) {
-        border-radius: 6px 6px 0 0;
-      }
-
+      //border-radius: 0 0 0 0;
+      //@media (max-width: 1200px) {
+      //  border-radius: 6px 6px 0 0;
+      //}
 
 
       .asideRow {

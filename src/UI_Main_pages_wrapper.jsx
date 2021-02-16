@@ -18,7 +18,7 @@ import {UI_divider} from "./m1_components/a3_animated_divider/UI_divider";
 
 
 // custom hook: to add event window event listener once/render and remove on exit.
-const useWindowSize = () => {
+export const useWindowSize = () => {
     const [size, setSize] = useState([window.innerHeight, window.innerWidth]);
     useEffect(() => {
         const handleWindowResize = () => {

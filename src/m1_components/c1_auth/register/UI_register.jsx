@@ -1,7 +1,7 @@
 import React, {useCallback, useEffect, useRef, useState} from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import './ST_register.scss'
-import silverlining_logo from "../../../resources/images/SL_logo.svg";
+import silverlining_logo from "../../../resources/images/SL_logoBLK.svg";
 import avatar from "../../../resources/images/avatar.svg";
 import {useTranslation} from "react-i18next";
 import {Link, useHistory} from "react-router-dom";

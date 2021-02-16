@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import "./ST_nav_bar.scss";
 import {InView, useInView} from 'react-intersection-observer';
 import silverlining_logo from "../../resources/images/SL_logo.svg";
-import {Link} from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
 import {useTranslation} from "react-i18next";
 import {useHistory} from "react-router-dom";
 import englishFlag from "../../resources/images/ukf.png";
@@ -22,6 +22,14 @@ import {showToast} from "../../UI_Main_pages_wrapper";
 
 export const UI_nav_bar = (props) => {
     const {t, i18n} = useTranslation("SL_languages");
+    const location = useLocation();
+
+    const [onHome, setOnHome] = useState(true);
+    const [onJobs, setOnJobs] = useState(false);
+    const [onService, setOnService] = useState(false);
+    const [onBlog, setOnBlog] = useState(false);
+    const [onAbout, setOnAbout] = useState(false);
+
     const {ref, inView, entry} = useInView({
         threshold: 0,
     });
@@ -39,12 +47,50 @@ export const UI_nav_bar = (props) => {
         }
     }
 
+    //should fire only when routing path changes:
     useEffect(() => {
-        //effect
-        return () => {
-            //cleanup
+        //for manual decoration of active li for nav.!
+        switch (location.pathname) {
+            case "/":
+                setOnHome(true);
+                setOnJobs(false);
+                setOnService(false);
+                setOnBlog(false);
+                setOnAbout(false);
+                break;
+            case "/jobs": //jobs!
+                setOnHome(false);
+                setOnJobs(true);
+                setOnService(false);
+                setOnBlog(false);
+                setOnAbout(false);
+                break;
+            case "/services":
+                setOnHome(false);
+                setOnJobs(false);
+                setOnService(true);
+                setOnBlog(false);
+                setOnAbout(false);
+                break;
+            case "/blog":
+                setOnHome(false);
+                setOnJobs(false);
+                setOnService(false);
+                setOnBlog(true);
+                setOnAbout(false);
+                break;
+            case "/about":
+                setOnHome(false);
+                setOnJobs(false);
+                setOnService(false);
+                setOnBlog(false);
+                setOnAbout(true);
+                break;
+            default:
+                //TODO
+                break;
         }
-    }, [/*input*/]);
+    }, [location.pathname]);
 
     //drop down
     const [openMenu, setOpenMenu] = React.useState(false);
@@ -109,11 +155,19 @@ export const UI_nav_bar = (props) => {
                         <IconContext.Provider value={{size: "1.5em"}}>
                             <li className={"burger_menu_li"} onClick={handleBtnClick}><GiHamburgerMenu/></li>
                         </IconContext.Provider>
-                        <li className={"li_s"}><Link className={"lnk"} to={"/"}>{t("nav.home")}</Link></li>
-                        <li className={"li_s"}><Link className={"lnk"} to={"/jobs"}>{t("nav.jobs")}</Link></li>
-                        <li className={"li_s"}><Link className={"lnk"} to={"/services"}>{t("nav.services")}</Link></li>
-                        <li className={"li_s"}><Link className={"lnk"} to={"/blog"}>{t("nav.blog")}</Link></li>
-                        <li className={"li_s"}><Link className={"lnk"} to={"/about"}>{t("nav.about")}</Link></li>
+
+                        <li className={onHome ? "activeStyle" : "li_s"}><Link className={"lnk"}
+                                                                              to={"/"}>{t("nav.home")}</Link></li>
+                        <li className={onJobs ? "activeStyle" : "li_s"}><Link className={"lnk"}
+                                                                              to={"/jobs"}>{t("nav.jobs")}</Link></li>
+                        <li className={onService ? "activeStyle" : "li_s"}><Link className={"lnk"}
+                                                                                 to={"/services"}>{t("nav.services")}</Link>
+                        </li>
+                        <li className={onBlog ? "activeStyle" : "li_s"}><Link className={"lnk"}
+                                                                              to={"/blog"}>{t("nav.blog")}</Link></li>
+                        <li className={onAbout ? "activeStyle" : "li_s"}><Link className={"lnk"}
+                                                                               to={"/about"}>{t("nav.about")}</Link>
+                        </li>
                     </ul>
 
                     <div className={"language"}>
@@ -122,7 +176,8 @@ export const UI_nav_bar = (props) => {
                                  alt={"language flag"}/>
                         </div>
                         <div style={{backgroundColor: "black"}} className={"text_div"} onClick={handleLanguageChange}>
-                            <p style={{color: "#24818D"}} className={"text_self d-flex justify-content-center"}>{t("nav.lang")}</p>
+                            <p style={{color: "#24818D"}}
+                               className={"text_self d-flex justify-content-center"}>{t("nav.lang")}</p>
                         </div>
                     </div>
 
@@ -134,16 +189,22 @@ export const UI_nav_bar = (props) => {
                 {openMenu && (
                     <div className="drop_down_wrapper" onClick={closeMenu}>
                         <ul style={{padding: 0}}>
-                            <li className={"li_d"}><Link className={"lnk_b"} to={`/router/path`}>{t("nav.home")}</Link>
+                            <li className={onHome ? "activeStyle" : "li_d"}><Link className={"lnk_b"}
+                                                                                  to={"/"}>{t("nav.home")}</Link>
                             </li>
-                            <li className={"li_d"}><Link className={"lnk_b"}
-                                                         to={`/router/path`}>{t("nav.av_positions")}</Link></li>
-                            <li className={"li_d"}><Link className={"lnk_b"}
-                                                         to={`/router/path`}>{t("nav.services")}</Link></li>
-                            <li className={"li_d"}><Link className={"lnk_b"} to={`/router/path`}>{t("nav.blog")}</Link>
+                            <li className={onJobs ? "activeStyle" : "li_d"}><Link className={"lnk_b"}
+                                                                                  to={"/jobs"}>{t("nav.av_positions")}</Link>
                             </li>
-                            <li className={"li_d"}><Link className={"lnk_b"} to={`/router/path`}>{t("nav.about")}</Link>
+                            <li className={onService ? "activeStyle" : "li_d"}><Link className={"lnk_b"}
+                                                                                     to={"/services"}>{t("nav.services")}</Link>
                             </li>
+                            <li className={onBlog ? "activeStyle" : "li_d"}><Link className={"lnk_b"}
+                                                                                  to={"/blog"}>{t("nav.blog")}</Link>
+                            </li>
+                            <li className={onAbout ? "activeStyle" : "li_d"}><Link className={"lnk_b"}
+                                                                                   to={"/about"}>{t("nav.about")}</Link>
+                            </li>
+
                             <div className={"language2"}>
                                 <div className={"flag_div2"}>
                                     <img className={"flag_img_self2"}

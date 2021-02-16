@@ -3,7 +3,7 @@ import "./ST_body_wrapper.scss";
 import {Route, Switch} from "react-router-dom";
 import {HomeContent} from "./p1_home/HomeContent";
 import {ErrorPage} from "../../m0_pages_routes/ErrorPage";
-import {JobsContent} from "./p2_jobs/job_list_view/Jobs";
+import {JobsContent, UI_Jobs} from "./p2_jobs/job_list_view/UI_Jobs";
 import {ServiceContent} from "./p3_services/ServiceContent";
 import {BlogContent} from "./p4_blog/BlogContent";
 import {AboutContent} from "./p5_about/AboutContent";
@@ -12,48 +12,65 @@ import {UI_register} from "../c1_auth/register/UI_register";
 import {FullPageLoader} from "../../resources/miscellaneous/FullPageLoader";
 import {UI_forgot_password} from "../c1_auth/forgot_password/UI_forgot_password";
 import {UI_PrivacyPolicy} from "../z_privacy_policy/UI_PrivacyPolicy";
+import {UI_Job_Viewer} from "./p2_jobs/job_Viewer/UI_Job_Viewer";
+import {Jobs_form} from "./p2_jobs/job_form/Jobs_form";
+
+
+import {useParams} from "react-router-dom";
+
+// //inner component to handle the extra routing.
+// export const HandleJobPageRouting = () => {
+//     const {page} = useParams();
+//     console.log("////: handleJobPageRouting", page);
+//     switch (page) {
+//         case "jobs":
+//             return <UI_Job_Viewer/>
+//         case "jobeditor":
+//             return <Jobs_form/>
+//         default:
+//             return <UI_Jobs/>
+//     }
+// }
 
 export const UI_body_wrapper = (props) => {
 
+    useEffect(() => {
+        //effect
+        console.log("////: UI bwr",);
+        return () => {
+            //cleanup
+        }
+    }, [/*input*/]);
+
     return (
         <div className={"body_outer"}>
-            <div  className={"body_wrapper"} style={{height: props.wrapperHeight}}>
+            <div className={"body_wrapper"} style={{height: props.wrapperHeight}}>
                 <Switch>
                     {/*navigation links*/}
                     <Route exact path={"/"}><HomeContent/></Route>
-                    <Route path={"/jobs"}><JobsContent/></Route>
-                    <Route path={"/services"}><ServiceContent/></Route>
-                    <Route path={"/blog"}><BlogContent/></Route>
-                    <Route path={"/about"}><AboutContent/></Route>
+
+                    {/*//////jobs page//////////*/}
+                    <Route exact path={"/jobs"}><UI_Jobs/></Route>
+                    <Route exact path={"/jobs/jobview/:id"}><UI_Job_Viewer/></Route>
+
+                    <Route exact path={"/jobs/jobeditor"}><Jobs_form/></Route>
+                    <Route exact path={"/jobs/jobeditor/:id"}><UI_Job_Viewer/></Route>
+                    {/*//////jobs page//////////*/}
+
+                    <Route exact path={"/services"}><ServiceContent/></Route>
+                    <Route exact path={"/blog"}><BlogContent/></Route>
+                    <Route exact path={"/about"}><AboutContent/></Route>
+                    {/*<Route exact path={"/jobedit"}><Jobs_form/></Route>*/}
 
                     {/*normail pages*/}
-                    <Route path={"/privacypolicy"}><UI_PrivacyPolicy/></Route>
-                    {/*<Route path={""}>< /></Route>*/}
-                    {/*<Route path={""}>< /></Route>*/}
-                    {/*<Route path={""}>< /></Route>*/}
-                    {/*<Route path={""}>< /></Route>*/}
-                    {/*<Route path={""}>< /></Route>*/}
-                    {/*<Route path={""}>< /></Route>*/}
-                    {/*<Route path={""}>< /></Route>*/}
-                    {/*<Route path={""}>< /></Route>*/}
-                    {/*<Route path={""}>< /></Route>*/}
-                    {/*<Route path={""}>< /></Route>*/}
-                    {/*<Route path={""}>< /></Route>*/}
-                    {/*<Route path={""}>< /></Route>*/}
-                    {/*<Route path={""}>< /></Route>*/}
-                    {/*<Route path={""}>< /></Route>*/}
-                    {/*<Route path={""}>< /></Route>*/}
-                    {/*<Route path={""}>< /></Route>*/}
-                    {/*<Route path={""}>< /></Route>*/}
-                    {/*<Route path={""}>< /></Route>*/}
-                    {/*<Route path={""}>< /></Route>*/}
-                    {/*<Route path={""}>< /></Route>*/}
+                    <Route exact path={"/privacypolicy"}><UI_PrivacyPolicy/></Route>
 
                     {/*other pages links*/}
                     <Suspense fallback={FullPageLoader}>
-                        <Route path={"/login"}><UI_login/></Route>
-                        <Route path={"/register"}><UI_register/></Route>
-                        <Route path={"/forgot_password"}><UI_forgot_password/></Route>
+                        <Route exact path={"/login"}><UI_login/></Route>
+                        <Route exact path={"/register"}><UI_register/></Route>
+                        <Route exact path={"/forgot_password"}><UI_forgot_password/></Route>
+                        <Route path={"*"}><ErrorPage/></Route>
                     </Suspense>
                     <Route path={"*"}><ErrorPage/></Route>
                 </Switch>
