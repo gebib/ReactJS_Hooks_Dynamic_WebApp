@@ -8,30 +8,12 @@ import draftToHtml from "draftjs-to-html";
 import htmlToDraft from "html-to-draftjs";
 
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-
-function testFetch(file) {
-    return new Promise((resolve, reject) => {
-        const data = new FormData(); // eslint-disable-line no-undef
-        data.append("image", file);
-        fetch("https://api.imgur.com/3/image", {
-            method: "POST",
-            headers: {Authorization: "Client-ID 8d26ccd12712fca"},
-            body: data
-        })
-            .then(body => body.json())
-            .then(body => {
-                console.log(body);
-                resolve(body);
-            });
-    });
-}
+import {showToast} from "../../../UI_Main_pages_wrapper";
+import { Prompt } from "react-router-dom"
+import {useTranslation} from "react-i18next";
 
 
-class TextEditorWYSIWYG extends Component {
-    constructor(props) {
-        super(props);
-
-        const newJobTemplate = `
+let newJobTemplate = `
 <h4><span style="color: rgb(47,47,53);background-color: rgb(255,255,255);font-size: 24px;font-family: Arial;">Job title</span> <span style="color: rgb(12,12,12);background-color: white;font-size: 12pt;font-family: Arial;">Digital leader job title</span></h4>
 <p style="margin-left:0in;"><span style="color: rgb(33,37,41);font-size: 12pt;font-family: Arial;"><strong>Employer: </strong>Company name</span>&nbsp;</p>
 <p style="margin-left:0in;"><span style="color: rgb(33,37,41);background-color: white;font-size: 12pt;font-family: Arial;"><strong>Deadline: </strong>27.02.2021 </span>&nbsp;</p>
@@ -73,23 +55,17 @@ class TextEditorWYSIWYG extends Component {
 <li><span style="font-family: Arial;">Personal growth and development of advanced knowledge</span></li>
 <li><span style="font-family: Arial;">6 weeks vecation / year</span></li>
 </ul>
-<p></p>
+<p></p>`;
 
-`;
-        const contentBlock = htmlToDraft(newJobTemplate);
-        if (contentBlock) {
-            const contentState = ContentState.createFromBlockArray(
-                contentBlock.contentBlocks
-            );
-            const editorState = EditorState.createWithContent(contentState);
-            this.state = {
-                editorState
-            };
-        } else {
-            this.state = {
-                editorState: `EditorState.createEmpty()`
-            };
-        }
+
+class TextEditorWYSIWYG extends Component {
+    shouldPrompt = false;
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            editorState: EditorState.createEmpty()
+        };
     }
 
     onEditorStateChange: Function = editorState => {
@@ -97,16 +73,44 @@ class TextEditorWYSIWYG extends Component {
             {
                 editorState
             },
-            () =>{
-                // console.log(draftToHtml(convertToRaw(editorState.getCurrentContent())));
+            () => {
+                try {
+                    let editedToHtml = JSON.stringify(draftToHtml(convertToRaw(this.state.editorState.getCurrentContent())));
+                    localStorage.setItem("tempFormData", editedToHtml);
+                } catch (e) {
+                    console.log("////: Error saving to ls! ", e);
+                    this.shouldPrompt = true;
+                }
             }
         );
+        this.props.setFormData(editorState);
     };
+
+    componentDidMount = () => {
+        try {
+            let savedEditHtml = JSON.parse(localStorage.getItem("tempFormData"));
+            if (savedEditHtml) {
+                newJobTemplate = savedEditHtml;
+            }
+        } catch (e) {
+            console.log("////: Error reading from ls! ", e);
+        }
+
+        let contentBlock = htmlToDraft(newJobTemplate);
+        if (contentBlock) {
+            const contentState = ContentState.createFromBlockArray(
+                contentBlock.contentBlocks
+            );
+            const editorState = EditorState.createWithContent(contentState);
+            this.setState({editorState: editorState});
+        }
+    }
 
     render() {
         const {editorState} = this.state;
         return (
             <div>
+                <Prompt when={this.shouldPrompt} message={this.props.promptMsg}/>
                 <Editor
                     // editorStyle={{lineHeight: 'nop!'}}
                     toolbarClassName="mainToolBarWrapper"

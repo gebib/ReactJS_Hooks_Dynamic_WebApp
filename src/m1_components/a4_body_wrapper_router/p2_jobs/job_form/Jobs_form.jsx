@@ -1,20 +1,24 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import "./Jobs_form.scss";
-import {useTranslation} from "react-i18next/src";
+import {useTranslation} from "react-i18next";
 
-import {useWindowSize} from "../../../../UI_Main_pages_wrapper";
+import {showToast, useWindowSize} from "../../../../UI_Main_pages_wrapper";
 import {UI_logo_with_image} from "../../../a2_logo_with_image/UI_logo_with_image";
 import TextEditorWYSIWYG from "../../../a0_shared_all/wysiwyg/TextEditorWYSIWYG";
-// import {TextEditorWYSIWYG} from "../../../a0_shared_all/wysiwyg/TextEditorWYSIWYG";
 import projMngrImg from "../../../../resources/images/project-manager.jpg";
 import itDevImg from "../../../../resources/images/developer.png";
 import archiTkImg from "../../../../resources/images/architect.jpg";
+import {EditorState, convertToRaw, ContentState} from "draft-js";
 
 ////////date picker///////////////
-
 import "antd/dist/antd.css";
 import DateInput from "../../../a0_shared_all/date_input/DateInput";
 import DatePicker from "antd/es/date-picker";
+import {useHistory, useLocation} from "react-router-dom";
+import {Prompt} from "react-router-dom";
+import moment from "moment";
+import {Editor} from "react-draft-wysiwyg";
+import draftToHtml from "draftjs-to-html";
 
 
 export const Jobs_form = () => {
@@ -27,23 +31,30 @@ export const Jobs_form = () => {
     const [partTime, setPartTime] = useState(false);
     const [proj, setProj] = useState(false);
 
+    const [jobTextHtml, setJobTextHtml] = useState(null);
+
+    const [selectedDate, setSelectedDate] = useState(null);
+    const [address, setAddress] = useState(null);
+
 
     const [imgToUse, setImgToUse] = useState(itDevImg);
 
-    const sizeHW = useWindowSize();
+    const [mustStay, setMustStay] = useState(false);
 
-    useEffect(() => {
-        return () => {
-            //cleanup
-        }
-    }, [itDev, projMn, archiTc]);
+    const sizeHW = useWindowSize();
+    const location = useLocation();
+    const history = useHistory();
+    const inputRef = useRef();
+    let shouldPrompt = false;
 
 
     //////////date picker /////////////////
-    const onDateChange = (inOnChange) => {
-        console.log(inOnChange._d);
+    const onDateChange = (moment) => {
+        let day = moment.format('D');
+        let month = moment.format('M');
+        let year = moment.format('YYYY');
+        setSelectedDate([day, month, year])
     };
-
     const onOpenChange = status => {
         if (status) {
             setTimeout(() => {
@@ -55,19 +66,69 @@ export const Jobs_form = () => {
 
     const handleButton = (actionType) => {
         if (actionType === "cancel") {
-            console.log("////: cancel!");
+            if (window.confirm(t("jform.resetok"))) {
+                localStorage.removeItem("tmpState");
+                localStorage.removeItem("tempFormData");
+                window.location.reload(false); // true = complete from the server, not from cached!.
+            }
         } else if (actionType === "post") {
-            console.log("////: post!");
+            // ceck appropriate is set on right
+            // check form left contains, tittle atleast etc.
+        }
+    }
+
+    //used by WYSIWYG through prop to pass here the data.
+    const handleWYSIWYG = (editorState) => {
+        setJobTextHtml(convertToRaw(editorState.getCurrentContent()));
+    }
+
+    useEffect(() => {
+        try {
+            let savedChecksEtc = JSON.parse(localStorage.getItem("tmpState"));
+            if (savedChecksEtc) {
+                setItDev(savedChecksEtc[0]);
+                setProjMn(savedChecksEtc[1]);
+                setArchiTc(savedChecksEtc[2]);
+                setFulTime(savedChecksEtc[3]);
+                setPartTime(savedChecksEtc[4]);
+                setProj(savedChecksEtc[5]);
+                setAddress(savedChecksEtc[6]);
+                // setSelectedDate(savedChecksEtc[7]);
+                inputRef.current.value = savedChecksEtc[6];
+            }
+        } catch (e) {
+            console.log("////:error at local storage!", e);
+        }
+
+    }, [/*input*/]);
+
+    useEffect(() => {
+        //effect
+        //save state to ls on unmount!
+        saveTempDataToLocalStorage();
+        return () => {
+        }
+    }, [itDev, projMn, archiTc, fulTime, partTime, proj, address, selectedDate]);
+
+    const saveTempDataToLocalStorage = () => {
+        //then save to local storage
+        try {
+            let states = JSON.stringify([itDev, projMn, archiTc, fulTime, partTime, proj, address, selectedDate]);
+            localStorage.setItem("tmpState", states);
+        } catch (e) {
+            console.log("////: could't write to local storage! ", e);
+            shouldPrompt = true;
         }
     }
 
 
     return (
         <main className={"jobs_form_main"}>
+            <Prompt when={shouldPrompt} message={t("jform.touchedInfo")}/>
             <div className={"jobs_form_bgi"}/>
             <div className={"form_wrapper row"}>
                 <div className={"editor_form_left col-sm-12 col-xl-8"}>
-                    <TextEditorWYSIWYG/>
+                    <TextEditorWYSIWYG promptMsg={t("jform.touchedInfo")} setFormData={handleWYSIWYG}/>
                 </div>
                 {/*////////////////////////////Right side control panel/////////////////////*/}
                 <div className={"editor_form_right col-sm-12 col-xl-4 order-lg-last"}>
@@ -76,42 +137,42 @@ export const Jobs_form = () => {
                             <strong style={{color: "#248c9d"}}>Job type</strong>
                             <div className={"col py-1 mt-2"}>
                                 <input checked={itDev} className="form-check-input" type="checkbox" value=""
-                                       id="flexCheckDefault" onChange={(e) => {
-                                    if (!itDev) {
-                                        setItDev(e.target.checked);
-                                        setProjMn(false);
-                                        setArchiTc(false);
-                                        setImgToUse(itDevImg);
-                                    }
-                                }}/>
+                                       onChange={(e) => {
+                                           if (!itDev) {
+                                               setItDev(e.target.checked);
+                                               setProjMn(false);
+                                               setArchiTc(false);
+                                               setImgToUse(itDevImg);
+                                           }
+                                       }}/>
                                 <label className="form-check-label px-2" htmlFor="flexCheckDefault">
                                     IT Developer
                                 </label>
                             </div>
                             <div className={"col py-1"}>
                                 <input checked={projMn} className="form-check-input" type="checkbox" value=""
-                                       id="flexCheckDefault" onChange={(e) => {
-                                    if (!projMn) {
-                                        setProjMn(e.target.checked);
-                                        setItDev(false);
-                                        setArchiTc(false);
-                                        setImgToUse(projMngrImg);
-                                    }
-                                }}/>
+                                       onChange={(e) => {
+                                           if (!projMn) {
+                                               setProjMn(e.target.checked);
+                                               setItDev(false);
+                                               setArchiTc(false);
+                                               setImgToUse(projMngrImg);
+                                           }
+                                       }}/>
                                 <label className="form-check-label px-2" htmlFor="flexCheckDefault">
                                     Project manager
                                 </label>
                             </div>
                             <div className={"col py-1"}>
                                 <input checked={archiTc} className="form-check-input" type="checkbox" value=""
-                                       id="flexCheckDefault" onChange={(e) => {
-                                    if (!archiTc) {
-                                        setArchiTc(e.target.checked);
-                                        setItDev(false);
-                                        setProjMn(false);
-                                        setImgToUse(archiTkImg);
-                                    }
-                                }}/>
+                                       onChange={(e) => {
+                                           if (!archiTc) {
+                                               setArchiTc(e.target.checked);
+                                               setItDev(false);
+                                               setProjMn(false);
+                                               setImgToUse(archiTkImg);
+                                           }
+                                       }}/>
                                 <label className="form-check-label px-2" htmlFor="flexCheckDefault">
                                     Architect
                                 </label>
@@ -122,40 +183,40 @@ export const Jobs_form = () => {
                             <strong style={{color: "#248c9d"}}>Contract type</strong>
                             <div className={"col py-1 mt-2"}>
                                 <input checked={fulTime} className="form-check-input" type="checkbox" value=""
-                                       id="flexCheckDefault" onChange={(e) => {
-                                    if (!fulTime) {
-                                        setFulTime(e.target.checked);
-                                        setPartTime(false);
-                                        setProj(false);
-                                    }
+                                       onChange={(e) => {
+                                           if (!fulTime) {
+                                               setFulTime(e.target.checked);
+                                               setPartTime(false);
+                                               setProj(false);
+                                           }
 
-                                }}/>
+                                       }}/>
                                 <label className="form-check-label px-2" htmlFor="flexCheckDefault">
                                     Full time
                                 </label>
                             </div>
                             <div className={"col py-1"}>
                                 <input checked={partTime} className="form-check-input" type="checkbox" value=""
-                                       id="flexCheckDefault" onChange={(e) => {
-                                    if (!partTime) {
-                                        setPartTime(e.target.checked);
-                                        setFulTime(false);
-                                        setProj(false);
-                                    }
-                                }}/>
+                                       onChange={(e) => {
+                                           if (!partTime) {
+                                               setPartTime(e.target.checked);
+                                               setFulTime(false);
+                                               setProj(false);
+                                           }
+                                       }}/>
                                 <label className="form-check-label px-2" htmlFor="flexCheckDefault">
                                     Part time
                                 </label>
                             </div>
                             <div className={"col py-1"}>
                                 <input checked={proj} className="form-check-input" type="checkbox" value=""
-                                       id="flexCheckDefault" onChange={(e) => {
-                                    if (!proj) {
-                                        setProj(e.target.checked);
-                                        setFulTime(false);
-                                        setPartTime(false);
-                                    }
-                                }}/>
+                                       onChange={(e) => {
+                                           if (!proj) {
+                                               setProj(e.target.checked);
+                                               setFulTime(false);
+                                               setPartTime(false);
+                                           }
+                                       }}/>
                                 <label className="form-check-label px-2" htmlFor="flexCheckDefault">
                                     Project
                                 </label>
@@ -169,13 +230,18 @@ export const Jobs_form = () => {
                                 <strong style={{color: "#248c9d"}}>Workplace address</strong>
                                 <input name={"workPlaceAddress"}
                                        type="text"
+                                       ref={inputRef}
+                                       onChange={(e) => {
+                                           setAddress(e.target.value);
+                                       }}
                                        className="form-control input_address mt-2"
                                        placeholder={"Workplace address"}/>
                             </div>
-                            <strong style={{color: "#248c9d"}}>Deadline date</strong>
+                            <strong style={{color: "#248c9d"}}>{t("jform.dld")}</strong>
                             <DatePicker
                                 className={"mt-2"}
-                                placeholder={"Deadline date"}
+                                format={"DD-MM-YYYY"}
+                                placeholder={t("jform.dld")}
                                 style={{
                                     width: "100%",
                                     height: "40px",
@@ -184,7 +250,6 @@ export const Jobs_form = () => {
                                 onChange={(e) => {
                                     onDateChange(e);
                                 }}
-                                customInput={<DateInput/>}
                                 // onOpenChange={onOpenChange}
                             />
                             <div className="btn-group mt-3" role="group" aria-label="Basic mixed styles example">

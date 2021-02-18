@@ -49,46 +49,38 @@ export const UI_nav_bar = (props) => {
 
     //should fire only when routing path changes:
     useEffect(() => {
+        let pageUrl = location.pathname;
         //for manual decoration of active li for nav.!
-        switch (location.pathname) {
-            case "/":
-                setOnHome(true);
-                setOnJobs(false);
-                setOnService(false);
-                setOnBlog(false);
-                setOnAbout(false);
-                break;
-            case "/jobs": //jobs!
-                setOnHome(false);
-                setOnJobs(true);
-                setOnService(false);
-                setOnBlog(false);
-                setOnAbout(false);
-                break;
-            case "/services":
-                setOnHome(false);
-                setOnJobs(false);
-                setOnService(true);
-                setOnBlog(false);
-                setOnAbout(false);
-                break;
-            case "/blog":
-                setOnHome(false);
-                setOnJobs(false);
-                setOnService(false);
-                setOnBlog(true);
-                setOnAbout(false);
-                break;
-            case "/about":
-                setOnHome(false);
-                setOnJobs(false);
-                setOnService(false);
-                setOnBlog(false);
-                setOnAbout(true);
-                break;
-            default:
-                //TODO
-                break;
+        if (pageUrl === "/") {
+            setOnHome(true);
+            setOnJobs(false);
+            setOnService(false);
+            setOnBlog(false);
+            setOnAbout(false);
+        } else if (pageUrl.includes("job")) {
+            setOnHome(false);
+            setOnJobs(true);
+            setOnService(false);
+            setOnBlog(false);
+            setOnAbout(false);
+        } else if (pageUrl.includes("services")) {
+            setOnHome(false);
+            setOnJobs(false);
+            setOnService(true);
+            setOnBlog(false);
+            setOnAbout(false);
+        } else if (pageUrl.includes("blog")) {
+            setOnHome(false);
+            setOnJobs(false);
+            setOnService(false);
+            setOnBlog(true);
+            setOnAbout(false);
+        } else if (pageUrl.includes("about")) {
+            setOnHome(false);
+            setOnJobs(false);
+            setOnService(false);
+            setOnBlog(false);
+            setOnAbout(true);
         }
     }, [location.pathname]);
 

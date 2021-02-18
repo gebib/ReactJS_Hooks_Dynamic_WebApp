@@ -36,7 +36,6 @@ export const UI_body_wrapper = (props) => {
 
     useEffect(() => {
         //effect
-        console.log("////: UI bwr",);
         return () => {
             //cleanup
         }
