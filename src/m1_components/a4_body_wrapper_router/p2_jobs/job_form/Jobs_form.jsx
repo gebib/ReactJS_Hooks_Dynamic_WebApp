@@ -72,8 +72,8 @@ export const Jobs_form = () => {
                 window.location.reload(false); // true = complete from the server, not from cached!.
             }
         } else if (actionType === "post") {
-            // ceck appropriate is set on right
-            // check form left contains, tittle atleast etc.
+            let jobTypAndContractType = [itDev, projMn, archiTc, fulTime, partTime, proj];
+            console.log("////: ", jobTypAndContractType, " ", jobTextHtml);
         }
     }
 
@@ -99,7 +99,6 @@ export const Jobs_form = () => {
         } catch (e) {
             console.log("////:error at local storage!", e);
         }
-
     }, [/*input*/]);
 
     useEffect(() => {
@@ -108,7 +107,7 @@ export const Jobs_form = () => {
         saveTempDataToLocalStorage();
         return () => {
         }
-    }, [itDev, projMn, archiTc, fulTime, partTime, proj,address, selectedDate]);
+    }, [itDev, projMn, archiTc, fulTime, partTime, proj, address, selectedDate]);
 
     const saveTempDataToLocalStorage = () => {
         //then save to local storage
@@ -120,7 +119,6 @@ export const Jobs_form = () => {
             shouldPrompt = true;
         }
     }
-
 
     return (
         <main className={"jobs_form_main"}>
@@ -174,7 +172,7 @@ export const Jobs_form = () => {
                                            }
                                        }}/>
                                 <label className="form-check-label px-2" htmlFor="flexCheckDefault">
-                                   {t("jform.arch")}
+                                    {t("jform.arch")}
                                 </label>
                             </div>
                         </div>

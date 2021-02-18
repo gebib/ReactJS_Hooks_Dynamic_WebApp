@@ -95,14 +95,15 @@ class TextEditorWYSIWYG extends Component {
         } catch (e) {
             console.log("////: Error reading from ls! ", e);
         }
-
         let contentBlock = htmlToDraft(newJobTemplate);
         if (contentBlock) {
             const contentState = ContentState.createFromBlockArray(
                 contentBlock.contentBlocks
             );
             const editorState = EditorState.createWithContent(contentState);
-            this.setState({editorState: editorState});
+            this.setState({editorState: editorState}, () => {
+                this.props.setFormData(editorState);
+            });
         }
     }
 
