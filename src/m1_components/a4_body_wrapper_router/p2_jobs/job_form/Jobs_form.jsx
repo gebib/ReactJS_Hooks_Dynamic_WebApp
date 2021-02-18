@@ -93,8 +93,8 @@ export const Jobs_form = () => {
                 setPartTime(savedChecksEtc[4]);
                 setProj(savedChecksEtc[5]);
                 setAddress(savedChecksEtc[6]);
-                // setSelectedDate(savedChecksEtc[7]);
-                inputRef.current.value = savedChecksEtc[6];
+                // inputRef.current.value = savedChecksEtc[6];
+                setImgToUse(savedChecksEtc[8]);
             }
         } catch (e) {
             console.log("////:error at local storage!", e);
@@ -108,12 +108,12 @@ export const Jobs_form = () => {
         saveTempDataToLocalStorage();
         return () => {
         }
-    }, [itDev, projMn, archiTc, fulTime, partTime, proj, address, selectedDate]);
+    }, [itDev, projMn, archiTc, fulTime, partTime, proj,address, selectedDate]);
 
     const saveTempDataToLocalStorage = () => {
         //then save to local storage
         try {
-            let states = JSON.stringify([itDev, projMn, archiTc, fulTime, partTime, proj, address, selectedDate]);
+            let states = JSON.stringify([itDev, projMn, archiTc, fulTime, partTime, proj, address, selectedDate, imgToUse]);
             localStorage.setItem("tmpState", states);
         } catch (e) {
             console.log("////: could't write to local storage! ", e);
@@ -134,7 +134,7 @@ export const Jobs_form = () => {
                 <div className={"editor_form_right col-sm-12 col-xl-4 order-lg-last"}>
                     <div className={"ed_f_r_top row py-3 "}>
                         <div className={"col-lg-6"}>
-                            <strong style={{color: "#248c9d"}}>Job type</strong>
+                            <strong style={{color: "#248c9d"}}>{t("jform.jobType")}</strong>
                             <div className={"col py-1 mt-2"}>
                                 <input checked={itDev} className="form-check-input" type="checkbox" value=""
                                        onChange={(e) => {
@@ -146,7 +146,7 @@ export const Jobs_form = () => {
                                            }
                                        }}/>
                                 <label className="form-check-label px-2" htmlFor="flexCheckDefault">
-                                    IT Developer
+                                    {t("jform.itdev")}
                                 </label>
                             </div>
                             <div className={"col py-1"}>
@@ -160,7 +160,7 @@ export const Jobs_form = () => {
                                            }
                                        }}/>
                                 <label className="form-check-label px-2" htmlFor="flexCheckDefault">
-                                    Project manager
+                                    {t("jform.projM")}
                                 </label>
                             </div>
                             <div className={"col py-1"}>
@@ -174,13 +174,13 @@ export const Jobs_form = () => {
                                            }
                                        }}/>
                                 <label className="form-check-label px-2" htmlFor="flexCheckDefault">
-                                    Architect
+                                   {t("jform.arch")}
                                 </label>
                             </div>
                         </div>
                         {/*/////checkBoxes right////////////*/}
                         <div className={"col-lg-6"}>
-                            <strong style={{color: "#248c9d"}}>Contract type</strong>
+                            <strong style={{color: "#248c9d"}}>{t("jform.conType")}</strong>
                             <div className={"col py-1 mt-2"}>
                                 <input checked={fulTime} className="form-check-input" type="checkbox" value=""
                                        onChange={(e) => {
@@ -192,7 +192,7 @@ export const Jobs_form = () => {
 
                                        }}/>
                                 <label className="form-check-label px-2" htmlFor="flexCheckDefault">
-                                    Full time
+                                    {t("jform.fultime")}
                                 </label>
                             </div>
                             <div className={"col py-1"}>
@@ -205,7 +205,7 @@ export const Jobs_form = () => {
                                            }
                                        }}/>
                                 <label className="form-check-label px-2" htmlFor="flexCheckDefault">
-                                    Part time
+                                    {t("jform.pt")}
                                 </label>
                             </div>
                             <div className={"col py-1"}>
@@ -218,7 +218,7 @@ export const Jobs_form = () => {
                                            }
                                        }}/>
                                 <label className="form-check-label px-2" htmlFor="flexCheckDefault">
-                                    Project
+                                    {t("jform.project")}
                                 </label>
                             </div>
                         </div>
@@ -226,41 +226,41 @@ export const Jobs_form = () => {
                             <img src={imgToUse} className="job_view_cards_img_self" alt="..."/>
                         </div>
                         <div className={"infoDiv my-5"}>
-                            <div className={"input_wrappers workPlace my-2"}>
-                                <strong style={{color: "#248c9d"}}>Workplace address</strong>
-                                <input name={"workPlaceAddress"}
-                                       type="text"
-                                       ref={inputRef}
-                                       onChange={(e) => {
-                                           setAddress(e.target.value);
-                                       }}
-                                       className="form-control input_address mt-2"
-                                       placeholder={"Workplace address"}/>
-                            </div>
-                            <strong style={{color: "#248c9d"}}>{t("jform.dld")}</strong>
-                            <DatePicker
-                                className={"mt-2"}
-                                format={"DD-MM-YYYY"}
-                                placeholder={t("jform.dld")}
-                                style={{
-                                    width: "100%",
-                                    height: "40px",
-                                    borderRadius: "4px"
-                                }}
-                                onChange={(e) => {
-                                    onDateChange(e);
-                                }}
-                                // onOpenChange={onOpenChange}
-                            />
+                            {/*<div className={"input_wrappers workPlace my-2"}>*/}
+                            {/*    <strong style={{color: "#248c9d"}}>Workplace address</strong>*/}
+                            {/*    <input name={"workPlaceAddress"}*/}
+                            {/*           type="text"*/}
+                            {/*           ref={inputRef}*/}
+                            {/*           onChange={(e) => {*/}
+                            {/*               setAddress(e.target.value);*/}
+                            {/*           }}*/}
+                            {/*           className="form-control input_address mt-2"*/}
+                            {/*           placeholder={"Workplace address"}/>*/}
+                            {/*</div>*/}
+                            {/*<strong style={{color: "#248c9d"}}>{t("jform.dld")}</strong>*/}
+                            {/*<DatePicker*/}
+                            {/*    className={"mt-2"}*/}
+                            {/*    format={"DD-MM-YYYY"}*/}
+                            {/*    placeholder={t("jform.dld")}*/}
+                            {/*    style={{*/}
+                            {/*        width: "100%",*/}
+                            {/*        height: "40px",*/}
+                            {/*        borderRadius: "4px"*/}
+                            {/*    }}*/}
+                            {/*    onChange={(e) => {*/}
+                            {/*        onDateChange(e);*/}
+                            {/*    }}*/}
+                            {/*    // onOpenChange={onOpenChange}*/}
+                            {/*/>*/}
                             <div className="btn-group mt-3" role="group" aria-label="Basic mixed styles example">
                                 <button onClick={() => {
                                     handleButton("cancel");
-                                }} type="button" className="btn btn-danger">Cancel
+                                }} type="button" className="btn btn-danger">{t("jform.reset")}
                                 </button>
                                 {/*<button onClick={() => handleButton} type="button" className="btn btn-warning">View</button>*/}
                                 <button onClick={() => {
                                     handleButton("post");
-                                }} type="button" className="btn btn-success">Post
+                                }} type="button" className="btn btn-success">{t("jform.post")}
                                 </button>
                             </div>
                         </div>
