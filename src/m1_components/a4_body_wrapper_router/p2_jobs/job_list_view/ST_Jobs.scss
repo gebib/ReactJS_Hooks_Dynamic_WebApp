@@ -48,7 +48,8 @@ ul {
         background-color: #EAFAF3;
         color: #151515;
       }
-      &:active{
+
+      &:active {
         background-color: #E34934;
       }
 
@@ -154,5 +155,13 @@ ul {
       border: $lineT solid #000000;
 
     }
+  }
+
+  .spinner_job {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+    //color: #EDF2F9;
   }
 }

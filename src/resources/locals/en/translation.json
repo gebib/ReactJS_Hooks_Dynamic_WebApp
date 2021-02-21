@@ -4,7 +4,6 @@
     "or": "or ",
     "create_an_account": "create an account",
     "forgot_password": "Forgot password ?",
-    "remember_me": "Remember me",
     "or_login_with": "or login using",
     "with_google": "Google",
     "with_facebook": "Facebook",
@@ -124,8 +123,8 @@
     "project": "Project",
     "reset": "Reset",
     "post": "Post",
-    "": "",
-    "": "",
+    "newJobPosted": "New job has been published!",
+    "error": "Something went wrong! please try posting again",
     "": ""
   }
 }

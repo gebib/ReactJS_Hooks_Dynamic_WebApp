@@ -1,5 +1,6 @@
 import React, {useContext, useEffect, useState} from "react";
 import {auth, storage, database} from "./firebase";
+import {showToast} from "../../../../UI_Main_pages_wrapper";
 
 
 const AuthContext = React.createContext();
@@ -60,40 +61,36 @@ export function AuthProvider({children}) {
     }
 
     ////////////////////////jobs list/////////////////////////////////
-    const create_job = () =>{
+    const create_job = (jobAndContractTypeAndTxt) => {
+        return database.ref("/jobs").push(jobAndContractTypeAndTxt);
+    }
+    const read_job = () => {
+        return database.ref("/jobs").once("value");
+    }
+    const update_job = () => {
 
     }
-    const read_job = () =>{
-
-    }
-    const update_job = () =>{
-
-    }
-    const delete_job = () =>{
+    const delete_job = () => {
 
     }
     //////////////////////////blog list///////////////////////////////
     //type: social | motivasjon/inspirasjon | artikkel | event
-    const create_blog = () =>{
+    const create_blog = () => {
 
     }
-    const read_blog = () =>{
+    const read_blog = () => {
 
     }
-    const update_blog = () =>{
+    const update_blog = () => {
 
     }
-    const delete_blog = () =>{
+    const delete_blog = () => {
 
     }
     /////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////
+
 
     useEffect(() => {
         auth.onAuthStateChanged((user) => {

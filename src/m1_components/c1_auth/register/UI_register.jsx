@@ -43,6 +43,7 @@ export const UI_register = () => {
     const previewCanvasRef = useRef(null);
     const [crop, setCrop] = useState({unit: 'px', width: 200, aspect: 1});
     const [completedCrop, setCompletedCrop] = useState(null);
+    const [cropingDone, setCropingDone] = useState(false);///////////////////////////////////
     const [tempProfileImg, setTempProfileImg] = useState(null);
     const [progressNr, setProgressNr] = useState(0);
 
@@ -211,11 +212,16 @@ export const UI_register = () => {
         }
     }, [name]);
 
+    const cropState = (c) =>{
+        setCompletedCrop(c);
+        setCropingDone(true);
+    }
+
 
     return (
         <div className={"register_page_container"}>
             { /*to set img size dynamically so it istays within parent div*/
-                (!completedCrop?.width || !completedCrop?.height) ? null :
+                (!cropingDone) ? null :
                     <style>{".ReactCrop__image{width: " + imgWidth + "px;"}</style>
                 /*/////////////////////////////////////////////////////////////*/
             }
@@ -235,7 +241,7 @@ export const UI_register = () => {
                                                           to={"/login"}>{t("sign_in.login")}</Link>
                     </div>
                     <div className={"profilePic"}>
-                        {(!completedCrop?.width || !completedCrop?.height) ?
+                        {(!cropingDone) ?
                             <div className={"avatar_image_or_canvas"}>
                                 <label onClick={() => editImage ? setEditImage(false) : setEditImage(true)}
                                        htmlFor="file-upload" className="custom-file-upload"><img
@@ -245,11 +251,11 @@ export const UI_register = () => {
                             </div> :
                             <canvas className={"avatar_image_or_canvas"} ref={previewCanvasRef}
                                 // Rounding is important so the canvas width and height matches/is a multiple for sharpness.
-                                    style={{
-                                        width: Math.round(completedCrop?.width ?? 0),
-                                        height: Math.round(completedCrop?.height ?? 0),
-                                        cursor: "pointer"
-                                    }}
+                                //     style={{
+                                //         width: Math.round(completedCrop?.width ?? 0),
+                                //         height: Math.round(completedCrop?.height ?? 0),
+                                //         cursor: "pointer"
+                                //     }}
                                     onClick={() => {
                                         localStorage.setItem("tempFormData", JSON.stringify([name, email, p1, p2, terms]));
                                         window.location.reload();
@@ -407,14 +413,16 @@ export const UI_register = () => {
                         onImageLoaded={onLoad}
                         crop={crop}
                         onChange={(c) => setCrop(c)}
-                        onComplete={(c) => setCompletedCrop(c)}/>
+                        onComplete={(c) => {
+                            cropState(c);
+                        }}/>
                 </div>
                 <div className={"row my-1"}>
                     <button
-                        className={(!completedCrop?.width || !completedCrop?.height) ? "btn btn-danger" : "btn btn-success"}
+                        className={(!cropingDone) ? "btn btn-danger" : "btn btn-success"}
                         type="button"
-                        disabled={!completedCrop?.width || !completedCrop?.height}
-                        style={(!completedCrop?.width || !completedCrop?.height) ? {width: 200} : {width: imgWidth}}
+                        disabled={!cropingDone}
+                        style={(!cropingDone) ? {width: 200} : {width: imgWidth}}
                         onClick={() => {
                             getCroppedImage(previewCanvasRef.current, completedCrop);
                             setFileSelection(false);

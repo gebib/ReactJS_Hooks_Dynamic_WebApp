@@ -19,6 +19,7 @@ import {Prompt} from "react-router-dom";
 import moment from "moment";
 import {Editor} from "react-draft-wysiwyg";
 import draftToHtml from "draftjs-to-html";
+import {useAuth} from "../../../c1_auth/a0_auth_common/firebase/AuthContext";
 
 
 export const Jobs_form = () => {
@@ -31,10 +32,11 @@ export const Jobs_form = () => {
     const [partTime, setPartTime] = useState(false);
     const [proj, setProj] = useState(false);
 
-    const [jobTextHtml, setJobTextHtml] = useState(null);
+    const [rawAndHtmlForm, setRawAndHtmlForm] = useState([]);
 
     const [selectedDate, setSelectedDate] = useState(null);
     const [address, setAddress] = useState(null);
+    const [loading, setLoading] = useState(false);
 
 
     const [imgToUse, setImgToUse] = useState(itDevImg);
@@ -45,6 +47,9 @@ export const Jobs_form = () => {
     const location = useLocation();
     const history = useHistory();
     const inputRef = useRef();
+    const {create_job} = useAuth();
+
+
     let shouldPrompt = false;
 
 
@@ -64,7 +69,15 @@ export const Jobs_form = () => {
     };
     ///////////////////////////////////
 
-    const handleButton = (actionType) => {
+    const getLocalDate = () => {
+        let date = new Date().getDate();
+        let month = new Date().getMonth() + 1;
+        let year = new Date().getFullYear();
+        console.log(date + '-' + month + '-' + year);
+        return JSON.stringify([date, month, year]);
+    }
+
+    const handleButton = async (actionType) => {
         if (actionType === "cancel") {
             if (window.confirm(t("jform.resetok"))) {
                 localStorage.removeItem("tmpState");
@@ -72,14 +85,29 @@ export const Jobs_form = () => {
                 window.location.reload(false); // true = complete from the server, not from cached!.
             }
         } else if (actionType === "post") {
-            let jobTypAndContractType = [itDev, projMn, archiTc, fulTime, partTime, proj];
-            console.log("////: ", jobTypAndContractType, " ", jobTextHtml);
+            setLoading(true);
+            let jobAndContractType = JSON.stringify([itDev, projMn, archiTc, fulTime, partTime, proj]);
+            let publishedDate =
+            // reverse engineer!
+            await create_job([jobAndContractType, rawAndHtmlForm, getLocalDate()]).then((r) => {
+                showToast(t("jform.newJobPosted"), "success");
+                history.push("/jobs");
+                setLoading(false);
+            }).catch((e) => {
+                console.log("////:e ", e);
+                showToast(t("jform.error"), "error");
+                setLoading(false);
+            });
         }
     }
 
     //used by WYSIWYG through prop to pass here the data.
     const handleWYSIWYG = (editorState) => {
-        setJobTextHtml(convertToRaw(editorState.getCurrentContent()));
+        let raw = JSON.stringify(convertToRaw(editorState.getCurrentContent()));
+        let htmlTxt = JSON.stringify(draftToHtml(convertToRaw(editorState.getCurrentContent())));
+        // console.log("////:RAW", JSON.parse(raw));
+        // console.log("////:htmlTxt", JSON.stringify(htmlTxt));
+        setRawAndHtmlForm([raw, htmlTxt]);
     }
 
     useEffect(() => {
@@ -252,13 +280,18 @@ export const Jobs_form = () => {
                             {/*/>*/}
                             <div className="btn-group mt-3" role="group" aria-label="Basic mixed styles example">
                                 <button onClick={() => {
-                                    handleButton("cancel");
+                                    handleButton("cancel").then(r => {
+                                    });
                                 }} type="button" className="btn btn-danger">{t("jform.reset")}
                                 </button>
                                 {/*<button onClick={() => handleButton} type="button" className="btn btn-warning">View</button>*/}
                                 <button onClick={() => {
-                                    handleButton("post");
+                                    handleButton("post").then(r => {
+                                    });
                                 }} type="button" className="btn btn-success">{t("jform.post")}
+                                    {loading ?
+                                        <span className="spinner-border mx-1 text-info spinner-border-sm" role="status"
+                                              aria-hidden="true"/> : null}
                                 </button>
                             </div>
                         </div>

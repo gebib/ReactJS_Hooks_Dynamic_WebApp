@@ -1,8 +1,8 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {IconContext} from "react-icons";
 import {GoTriangleRight} from "react-icons/go";
 
-import {MdWork} from "react-icons/md";
+import {BsBoxArrowUpRight} from "react-icons/bs";
 
 import "./ST_jlist_card.scss";
 import devImg from "../../../resources/images/developer.png";
@@ -10,14 +10,89 @@ import archiImg from "../../../resources/images/architect.jpg";
 import projMngr from "../../../resources/images/project-manager.jpg";
 import {useHistory} from "react-router-dom";
 
+import styled from "styled-components";
 
-export const UI_jlist_card = () => {
+const JobCardStyle = styled.div
+    `
+    height: 50px;
+    width: 100%;
+    background-color: green;
+    font-size: 20px;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;`
+
+//styled Component way!
+
+export const UI_jlist_card = (props) => {
     const history = useHistory();
+
+    const [aJobData, setAJobData] = useState(null);
+
+    const prepareAjobDataForRender = (jd) => {
+        let imgToUse = null;
+        let title = null;
+        let published = null;
+        let deadline = null;
+        let contractType = null;
+        let city = null;
+        let jobType = null;
+
+
+        if (jd.jobTypeAndContAr[0]) {
+            jobType = "it";
+            imgToUse = devImg;
+        } else if (jd.jobTypeAndContAr[1]) {
+            jobType = "pm";
+            imgToUse = projMngr;
+        } else if (jd.jobTypeAndContAr[2]) {
+            jobType = "ar";
+            imgToUse = archiImg;
+        }
+
+        if (jd.jobTypeAndContAr[3]) {
+            contractType = "ft";
+        } else if (jd.jobTypeAndContAr[4]) {
+            jobType = "pm";
+        } else if (jd.jobTypeAndContAr[5]) {
+            jobType = "ar";
+        }
+
+        title = jd.jobTxtRawTableData[0].text;
+
+
+        // console.log("////: ", title);
+
+
+        // setAJobData(
+        //     [
+        //         imgToUse,
+        //         title,
+        //         published,
+        //         deadline,
+        //         contractType,
+        //         city,
+        //         jobType
+        //     ]);
+    }
+
+
+    useEffect(() => {
+        prepareAjobDataForRender(props.aJobData);
+        return () => {
+            //cleanup
+        }
+    }, [/*for update on change*/]);
+
     return (
         <div className={"col bmain"} onClick={() => {
             history.push("jobs/jobview/123");
         }}>
             <section className={"col2 col"}>
+                <JobCardStyle>
+                    ok!
+                </JobCardStyle>
                 <header className={"top_bar_list row py-3"}>
                     {/*take up 6 for lg else 8 for md*/}
                     <div className={"job_icon_div d-none d-sm-block"}>
@@ -59,7 +134,7 @@ export const UI_jlist_card = () => {
                     <div className={"type_tag_list col-1 d-none d-sm-block"}>
                         <div className={"list_header_textDiv"}>
                             <IconContext.Provider value={{size: "2em"}}>
-                                <GoTriangleRight style={{marginLeft: "10px", color: "#248C9D"}}/>
+                                <BsBoxArrowUpRight style={{marginLeft: "10px", color: "#248C9D"}}/>
                             </IconContext.Provider>
                         </div>
                     </div>

@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import "./ST_Jobs.scss";
 import {useTranslation} from "react-i18next";
 import {IconContext} from "react-icons";
@@ -14,12 +14,17 @@ import projMngr from "../../../../resources/images/project-manager.jpg";
 import {BsPlusCircleFill} from "react-icons/bs";
 import {Link, useHistory, useParams} from "react-router-dom";
 import {MdEmail} from "react-icons/md";
+import {useAuth} from "../../../c1_auth/a0_auth_common/firebase/AuthContext";
 
 
 export const UI_Jobs = () => {
+
     const {t, i18n} = useTranslation("SL_languages");
     const history = useHistory();
-    const [isAdminSignedIn, setIsAdminSignedIn] = useState(true);
+    const [isAdminSignedIn, setIsAdminSignedIn] = useState(true); //////////////
+    const [loading, setLoading] = useState(false);
+    const {read_job} = useAuth();
+    const [listOfJobs, setListOfJobs] = useState(null);
 
     const handleJobAddition = () => {
         if (isAdminSignedIn) {
@@ -29,6 +34,62 @@ export const UI_Jobs = () => {
             alert("Get in touch with us!");
         }
     }
+
+    const fetchListOfJobs = async () => {
+        setLoading(true);
+        await read_job().then(snapshot => {
+            if (snapshot.val() !== null) {
+
+                let fetchedJobsList = [];
+                let snData = {
+                    snKey: "",
+                    jobTypeAndContAr: [],
+                    jobTxtRawTableData: null,
+                    txtInHTMLform: "",
+                    postedDate: ""
+                }
+                snapshot.forEach((aSnapShot) => {
+                    // console.log("////:key: ", aSnapShot.key);
+                    // console.log("////:jtacAr: ", JSON.parse(aSnapShot.val()[0]));
+                    // console.log("////:raw: ", JSON.parse(aSnapShot.val()[1][0]).blocks/*[0] for raw title etc!*/ );
+                    // console.log("////:HTML: ", JSON.parse(aSnapShot.val()[1][1]));
+                    // console.log("////:pDate: ", JSON.parse(aSnapShot.val()[2]));
+
+                    snData.snKey = aSnapShot.key;
+                    snData.jobTypeAndContAr = JSON.parse(aSnapShot.val()[0]);
+                    snData.jobTxtRawTableData = JSON.parse(aSnapShot.val()[1][0]).blocks;
+                    snData.txtInHTMLform = JSON.parse(aSnapShot.val()[1][1]);
+                    snData.postedDate = JSON.parse(aSnapShot.val()[2]);
+
+                    fetchedJobsList.push(snData);
+                });
+                setListOfJobs(fetchedJobsList);
+                setLoading(false);
+            }
+        });
+    }
+
+    useEffect(() => {
+        //effect
+        console.log("////:FETChed! once?");
+        fetchListOfJobs().then(r => {
+            setLoading(false);
+        });
+        return () => {
+            //cleanup
+        }
+    }, [/*for update on change*/]);
+
+    useEffect(() => {
+        //effect
+        if (listOfJobs !== null) {
+        // console.log("////:listOfJobs ",listOfJobs);
+        }
+        return () => {
+            //cleanup
+        }
+    }, [listOfJobs]);
+
 
     return (
         <main className={"container jobs_list_main_wrapper "}>
@@ -158,22 +219,19 @@ export const UI_Jobs = () => {
                         </header>
                     </section>
                     {/*//////////////job entry list cards*/}
-                    <UI_jlist_card/>
-                    <UI_jlist_card/>
-                    <UI_jlist_card/>
-                    <UI_jlist_card/>
-                    <UI_jlist_card/>
-                    <UI_jlist_card/>
-                    <UI_jlist_card/>
-                    <UI_jlist_card/>
-                    <UI_jlist_card/>
-                    <UI_jlist_card/>
-                    <UI_jlist_card/>
-                    <UI_jlist_card/>
-                    <UI_jlist_card/>
-                    <UI_jlist_card/>
-                    <UI_jlist_card/>
+                    <div className={"spinner_job"}>
+                        {loading ?
+                            <span className="spinner-border mx-1 text-info spinner-border-sm" role="status"
+                                  aria-hidden="true"/> : null}
+                    </div>
 
+                    {
+                        listOfJobs && listOfJobs.map((oneJobL, index) => {
+                            console.log("////:fe ",oneJobL);
+                           return <UI_jlist_card key={oneJobL.key} aJobData={oneJobL} />
+                        })}
+
+                    {/*<UI_jlist_card/>*/}
 
                 </div>
 
