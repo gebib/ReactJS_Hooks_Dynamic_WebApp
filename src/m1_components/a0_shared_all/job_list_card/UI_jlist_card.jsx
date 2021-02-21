@@ -4,24 +4,23 @@ import {GoTriangleRight} from "react-icons/go";
 
 import {BsBoxArrowUpRight} from "react-icons/bs";
 
-import "./ST_jlist_card.scss";
 import devImg from "../../../resources/images/developer.png";
 import archiImg from "../../../resources/images/architect.jpg";
 import projMngr from "../../../resources/images/project-manager.jpg";
 import {useHistory} from "react-router-dom";
-
+import jlcStyle from "./ST_jlist_card.module.scss";
 import styled from "styled-components";
 
-const JobCardStyle = styled.div
-    `
-    height: 50px;
-    width: 100%;
-    background-color: green;
-    font-size: 20px;
-    color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;`
+// const JobCardStyle = styled.div
+//     `
+//     height: 50px;
+//     width: 100%;
+//     background-color: green;
+//     font-size: 20px;
+//     color: white;
+//     display: flex;
+//     justify-content: center;
+//     align-items: center;`
 
 //styled Component way!
 
@@ -90,18 +89,18 @@ export const UI_jlist_card = (props) => {
             history.push("jobs/jobview/123");
         }}>
             <section className={"col2 col"}>
-                <JobCardStyle>
-                    ok!
-                </JobCardStyle>
-                <header className={"top_bar_list row py-3"}>
+                {/*<JobCardStyle>*/}
+                {/*    ok!*/}
+                {/*</JobCardStyle>*/}
+                <header className={jlcStyle.top_bar_list + " row py-3"}>
                     {/*take up 6 for lg else 8 for md*/}
-                    <div className={"job_icon_div d-none d-sm-block"}>
-                        <img src={projMngr} className="job_cards_img_self" alt="..."/>
+                    <div className={jlcStyle.job_icon_div + " d-none d-sm-block"}>
+                        <img src={projMngr} className={jlcStyle.job_cards_img_self} alt="..."/>
                     </div>
-                    <div className={"job_names_list col"}>
-                        <div className={"icon_div_list"}>
+                    <div className={jlcStyle.job_names_list + " col"}>
+                        <div className={jlcStyle.icon_div_list}>
                             <div>
-                                <div className={"job_text"}>
+                                <div className={jlcStyle.job_text}>
                                     {/*should receive no more than this much text!*/}
                                     Lorem ipsum dolor sit amet, consectetur adipisicing elit.
                                     <div style={{
@@ -117,24 +116,24 @@ export const UI_jlist_card = (props) => {
                             </div>
                         </div>
                     </div>
-                    <div className={"type_tag_list d-none d-lg-block col-2"}>
-                        <div className={"job_text"}>
+                    <div className={jlcStyle.type_tag_list + "  d-none d-lg-block col-2"}>
+                        <div className={jlcStyle.job_text}>
                             Ful-time
                         </div>
-                        <div className={"job_text"}>
-                            <span style={{fontWeight: "600", color: "#bababa"}}>in</span> Bergen
+                        <div className={jlcStyle.job_text}>
+                            <span style={{fontWeight: "600", color: "#bababa"}}>in</span> <span style={{color: "#E34934"}}>Bergen</span>
                         </div>
                     </div>
-                    <div className={"type_tag_list d-none d-md-block col-2 d-flex justify-content-center"}>
+                    <div className={jlcStyle.type_tag_list + "  d-none d-md-block col-2 "}>
                         <div className={"wortby_wrap"}>
-                            <div className={"list_header_textDiv"}>Project Manager</div>
+                            <div className={jlcStyle.job_text + " list_header_textDiv"}>Project Manager</div>
                         </div>
                     </div>
                     {/*/////////////////////hide for any < xl = 1200px*/}
-                    <div className={"type_tag_list col-1 d-none d-sm-block"}>
+                    <div  className={ "  col-1 d-none d-sm-block"}>
                         <div className={"list_header_textDiv"}>
                             <IconContext.Provider value={{size: "2em"}}>
-                                <BsBoxArrowUpRight style={{marginLeft: "10px", color: "#248C9D"}}/>
+                                <BsBoxArrowUpRight style={{color: "#248C9D"}}/>
                             </IconContext.Provider>
                         </div>
                     </div>

@@ -227,7 +227,7 @@ export const UI_Jobs = () => {
 
                     {
                         listOfJobs && listOfJobs.map((oneJobL, index) => {
-                            console.log("////:fe ",oneJobL);
+                            console.log("////:.map=> ");
                            return <UI_jlist_card key={oneJobL.key} aJobData={oneJobL} />
                         })}
 

@@ -1,4 +1,4 @@
-$lineT: 0px;
+//$lineT: 3px;
 $uiBg: #151515;
 $slColor: #248c9d;
 
@@ -16,12 +16,12 @@ ul {
 }
 
 .jobs_list_main_wrapper {
-  border: $lineT solid #7e9c6d;
+  //border: $lineT solid #7e9c6d;
   color: white;
 
 
   .jobs_header {
-    border: $lineT solid #ff9900;
+    //border: $lineT solid #ff9900;
     background-image: url("../../../../resources/images/headerImgIt2.png");
     background-size: cover;
     height: 300px;
@@ -32,7 +32,7 @@ ul {
 
     .manage_job_List {
       margin-bottom: 10px;
-      border: $lineT solid #37ff00;
+      //border: $lineT solid #37ff00;
       display: flex;
       min-height: 60px;
       align-items: flex-end;
@@ -57,7 +57,7 @@ ul {
   }
 
   .top_bar {
-    border: $lineT solid #615ce5;
+    //border: $lineT solid #615ce5;
     //background: linear-gradient(-90deg, rgb(21, 21, 21) 10%, rgba(0, 0, 0, 0) 100%), rgb(21, 21, 21);
     background: $uiBg;
     height: 50px;
@@ -76,7 +76,7 @@ ul {
 
 
     .job_names {
-      border: $lineT solid #16501d;
+      //border: $lineT solid #16501d;
       display: flex;
       flex-direction: row;
       justify-content: flex-start;
@@ -100,13 +100,13 @@ ul {
 
 
     .type_tag {
-      border: $lineT solid #ff0000;
+      //border: $lineT solid #ff0000;
       font-weight: 500;
       font-size: 17px;
       color: #2f2f35;
       text-align: center;
       white-space: nowrap;
-      min-width: 140px;
+      //min-width: 140px;
       //@media (max-width: 423px) {
       //  display: none;
       //}
@@ -123,10 +123,10 @@ ul {
 
   //  //////////////////////////////////////////////
   .asidePmainRow {
-    border: $lineT solid #ff00ea;
+    //border: $lineT solid #ff00ea;
 
     .asideRow_wrapper {
-      border: $lineT solid #0059ff;
+      //border: $lineT solid #0059ff;
       //background: linear-gradient(90deg, rgb(240, 240, 240) 10%, rgba(0, 0, 0, 0) 100%), rgb(240, 240, 240);
       background: $uiBg;
       padding-left: 3em;
@@ -137,22 +137,22 @@ ul {
 
 
       .asideRow {
-        border: $lineT solid #ff8800;
+        //border: $lineT solid #ff8800;
         max-height: 500px;
       }
 
       .as1 {
-        border: $lineT solid #535e00;
+        //border: $lineT solid #535e00;
 
       }
 
       .as2 {
-        border: $lineT solid #00ff10;
+        //border: $lineT solid #00ff10;
       }
     }
 
     .bmain {
-      border: $lineT solid #000000;
+      //border: $lineT solid #000000;
 
     }
   }
