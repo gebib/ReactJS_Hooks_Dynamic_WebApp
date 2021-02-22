@@ -21,10 +21,13 @@ export const UI_Jobs = () => {
 
     const {t, i18n} = useTranslation("SL_languages");
     const history = useHistory();
+
     const [isAdminSignedIn, setIsAdminSignedIn] = useState(true); //////////////
     const [loading, setLoading] = useState(false);
     const {read_job} = useAuth();
     const [listOfJobs, setListOfJobs] = useState(null);
+
+    let renderPases = 0;
 
     const handleJobAddition = () => {
         if (isAdminSignedIn) {
@@ -65,7 +68,7 @@ export const UI_Jobs = () => {
 
     useEffect(() => {
         //effect
-        console.log("////:FETChed! once?");
+        console.log("___:FE1T ok!");
         fetchListOfJobs().then(r => {
             setLoading(false);
         });
@@ -77,7 +80,7 @@ export const UI_Jobs = () => {
     useEffect(() => {
         //effect
         if (listOfJobs !== null) {
-        // console.log("////:state listOfJobs useEf: ",listOfJobs);
+            // console.log("////:state listOfJobs useEf: ",listOfJobs);
         }
         return () => {
             //cleanup
@@ -106,14 +109,14 @@ export const UI_Jobs = () => {
                     <div className={"row asideRow "}>
 
                         <div className={"as1  col-xl-12 col-md-6 col-sm-12 "}>
-                            <p style={{fontWeight: "600", color: "#248c9d"}}>Job types</p>
+                            <p style={{fontWeight: "600", color: "#248c9d"}}>{t("jform.jobType")}</p>
                             <ul>
                                 <li>
                                     <div className="form-check my-2">
                                         <input className="form-check-input" type="checkbox" value=""
                                                id="flexCheckDefault"/>
                                         <label className="form-check-label" htmlFor="flexCheckDefault">
-                                            IT Developer
+                                            {t("jform.itdev")}
                                         </label>
                                     </div>
                                 </li>
@@ -122,7 +125,7 @@ export const UI_Jobs = () => {
                                         <input className="form-check-input" type="checkbox" value=""
                                                id="flexCheckDefault"/>
                                         <label className="form-check-label" htmlFor="flexCheckDefault">
-                                            Project manager
+                                            {t("jform.projM")}
                                         </label>
                                     </div>
                                 </li>
@@ -131,7 +134,7 @@ export const UI_Jobs = () => {
                                         <input className="form-check-input" type="checkbox" value=""
                                                id="flexCheckDefault"/>
                                         <label className="form-check-label" htmlFor="flexCheckDefault">
-                                            Architect
+                                            {t("jform.arch")}
                                         </label>
                                     </div>
                                 </li>
@@ -139,14 +142,14 @@ export const UI_Jobs = () => {
                         </div>
 
                         <div className={"as2 col-xl-12 col-md-6 col-sm-12 "}>
-                            <p style={{fontWeight: "600", color: "#248c9d"}}>Work hours</p>
+                            <p style={{fontWeight: "600", color: "#248c9d"}}>{t("jform.workH")}</p>
                             <ul>
                                 <li>
                                     <div className="form-check my-2">
                                         <input className="form-check-input" type="checkbox" value=""
                                                id="flexCheckDefault"/>
                                         <label className="form-check-label" htmlFor="flexCheckDefault">
-                                            Ful time
+                                            {t("jform.fultime")}
                                         </label>
                                     </div>
                                 </li>
@@ -155,7 +158,7 @@ export const UI_Jobs = () => {
                                         <input className="form-check-input" type="checkbox" value=""
                                                id="flexCheckDefault"/>
                                         <label className="form-check-label" htmlFor="flexCheckDefault">
-                                            Part time
+                                            {t("jform.pt")}
                                         </label>
                                     </div>
                                 </li>
@@ -164,7 +167,7 @@ export const UI_Jobs = () => {
                                         <input className="form-check-input" type="checkbox" value=""
                                                id="flexCheckDefault"/>
                                         <label className="form-check-label" htmlFor="flexCheckDefault">
-                                            Project
+                                            {t("jform.project")}
                                         </label>
                                     </div>
                                 </li>
@@ -185,7 +188,7 @@ export const UI_Jobs = () => {
                                     </IconContext.Provider>
                                     <div>
                                         <div className={"list_header_textDiv"} style={{color: "#ffffff"}}>
-                                            Available job positions
+                                            {t("jform.availableJP")}
                                         </div>
                                     </div>
                                 </div>
@@ -218,15 +221,13 @@ export const UI_Jobs = () => {
                             <span className="spinner-border mx-1 text-info spinner-border-sm" role="status"
                                   aria-hidden="true"/> : null}
                     </div>
-
                     {
                         listOfJobs && listOfJobs.map((oneJobL, index) => {
-                            console.log("////:.map=> ");
-                           return <UI_jlist_card key={oneJobL.snKey} aJobData={oneJobL} />
-                        })}
+                            renderPases++;
+                            return <UI_jlist_card key={oneJobL.snKey} aJobData={oneJobL}/>
+                        })
 
-                    {/*<UI_jlist_card/>*/}
-
+                    }
                 </div>
 
 

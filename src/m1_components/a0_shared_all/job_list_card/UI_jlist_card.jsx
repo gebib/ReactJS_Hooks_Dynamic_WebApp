@@ -12,15 +12,26 @@ import jlcStyle from "./ST_jlist_card.module.scss";
 import styled from "styled-components";
 import {useTranslation} from "react-i18next";
 
+// export const UI_jlist_card = React.memo(({props}) => {
 export const UI_jlist_card = (props) => {
     const history = useHistory();
     const {t, i18n} = useTranslation("SL_languages");
 
-    const [aJobData, setAJobData] = useState(null);
+    // const [aJobData, setAJobData] = useState(null);
     const [imgToUse, setImgToUse] = useState(null);
     const [jobType, setJobType] = useState(null);
     const [contractType, setContractType] = useState(null);
     const [title, setTitle] = useState(null);
+    const [deadline, setDeadline] = useState(null);
+    const [city, setCity] = useState(null);
+
+
+    //gets last word of string.
+    function getLastWord(words) {
+        let n = words.split(" ");
+        return n[n.length - 1];
+
+    }
 
     useEffect(() => {
         let jd = props.aJobData;
@@ -48,7 +59,11 @@ export const UI_jlist_card = (props) => {
         } else {
             setTitle(jd.jobTxtRawTableData[0].text);
         }
-        setAJobData(jd);
+        setDeadline(jd.jobTxtRawTableData[2].text);
+        setCity(getLastWord(jd.jobTxtRawTableData[3].text));
+
+        console.log("////:Deadline ", jd.jobTxtRawTableData[2].text );
+
 
         return () => {
             //cleanup
@@ -57,8 +72,7 @@ export const UI_jlist_card = (props) => {
 
     return (
         <div className={"col bmain"} onClick={() => {
-            console.log("////: ", aJobData.snKey);
-            history.push("jobs/jobview/" + aJobData.snKey);
+            history.push("jobs/jobview/" + props.aJobData.snKey);
         }}>
             <section className={"col2 col"}>
                 <header className={jlcStyle.top_bar_list + " row py-3"}>
@@ -73,7 +87,7 @@ export const UI_jlist_card = (props) => {
                         </div>
                         <div className={jlcStyle.footerTxt}>
                             <span className={jlcStyle.published}>Published: 01.02.2021</span> |
-                            <span className={jlcStyle.deadline}>Deadline: 01.05.2021</span>
+                            <span style={{color:"#151515"}} className={jlcStyle.deadline}>{deadline}</span>
                         </div>
                     </div>
                     <div className={jlcStyle.type_tag_list + "  d-none d-lg-block col-2"}>
@@ -81,8 +95,8 @@ export const UI_jlist_card = (props) => {
                         <div hidden={(contractType !== "pt")} className={jlcStyle.job_text}>{t("jform.pt")}</div>
                         <div hidden={(contractType !== "pr")} className={jlcStyle.job_text}>{t("jform.project")}</div>
                         <div className={jlcStyle.job_text}>
-                            <span style={{fontWeight: "600", color: "#bababa"}}>in</span> <span
-                            style={{color: "#E34934"}}>Bergen</span>
+                            <span style={{fontWeight: "600", color: "#bababa"}}>{t("jform.in")}</span> <span
+                            style={{color: "#E34934"}}>{city}</span>
                         </div>
                     </div>
                     <div className={jlcStyle.type_tag_list + "  d-none d-md-block col-2 "}>

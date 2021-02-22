@@ -44,8 +44,6 @@ export const Jobs_form = () => {
 
     const [imgToUse, setImgToUse] = useState(itDevImg);
 
-    const [mustStay, setMustStay] = useState(false);
-
     const sizeHW = useWindowSize();
     const location = useLocation();
     const history = useHistory();

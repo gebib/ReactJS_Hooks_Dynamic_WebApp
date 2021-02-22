@@ -17,7 +17,7 @@ let newJobTemplateE = `
     <h4><span style="color: rgb(47,47,53);background-color: rgb(255,255,255);font-size: 24px;font-family: Arial;">Job title job title</span></h4>
 <p style="margin-left:0in;"><span style="color: rgb(33,37,41);font-size: 12pt;font-family: Arial;"><strong>Employer: </strong>Company name</span>&nbsp;</p>
 <p style="margin-left:0in;"><span style="color: rgb(33,37,41);background-color: white;font-size: 12pt;font-family: Arial;"><strong>Deadline: </strong>27.02.2021 </span>&nbsp;</p>
-<p style="margin-left:0in;"><span style="color: rgb(33,37,41);background-color: white;font-size: 12pt;font-family: Arial;"><strong>Work place: </strong>Bergen</span></p>
+<p style="margin-left:0in;"><span style="color: rgb(33,37,41);background-color: white;font-size: 12pt;font-family: Arial;"><strong>Work place (City): </strong>Bergen</span></p>
 <p></p>
 <p><span style="color: rgb(33,37,41);background-color: white;font-size: 12pt;font-family: Arial;"><strong>About company</strong></span>&nbsp;</p>
 <p style="margin-left:0in;"><span style="font-family: Arial;">Company name is a large corporation, established in 1991, and has over x employees. Their main goal is to deliver high quality apllications solutions, that make their customers life easier to do their work....  etc</span></p>
@@ -62,7 +62,7 @@ let newJobTemplateN = `
     <h4><span style="color: rgb(47,47,53);background-color: rgb(255,255,255);font-size: 24px;font-family: Arial;">Jobb tittel</span></h4>
 <p style="margin-left:0in;"><span style="color: rgb(33,37,41);font-size: 12pt;font-family: Arial;"><strong>Ansatter: </strong>Selskapsnavn</span>&nbsp;</p>
 <p style="margin-left:0in;"><span style="color: rgb(33,37,41);background-color: white;font-size: 12pt;font-family: Arial;"><strong>Frist: </strong>27.02.2021 </span>&nbsp;</p>
-<p style="margin-left:0in;"><span style="color: rgb(33,37,41);background-color: white;font-size: 12pt;font-family: Arial;"><strong>Arbeidssted: </strong>Bergen</span></p>
+<p style="margin-left:0in;"><span style="color: rgb(33,37,41);background-color: white;font-size: 12pt;font-family: Arial;"><strong>Arbeidssted (By): </strong>Bergen</span></p>
 <p></p>
 <p><span style="color: rgb(33,37,41);background-color: white;font-size: 12pt;font-family: Arial;"><strong>Om selskapet</strong></span>&nbsp;</p>
 <p style="margin-left:0in;"><span style="font-family: Arial;">Eksempel firma er en stor selskap, etablert i 1991, og har over x ansatte. Hovedmålet deres er å levere høykvalitets applikasjonsløsninger, som gjør kundenes liv lettere å gjøre jobben sin ... osv</span></p>
@@ -109,6 +109,8 @@ export const TextEditorWYSIWYG = (props) => {
     let shouldPrompt = false;
     const [editorState, setEditorState] = useState(EditorState.createEmpty());
 
+
+
     useEffect(() => {
         try {
             let savedEditHtml = JSON.parse(localStorage.getItem("tempFormData"));
@@ -119,7 +121,6 @@ export const TextEditorWYSIWYG = (props) => {
             console.log("////: Error reading from ls! ", e);
         }
         let contentBlock;
-        console.log("////:WYSIWYG ", i18n.language);
         if (i18n.language === "en") {
             contentBlock = htmlToDraft(newJobTemplateE);
         } else {
