@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, {Component, useEffect, useState} from "react";
 import {EditorState, convertToRaw, ContentState} from "draft-js";
 import {Editor} from "react-draft-wysiwyg";
 import "./TextEditorWYSIWYG.scss";
@@ -9,7 +9,7 @@ import htmlToDraft from "html-to-draftjs";
 
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import {showToast} from "../../../UI_Main_pages_wrapper";
-import { Prompt } from "react-router-dom"
+import {Prompt} from "react-router-dom"
 import {useTranslation} from "react-i18next";
 
 
@@ -58,35 +58,13 @@ let newJobTemplate = `
 <p></p>`;
 
 
-class TextEditorWYSIWYG extends Component {
-    shouldPrompt = false;
+export const TextEditorWYSIWYG = (props) => {
+    let shouldPrompt = false;
+    const [editorState, setEditorState] = useState(EditorState.createEmpty());
+    const [state, setState] = useState(null); /////???
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            editorState: EditorState.createEmpty()
-        };
-    }
 
-    onEditorStateChange: Function = editorState => {
-        this.setState(
-            {
-                editorState
-            },
-            () => {
-                try {
-                    let editedToHtml = JSON.stringify(draftToHtml(convertToRaw(this.state.editorState.getCurrentContent())));
-                    localStorage.setItem("tempFormData", editedToHtml);
-                } catch (e) {
-                    console.log("////: Error saving to ls! ", e);
-                    this.shouldPrompt = true;
-                }
-            }
-        );
-        this.props.setFormData(editorState);
-    };
-
-    componentDidMount = () => {
+    useEffect(() => {
         try {
             let savedEditHtml = JSON.parse(localStorage.getItem("tempFormData"));
             if (savedEditHtml) {
@@ -101,35 +79,42 @@ class TextEditorWYSIWYG extends Component {
                 contentBlock.contentBlocks
             );
             const editorState = EditorState.createWithContent(contentState);
-            this.setState({editorState: editorState}, () => {
-                this.props.setFormData(editorState);
-            });
+            setEditorState(editorState);
+            props.setFormData(editorState);
         }
-    }
+        return () => {
+            //cleanup
+        }
+    }, [/*for update on change*/]);
 
-    render() {
-        const {editorState} = this.state;
-        return (
-            <div>
-                <Prompt when={this.shouldPrompt} message={this.props.promptMsg}/>
-                <Editor
-                    // editorStyle={{lineHeight: 'nop!'}}
-                    toolbarClassName="mainToolBarWrapper"
-                    wrapperClassName="toolWrapper"
-                    editorClassName="editor"
-                    toolbar={{
-                        options: ["inline", "textAlign", "blockType", "fontSize", "fontFamily", "list", "link", "colorPicker", "history", "emoji"],
-                        // image: { uploadCallback: uploadImageCallBack, alt: { present: true, mandatory: true } },
-                        link: {inDropdown: false},
-                        list: {inDropdown: false}
-                    }}
-                    editorState={editorState}
-                    onEditorStateChange={this.onEditorStateChange}/>
-            </div>
-        );
-
-    }
+    return (
+        <div>
+            <Prompt when={shouldPrompt} message={props.promptMsg}/>
+            <Editor
+                // editorStyle={{lineHeight: 'nop!'}}
+                toolbarClassName="mainToolBarWrapper"
+                wrapperClassName="toolWrapper"
+                editorClassName="editor"
+                toolbar={{
+                    options: ["inline", "textAlign", "blockType", "fontSize", "fontFamily", "list", "link", "colorPicker", "history", "emoji"],
+                    // image: { uploadCallback: uploadImageCallBack, alt: { present: true, mandatory: true } },
+                    link: {inDropdown: false},
+                    list: {inDropdown: false}
+                }}
+                editorState={editorState} ///////////////////////////////////////////
+                onEditorStateChange={(es) => {
+                    setEditorState(es);
+                    try {
+                        let editedToHtml = JSON.stringify(draftToHtml(convertToRaw(editorState.getCurrentContent())));
+                        localStorage.setItem("tempFormData", editedToHtml);
+                    } catch (e) {
+                        console.log("////: Error saving to ls! ", e);
+                        shouldPrompt = true;
+                    }
+                    props.setFormData(es);
+                }}/>
+        </div>
+    );
 }
 
-export default TextEditorWYSIWYG;
 

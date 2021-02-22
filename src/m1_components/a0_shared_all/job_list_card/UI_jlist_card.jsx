@@ -10,75 +10,46 @@ import projMngr from "../../../resources/images/project-manager.jpg";
 import {useHistory} from "react-router-dom";
 import jlcStyle from "./ST_jlist_card.module.scss";
 import styled from "styled-components";
-
-// const JobCardStyle = styled.div
-//     `
-//     height: 50px;
-//     width: 100%;
-//     background-color: green;
-//     font-size: 20px;
-//     color: white;
-//     display: flex;
-//     justify-content: center;
-//     align-items: center;`
-
-//styled Component way!
+import {useTranslation} from "react-i18next";
 
 export const UI_jlist_card = (props) => {
     const history = useHistory();
+    const {t, i18n} = useTranslation("SL_languages");
 
     const [aJobData, setAJobData] = useState(null);
-
-    const prepareAjobDataForRender = (jd) => {
-        let imgToUse = null;
-        let title = null;
-        let published = null;
-        let deadline = null;
-        let contractType = null;
-        let city = null;
-        let jobType = null;
-
-
-        if (jd.jobTypeAndContAr[0]) {
-            jobType = "it";
-            imgToUse = devImg;
-        } else if (jd.jobTypeAndContAr[1]) {
-            jobType = "pm";
-            imgToUse = projMngr;
-        } else if (jd.jobTypeAndContAr[2]) {
-            jobType = "ar";
-            imgToUse = archiImg;
-        }
-
-        if (jd.jobTypeAndContAr[3]) {
-            contractType = "ft";
-        } else if (jd.jobTypeAndContAr[4]) {
-            jobType = "pm";
-        } else if (jd.jobTypeAndContAr[5]) {
-            jobType = "ar";
-        }
-
-        title = jd.jobTxtRawTableData[0].text;
-
-
-        // console.log("////: ", title);
-
-
-        // setAJobData(
-        //     [
-        //         imgToUse,
-        //         title,
-        //         published,
-        //         deadline,
-        //         contractType,
-        //         city,
-        //         jobType
-        //     ]);
-    }
-
+    const [imgToUse, setImgToUse] = useState(null);
+    const [jobType, setJobType] = useState(null);
+    const [contractType, setContractType] = useState(null);
+    const [title, setTitle] = useState(null);
 
     useEffect(() => {
-        prepareAjobDataForRender(props.aJobData);
+        let jd = props.aJobData;
+        if (jd.jobTypeAndContAr[0]) {
+            setJobType("itdev");
+            setImgToUse(devImg);
+        } else if (jd.jobTypeAndContAr[1]) {
+            setJobType("projM");
+            setImgToUse(projMngr);
+        } else if (jd.jobTypeAndContAr[2]) {
+            setJobType("arch");
+            setImgToUse(archiImg);
+        }
+        /////////////contract type
+        if (jd.jobTypeAndContAr[3]) {
+            setContractType("ft")
+        } else if (jd.jobTypeAndContAr[4]) {
+            setContractType("pt")
+        } else if (jd.jobTypeAndContAr[5]) {
+            setContractType("pr");
+        }
+        //shorten title if it is too long! max 100 cha, just to limit.
+        if (jd.jobTxtRawTableData[0].text.length > 100) {
+            setTitle(jd.jobTxtRawTableData[0].text.substring(0, 90) + ". . .");
+        } else {
+            setTitle(jd.jobTxtRawTableData[0].text);
+        }
+        setAJobData(jd);
+
         return () => {
             //cleanup
         }
@@ -86,51 +57,46 @@ export const UI_jlist_card = (props) => {
 
     return (
         <div className={"col bmain"} onClick={() => {
-            history.push("jobs/jobview/123");
+            console.log("////: ", aJobData.snKey);
+            history.push("jobs/jobview/" + aJobData.snKey);
         }}>
             <section className={"col2 col"}>
-                {/*<JobCardStyle>*/}
-                {/*    ok!*/}
-                {/*</JobCardStyle>*/}
                 <header className={jlcStyle.top_bar_list + " row py-3"}>
                     {/*take up 6 for lg else 8 for md*/}
                     <div className={jlcStyle.job_icon_div + " d-none d-sm-block"}>
-                        <img src={projMngr} className={jlcStyle.job_cards_img_self} alt="..."/>
+                        <img src={imgToUse} className={jlcStyle.job_cards_img_self} alt="job type avatar"/>
                     </div>
                     <div className={jlcStyle.job_names_list + " col"}>
-                        <div className={jlcStyle.icon_div_list}>
-                            <div>
-                                <div className={jlcStyle.job_text}>
-                                    {/*should receive no more than this much text!*/}
-                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                                    <div style={{
-                                        fontWeight: "600",
-                                        color: "#bababa",
-                                        marginTop: "10px",
-                                        fontSize: "13px"
-                                    }}>
-                                        <span style={{marginRight: "10px"}}>Published: 01.02.2021</span> | <span
-                                        style={{marginLeft: "10px"}}>Published: 01.05.2021</span>
-                                    </div>
-                                </div>
-                            </div>
+                        <div className={jlcStyle.title}>
+                            {/*should receive no more than this much text!*/}
+                            {title}
+                        </div>
+                        <div className={jlcStyle.footerTxt}>
+                            <span className={jlcStyle.published}>Published: 01.02.2021</span> |
+                            <span className={jlcStyle.deadline}>Deadline: 01.05.2021</span>
                         </div>
                     </div>
                     <div className={jlcStyle.type_tag_list + "  d-none d-lg-block col-2"}>
+                        <div hidden={(contractType !== "ft")} className={jlcStyle.job_text}>{t("jform.fultime")}</div>
+                        <div hidden={(contractType !== "pt")} className={jlcStyle.job_text}>{t("jform.pt")}</div>
+                        <div hidden={(contractType !== "pr")} className={jlcStyle.job_text}>{t("jform.project")}</div>
                         <div className={jlcStyle.job_text}>
-                            Ful-time
-                        </div>
-                        <div className={jlcStyle.job_text}>
-                            <span style={{fontWeight: "600", color: "#bababa"}}>in</span> <span style={{color: "#E34934"}}>Bergen</span>
+                            <span style={{fontWeight: "600", color: "#bababa"}}>in</span> <span
+                            style={{color: "#E34934"}}>Bergen</span>
                         </div>
                     </div>
                     <div className={jlcStyle.type_tag_list + "  d-none d-md-block col-2 "}>
                         <div className={"wortby_wrap"}>
-                            <div className={jlcStyle.job_text + " list_header_textDiv"}>Project Manager</div>
+                            <div hidden={(jobType !== "itdev")}
+                                 className={jlcStyle.job_text + " list_header_textDiv"}>{t("jform.itdev")}</div>
+                            <div hidden={(jobType !== "projM")}
+                                 className={jlcStyle.job_text + " list_header_textDiv"}>{t("jform.projM")}</div>
+                            <div hidden={(jobType !== "arch")}
+                                 className={jlcStyle.job_text + " list_header_textDiv"}>{t("jform.arch")}</div>
                         </div>
                     </div>
                     {/*/////////////////////hide for any < xl = 1200px*/}
-                    <div  className={ "  col-1 d-none d-sm-block"}>
+                    <div className={"  col-1 d-none d-sm-block"}>
                         <div className={"list_header_textDiv"}>
                             <IconContext.Provider value={{size: "2em"}}>
                                 <BsBoxArrowUpRight style={{color: "#248C9D"}}/>

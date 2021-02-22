@@ -4,7 +4,7 @@ import {useTranslation} from "react-i18next";
 
 import {showToast, useWindowSize} from "../../../../UI_Main_pages_wrapper";
 import {UI_logo_with_image} from "../../../a2_logo_with_image/UI_logo_with_image";
-import TextEditorWYSIWYG from "../../../a0_shared_all/wysiwyg/TextEditorWYSIWYG";
+
 import projMngrImg from "../../../../resources/images/project-manager.jpg";
 import itDevImg from "../../../../resources/images/developer.png";
 import archiTkImg from "../../../../resources/images/architect.jpg";
@@ -20,6 +20,9 @@ import moment from "moment";
 import {Editor} from "react-draft-wysiwyg";
 import draftToHtml from "draftjs-to-html";
 import {useAuth} from "../../../c1_auth/a0_auth_common/firebase/AuthContext";
+import {TextEditorWYSIWYG} from "../../../a0_shared_all/wysiwyg/TextEditorWYSIWYG";
+
+
 
 
 export const Jobs_form = () => {

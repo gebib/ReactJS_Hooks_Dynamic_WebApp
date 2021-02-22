@@ -42,28 +42,35 @@
 
   .job_names_list {
     //border: $lineT solid #16501d;
-    //display: flex;
-    //flex-direction: row;
+    display: grid;
     //justify-content: flex-start;
     //align-items: center;
 
+    ////////////////////////////////////////////////////////////
 
-    //.list_header_textDiv_list {
-    //  font-weight: 500;
-    //  font-size: 17px;
-    //  padding-left: 20px;
-    //  color: #0000ff;
-    //
-    //
-    //}
-
-    .icon_div_list {
-      //display: flex;
-      //flex-direction: row;
-      //justify-content: flex-start;
-      //align-items: center;
-
+    .title {
+      align-self: center;
+      font-size: 16px;
+      color: #2f2f35;
+      font-weight: 500;
     }
+
+    .footerTxt {
+      align-self: end;
+      font-weight: 600;
+      color: #bababa;
+      margin-top: 10px;
+      font-size: 13px;
+
+      .published {
+        margin-right: 10px;
+      }
+
+      .deadline {
+        margin-left: 10px;
+      }
+    }
+
   }
 
   .job_icon_div {

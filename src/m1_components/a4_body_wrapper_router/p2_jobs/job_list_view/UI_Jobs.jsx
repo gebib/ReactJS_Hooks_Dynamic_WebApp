@@ -41,20 +41,14 @@ export const UI_Jobs = () => {
             if (snapshot.val() !== null) {
 
                 let fetchedJobsList = [];
-                let snData = {
-                    snKey: "",
-                    jobTypeAndContAr: [],
-                    jobTxtRawTableData: null,
-                    txtInHTMLform: "",
-                    postedDate: ""
-                }
                 snapshot.forEach((aSnapShot) => {
-                    // console.log("////:key: ", aSnapShot.key);
-                    // console.log("////:jtacAr: ", JSON.parse(aSnapShot.val()[0]));
-                    // console.log("////:raw: ", JSON.parse(aSnapShot.val()[1][0]).blocks/*[0] for raw title etc!*/ );
-                    // console.log("////:HTML: ", JSON.parse(aSnapShot.val()[1][1]));
-                    // console.log("////:pDate: ", JSON.parse(aSnapShot.val()[2]));
-
+                    let snData = {
+                        snKey: "",
+                        jobTypeAndContAr: [],
+                        jobTxtRawTableData: null,
+                        txtInHTMLform: "",
+                        postedDate: ""
+                    }
                     snData.snKey = aSnapShot.key;
                     snData.jobTypeAndContAr = JSON.parse(aSnapShot.val()[0]);
                     snData.jobTxtRawTableData = JSON.parse(aSnapShot.val()[1][0]).blocks;
@@ -83,7 +77,7 @@ export const UI_Jobs = () => {
     useEffect(() => {
         //effect
         if (listOfJobs !== null) {
-        // console.log("////:listOfJobs ",listOfJobs);
+        // console.log("////:state listOfJobs useEf: ",listOfJobs);
         }
         return () => {
             //cleanup
@@ -228,7 +222,7 @@ export const UI_Jobs = () => {
                     {
                         listOfJobs && listOfJobs.map((oneJobL, index) => {
                             console.log("////:.map=> ");
-                           return <UI_jlist_card key={oneJobL.key} aJobData={oneJobL} />
+                           return <UI_jlist_card key={oneJobL.snKey} aJobData={oneJobL} />
                         })}
 
                     {/*<UI_jlist_card/>*/}

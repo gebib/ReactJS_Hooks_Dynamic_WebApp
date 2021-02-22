@@ -100,12 +100,6 @@
     "": "",
     "": "",
     "": "",
-    "": "",
-    "": "",
-    "": "",
-    "": "",
-    "": "",
-    "": "",
     "": ""
   },
   "jform": {
@@ -125,6 +119,6 @@
     "post": "Post",
     "newJobPosted": "New job has been published!",
     "error": "Something went wrong! please try posting again",
-    "": ""
+    "tt": "Job title"
   }
 }
