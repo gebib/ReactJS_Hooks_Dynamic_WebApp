@@ -16,22 +16,6 @@ import {UI_Job_Viewer} from "./p2_jobs/job_Viewer/UI_Job_Viewer";
 import {Jobs_form} from "./p2_jobs/job_form/Jobs_form";
 
 
-import {useParams} from "react-router-dom";
-
-// //inner component to handle the extra routing.
-// export const HandleJobPageRouting = () => {
-//     const {page} = useParams();
-//     console.log("////: handleJobPageRouting", page);
-//     switch (page) {
-//         case "jobs":
-//             return <UI_Job_Viewer/>
-//         case "jobeditor":
-//             return <Jobs_form/>
-//         default:
-//             return <UI_Jobs/>
-//     }
-// }
-
 export const UI_body_wrapper = (props) => {
 
     useEffect(() => {

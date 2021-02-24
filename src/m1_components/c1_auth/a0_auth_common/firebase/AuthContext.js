@@ -67,6 +67,11 @@ export function AuthProvider({children}) {
     const read_job = () => {
         return database.ref("/jobs").once("value");
     }
+
+    const read_job_single = (jobKey) => {
+        return database.ref("jobs/" + jobKey).once("value");
+    }
+
     const update_job = () => {
 
     }
@@ -114,6 +119,7 @@ export function AuthProvider({children}) {
         //job
         create_job,
         read_job,
+        read_job_single,
         update_job,
         delete_job,
         //blog

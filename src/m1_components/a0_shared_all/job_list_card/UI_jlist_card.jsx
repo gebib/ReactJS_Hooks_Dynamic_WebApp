@@ -11,6 +11,9 @@ import {useHistory} from "react-router-dom";
 import jlcStyle from "./ST_jlist_card.module.scss";
 import styled from "styled-components";
 import {useTranslation} from "react-i18next";
+import {MdDeleteForever} from "react-icons/md";
+import {RiEdit2Fill} from "react-icons/ri";
+
 
 // export const UI_jlist_card = React.memo(({props}) => {
 export const UI_jlist_card = (props) => {
@@ -22,8 +25,11 @@ export const UI_jlist_card = (props) => {
     const [jobType, setJobType] = useState(null);
     const [contractType, setContractType] = useState(null);
     const [title, setTitle] = useState(null);
+    const [publishedDate, setPublishedDate] = useState(null);
     const [deadline, setDeadline] = useState(null);
     const [city, setCity] = useState(null);
+
+    const [isAdminSignedIn, setIsAdminSignedIn] = useState(true); //////////////
 
 
     //gets last word of string.
@@ -59,23 +65,32 @@ export const UI_jlist_card = (props) => {
         } else {
             setTitle(jd.jobTxtRawTableData[0].text);
         }
+        setPublishedDate(jd.postedDate[0] + "." + jd.postedDate[1] + "." + jd.postedDate[2]);
         setDeadline(jd.jobTxtRawTableData[2].text);
         setCity(getLastWord(jd.jobTxtRawTableData[3].text));
-
-        console.log("////:Deadline ", jd.jobTxtRawTableData[2].text );
-
 
         return () => {
             //cleanup
         }
     }, [/*for update on change*/]);
 
+    //edit/delete any job.
+    const handleAdminTaskEdit = (childKey) => {
+        console.log("////:edit ", childKey);
+        //TODO deleteLocalCache, gotoEditWithDataToUpdate
+    }
+
+    const handleAdminTaskDelete = (childKey) => {
+        console.log("////:delete ", childKey);
+        //TODO deleteLocalCache, gotoListOfJobs
+    }
+
     return (
         <div className={"col bmain"} onClick={() => {
             history.push("jobs/jobview/" + props.aJobData.snKey);
         }}>
             <section className={"col2 col"}>
-                <header className={jlcStyle.top_bar_list + " row py-3"}>
+                <header className={jlcStyle.top_bar_list + " row my-2"}>
                     {/*take up 6 for lg else 8 for md*/}
                     <div className={jlcStyle.job_icon_div + " d-none d-sm-block"}>
                         <img src={imgToUse} className={jlcStyle.job_cards_img_self} alt="job type avatar"/>
@@ -86,8 +101,8 @@ export const UI_jlist_card = (props) => {
                             {title}
                         </div>
                         <div className={jlcStyle.footerTxt}>
-                            <span className={jlcStyle.published}>Published: 01.02.2021</span> |
-                            <span style={{color:"#151515"}} className={jlcStyle.deadline}>{deadline}</span>
+                            <span className={jlcStyle.published}>Published: {publishedDate}</span> |
+                            <span style={{color: "#248C9D"}} className={jlcStyle.deadline}>{deadline}</span>
                         </div>
                     </div>
                     <div className={jlcStyle.type_tag_list + "  d-none d-lg-block col-2"}>
@@ -99,8 +114,9 @@ export const UI_jlist_card = (props) => {
                             style={{color: "#E34934"}}>{city}</span>
                         </div>
                     </div>
-                    <div className={jlcStyle.type_tag_list + "  d-none d-md-block col-2 "}>
-                        <div className={"wortby_wrap"}>
+
+
+                        <div className={jlcStyle.type_tag_list + "  d-none d-md-block col-2 "}>
                             <div hidden={(jobType !== "itdev")}
                                  className={jlcStyle.job_text + " list_header_textDiv"}>{t("jform.itdev")}</div>
                             <div hidden={(jobType !== "projM")}
@@ -108,7 +124,8 @@ export const UI_jlist_card = (props) => {
                             <div hidden={(jobType !== "arch")}
                                  className={jlcStyle.job_text + " list_header_textDiv"}>{t("jform.arch")}</div>
                         </div>
-                    </div>
+
+
                     {/*/////////////////////hide for any < xl = 1200px*/}
                     <div className={"  col-1 d-none d-sm-block"}>
                         <div className={"list_header_textDiv"}>

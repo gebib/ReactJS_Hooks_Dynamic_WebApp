@@ -23,8 +23,6 @@ import {useAuth} from "../../../c1_auth/a0_auth_common/firebase/AuthContext";
 import {TextEditorWYSIWYG} from "../../../a0_shared_all/wysiwyg/TextEditorWYSIWYG";
 
 
-
-
 export const Jobs_form = () => {
     const {t, i18n} = useTranslation("SL_languages");
 
@@ -86,10 +84,13 @@ export const Jobs_form = () => {
                 window.location.reload(false); // true = complete from the server, not from cached!.
             }
         } else if (actionType === "post") {
+            try {
+                localStorage.removeItem("fbOkDataCache");
+            } catch (e) {
+                console.log("Couldnt remove ls cache data Jobs_form.jsx", e);
+            }
             setLoading(true);
             let jobAndContractType = JSON.stringify([itDev, projMn, archiTc, fulTime, partTime, proj]);
-            let publishedDate =
-            // reverse engineer!
             await create_job([jobAndContractType, rawAndHtmlForm, getLocalDate()]).then((r) => {
                 showToast(t("jform.newJobPosted"), "success");
                 history.push("/jobs");
@@ -131,7 +132,6 @@ export const Jobs_form = () => {
     }, [/*input*/]);
 
     useEffect(() => {
-        //effect
         //save state to ls on unmount!
         saveTempDataToLocalStorage();
         return () => {

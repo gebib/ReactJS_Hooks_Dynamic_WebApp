@@ -1,12 +1,14 @@
-//$lineT: 4px;
+//$lineT: 1px;
 ////////////////job list card stuff//////////////
 .top_bar_list {
   //border: $lineT solid #615ce5;
-  //max-height: 200px;
-  //display: flex;
-  //flex-direction: row;
-  //justify-content: flex-start;
-  //align-items: center;
+  height: 130px;
+  overflow: hidden;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
   background-color: #ffffff;
   border-bottom: 1px solid #eaeaea;
   //box-shadow: 0px 0px 10px 6px rgba(0, 0, 0, 0.1);
@@ -17,11 +19,20 @@
   //-webkit-line-clamp: 2; /* number of lines to show */
   //-webkit-box-orient: vertical;
 
+  .list_header_textDiv {
+    //height: 100px;
+    //display: flex;
+    border-radius: 6px;
+  }
+
+
 
   .job_text {
+    //border: $lineT solid #00ffcc;
     font-size: 16px;
     color: #2f2f35;
     font-weight: 500;
+    padding-top: 10px;
 
     //background-color: #9da9bb;
   }
@@ -42,26 +53,36 @@
 
   .job_names_list {
     //border: $lineT solid #16501d;
-    display: grid;
-    //justify-content: flex-start;
-    //align-items: center;
+    //height: 100px;
+    display: flex;
+    flex-direction: column;
 
     ////////////////////////////////////////////////////////////
 
     .title {
-      align-self: center;
+      //border: $lineT solid #ffc400;
       font-size: 16px;
       color: #2f2f35;
       font-weight: 500;
+      min-height: 70px;
+      padding-top: 2px;
+      padding-bottom: 5px;
+      border-right: solid 1px #e6e6e6;
     }
 
     .footerTxt {
-      align-self: end;
+      //border: $lineT solid #d400ff;
+      align-self: flex-start;
+      justify-self: flex-end;
       font-weight: 600;
-      color: #bababa;
-      margin-top: 10px;
+      color: #a0a0a0;
+      //margin-top: 10px;
       font-size: 13px;
-
+      padding-right: 5px;
+      border-radius: 0 6px 0 0;
+      border-top: solid 1px #e6e6e6;
+      border-right: solid 1px #e6e6e6;
+      background-color: #fffcf8;
       .published {
         margin-right: 10px;
       }
@@ -75,9 +96,12 @@
 
   .job_icon_div {
     //border: $lineT solid #002aff;
-    width: 150px;
+    width: 150px;/////////////////////////////only one to hold the size up!
+    //height: 100px;
+
 
     .job_cards_img_self {
+      height: 100%;
       width: 100%;
     }
   }
@@ -89,16 +113,10 @@
     //color: #2f2f35;
     //text-align: center;
     //min-width: 140px;
-
-    //display: flex;
-    //flex-direction: row;
-    //justify-content: center;
-    //align-items: center;
-
+    //height: 100px;
     //background-color: #b1d3ff;
 
-    align-self: flex-start;
-    text-align: center;
+
 
   }
 

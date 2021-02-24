@@ -1,8 +1,103 @@
+//$lineT: 0px;
+//$uiBg: #151515;
+//$slColor: #248c9d;
+//
+//.editJobsForm{
+//  border: $lineT solid #7e9c6d;
+//
+//  //.admBtn {
+//  //  background: #9da9bb;
+//  //  color: #248C9D;
+//  //  width: 35px;
+//  //  height: 50px;
+//  //  border-radius: 6px;
+//  //  //border: 1px solid #151515;
+//  //  margin: 3px;
+//  //  &:hover{
+//  //    background: #ffbb00;
+//  //  }
+//  //}
+//
+//}
 $lineT: 0px;
 $uiBg: #151515;
 $slColor: #248c9d;
 
-.editJobsForm{
-  border: $lineT solid #7e9c6d;
+
+h3, h4, h1 {
+  color: #2f2f35;
+  font-weight: 400;
+}
+
+p {
+  font-size: 18px;
+  line-height: 28px;
+  color: #2f2f35;
+  text-align: justify;
+  text-justify: inter-word;
+}
+
+.btn-group {
+  display: flex;
+}
+
+.btn {
+  flex: 1
+}
+
+
+.jobs_form_main {
+  border: $lineT solid #ff0000;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  .jobs_form_bgi {
+    border: $lineT solid #ff9900;
+    background-image: url("../../../../resources/images/headerImgIt2.png");
+    background-size: cover;
+    height: 300px;
+    width: 92%;
+  }
+
+
+  .form_wrapper {
+    border: $lineT solid #00faff;
+    width: 92%;
+
+    .editor_form_right {
+      border: $lineT solid #00ff19;
+
+    }
+
+    .editor_form_left {
+      border: $lineT solid #c300ff;
+      padding: 0;
+    }
+
+    .editor_form_right {
+      border: $lineT solid #ffbb00;
+      //padding: 0;
+      .ed_f_r_top {
+        border: 1px solid $slColor;
+        background-color: $uiBg;
+        color: white;
+      }
+
+      .job_view_cards_img_self {
+        border: $lineT solid #11ff00;
+        width: 100%;
+      }
+
+    }
+
+  }
 
 }
+//alert
+.alertOverlay{
+  color: red !important;
+}
+
+

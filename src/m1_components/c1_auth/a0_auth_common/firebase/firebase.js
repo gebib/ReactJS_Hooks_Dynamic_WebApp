@@ -20,4 +20,5 @@ export const auth = app.auth();
 export const  storage = app.storage();
 //fb rt db
 export const  database = app.database();
+
 export default (app);

@@ -42,7 +42,6 @@ export const UI_Jobs = () => {
         setLoading(true);
         await read_job().then(snapshot => {
             if (snapshot.val() !== null) {
-
                 let fetchedJobsList = [];
                 snapshot.forEach((aSnapShot) => {
                     let snData = {
@@ -62,16 +61,26 @@ export const UI_Jobs = () => {
                 });
                 setListOfJobs(fetchedJobsList);
                 setLoading(false);
+                try {
+                    localStorage.setItem("fbOkDataCache", JSON.stringify(fetchedJobsList));
+                }catch(e){
+                    console.log("local storage error! ",e);
+                }
             }
         });
     }
 
     useEffect(() => {
         //effect
-        console.log("___:FE1T ok!");
-        fetchListOfJobs().then(r => {
-            setLoading(false);
-        });
+        if (localStorage.getItem("fbOkDataCache") !== null) {
+            console.log(":FE: locale (cache)");
+            setListOfJobs(JSON.parse(localStorage.getItem("fbOkDataCache")));
+        } else {
+            console.log(":FE: no locale (cache)");
+            fetchListOfJobs().then(r => {
+                setLoading(false);
+            });
+        }
         return () => {
             //cleanup
         }
