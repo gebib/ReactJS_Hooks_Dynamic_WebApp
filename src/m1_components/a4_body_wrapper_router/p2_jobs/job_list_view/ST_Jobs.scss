@@ -18,6 +18,10 @@ ul {
 .jobs_list_main_wrapper {
   //border: $lineT solid #7e9c6d;
   color: white;
+  //min-height: 100vh;/////////////////////////////////////////
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 
 
   .jobs_header {
@@ -124,6 +128,7 @@ ul {
   //  //////////////////////////////////////////////
   .asidePmainRow {
     //border: $lineT solid #ff00ea;
+     flex-grow: 1;
 
     .asideRow_wrapper {
       //border: $lineT solid #0059ff;
