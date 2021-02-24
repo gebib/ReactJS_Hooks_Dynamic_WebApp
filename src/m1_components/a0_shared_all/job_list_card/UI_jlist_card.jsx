@@ -11,8 +11,6 @@ import {useHistory} from "react-router-dom";
 import jlcStyle from "./ST_jlist_card.module.scss";
 import styled from "styled-components";
 import {useTranslation} from "react-i18next";
-import {MdDeleteForever} from "react-icons/md";
-import {RiEdit2Fill} from "react-icons/ri";
 
 
 // export const UI_jlist_card = React.memo(({props}) => {
@@ -74,16 +72,7 @@ export const UI_jlist_card = (props) => {
         }
     }, [/*for update on change*/]);
 
-    //edit/delete any job.
-    const handleAdminTaskEdit = (childKey) => {
-        console.log("////:edit ", childKey);
-        //TODO deleteLocalCache, gotoEditWithDataToUpdate
-    }
 
-    const handleAdminTaskDelete = (childKey) => {
-        console.log("////:delete ", childKey);
-        //TODO deleteLocalCache, gotoListOfJobs
-    }
 
     return (
         <div className={"col bmain"} onClick={() => {

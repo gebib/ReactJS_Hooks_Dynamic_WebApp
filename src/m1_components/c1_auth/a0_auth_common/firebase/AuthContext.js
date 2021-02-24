@@ -3,6 +3,8 @@ import {auth, storage, database} from "./firebase";
 import {showToast} from "../../../../UI_Main_pages_wrapper";
 
 
+
+
 const AuthContext = React.createContext();
 
 export const useAuth = () => {
@@ -12,6 +14,7 @@ export const useAuth = () => {
 export function AuthProvider({children}) {
     const [currentUser, setCurrentUser] = useState();
     const [loading, setLoading] = useState(true);
+
 
     /////////////Auth | sign up | login | forgot /////////////////////
     const signup = (email, password) => {
@@ -129,7 +132,6 @@ export function AuthProvider({children}) {
         delete_blog
 
     }
-
 
     return (
         <AuthContext.Provider value={value}>

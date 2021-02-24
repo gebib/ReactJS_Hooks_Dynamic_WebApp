@@ -61,26 +61,26 @@ export const UI_Jobs = () => {
                 });
                 setListOfJobs(fetchedJobsList);
                 setLoading(false);
-                try {
-                    localStorage.setItem("fbOkDataCache", JSON.stringify(fetchedJobsList));
-                }catch(e){
-                    console.log("local storage error! ",e);
-                }
+                // try {
+                //     localStorage.setItem("fbOkDataCache", JSON.stringify(fetchedJobsList));
+                // }catch(e){
+                //     console.log("local storage error! ",e);
+                // }
             }
         });
     }
 
     useEffect(() => {
         //effect
-        if (localStorage.getItem("fbOkDataCache") !== null) {
-            console.log(":FE: locale (cache)");
-            setListOfJobs(JSON.parse(localStorage.getItem("fbOkDataCache")));
-        } else {
-            console.log(":FE: no locale (cache)");
+        // if (localStorage.getItem("fbOkDataCache") !== null) {
+        //     console.log(":FE: locale (cache)");
+        //     setListOfJobs(JSON.parse(localStorage.getItem("fbOkDataCache")));
+        // } else {
+        //     console.log(":FE: no locale (cache)");
             fetchListOfJobs().then(r => {
                 setLoading(false);
             });
-        }
+        // }
         return () => {
             //cleanup
         }
@@ -235,7 +235,6 @@ export const UI_Jobs = () => {
                             renderPases++;
                             return <UI_jlist_card key={oneJobL.snKey} aJobData={oneJobL}/>
                         })
-
                     }
                 </div>
 

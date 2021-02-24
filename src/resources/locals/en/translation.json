@@ -122,9 +122,11 @@
     "tt": "Job title",
     "in": "in",
     "workH": "Work hours",
-    "availableJP": "Available job positions",
-    "": "",
-    "": "",
+    "availableJP": "Available job positions"
+  },
+  "vjob": {
+    "sendIn": "Send",
+    "thanks": "Your message is sent to SILVERLINING-IT ! \n\n Thank you for registering your interest to this job add!. We will contact you as soon as we can, using the email you provided. \n\n You can also call us, in case we miss your request. Looking forward to talk to you soon!",
     "": "",
     "": "",
     "": "",
