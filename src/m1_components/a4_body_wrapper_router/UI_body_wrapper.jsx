@@ -47,6 +47,7 @@ export const UI_body_wrapper = (props) => {
 
                     {/*normail pages*/}
                     <Route exact path={"/privacypolicy"}><UI_PrivacyPolicy/></Route>
+                    <Route path={"/badurl404"}><ErrorPage/></Route>
 
                     {/*other pages links*/}
                     <Suspense fallback={FullPageLoader}>

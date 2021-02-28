@@ -79,7 +79,7 @@ export const UI_jlist_card = (props) => {
             history.push("jobs/jobview/" + props.aJobData.snKey);
         }}>
             <section className={"col2 col"}>
-                <header className={jlcStyle.top_bar_list + " row my-2"}>
+                <header className={jlcStyle.top_bar_list + " row my-1"}>
                     {/*take up 6 for lg else 8 for md*/}
                     <div className={jlcStyle.job_icon_div + " d-none d-sm-block"}>
                         <img src={imgToUse} className={jlcStyle.job_cards_img_self} alt="job type avatar"/>

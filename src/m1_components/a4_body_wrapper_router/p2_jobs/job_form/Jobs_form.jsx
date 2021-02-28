@@ -253,32 +253,6 @@ export const Jobs_form = () => {
                             <img src={imgToUse} className="job_view_cards_img_self" alt="..."/>
                         </div>
                         <div className={"infoDiv my-5"}>
-                            {/*<div className={"input_wrappers workPlace my-2"}>*/}
-                            {/*    <strong style={{color: "#248c9d"}}>Workplace address</strong>*/}
-                            {/*    <input name={"workPlaceAddress"}*/}
-                            {/*           type="text"*/}
-                            {/*           ref={inputRef}*/}
-                            {/*           onChange={(e) => {*/}
-                            {/*               setAddress(e.target.value);*/}
-                            {/*           }}*/}
-                            {/*           className="form-control input_address mt-2"*/}
-                            {/*           placeholder={"Workplace address"}/>*/}
-                            {/*</div>*/}
-                            {/*<strong style={{color: "#248c9d"}}>{t("jform.dld")}</strong>*/}
-                            {/*<DatePicker*/}
-                            {/*    className={"mt-2"}*/}
-                            {/*    format={"DD-MM-YYYY"}*/}
-                            {/*    placeholder={t("jform.dld")}*/}
-                            {/*    style={{*/}
-                            {/*        width: "100%",*/}
-                            {/*        height: "40px",*/}
-                            {/*        borderRadius: "4px"*/}
-                            {/*    }}*/}
-                            {/*    onChange={(e) => {*/}
-                            {/*        onDateChange(e);*/}
-                            {/*    }}*/}
-                            {/*    // onOpenChange={onOpenChange}*/}
-                            {/*/>*/}
                             <div className="btn-group mt-3" role="group" aria-label="Basic mixed styles example">
                                 <button onClick={() => {
                                     handleButton("cancel").then(r => {

@@ -90,7 +90,7 @@
     "t1": "ADD NEW",
     "t2": "Get in touch with us!",
     "sort": "Sort by",
-    "": "",
+    "filter": "Filter by",
     "": "",
     "": "",
     "": "",
@@ -106,7 +106,7 @@
     "dld": "Deadline date",
     "touchedInfo": "\n! Changes you made in editing here couldn't be automatically saved to local storage!. \n\n Click \"OK\" if you want discard your changes, \nor \"CANCEL\" if you want to stay on this page and finish editing first.",
     "sure": "!Are you sure you want to reset all changes you have filled in?",
-    "resetok": "Reset to default values!",
+    "resetok": "Reset to default, and reload new template?",
     "jobType": "Job type",
     "conType": "Contract type",
     "itdev": "IT Developer",
@@ -122,17 +122,18 @@
     "tt": "Job title",
     "in": "in",
     "workH": "Work hours",
-    "availableJP": "Available job positions"
+    "availableJP": "Available job positions",
+    "interest": "Interested? send us a message!"
   },
   "vjob": {
     "sendIn": "Send",
     "thanks": "Your message is sent to SILVERLINING-IT ! \n\n Thank you for registering your interest to this job add!. We will contact you as soon as we can, using the email you provided. \n\n You can also call us, in case we miss your request. Looking forward to talk to you soon!",
-    "": "",
-    "": "",
-    "": "",
-    "": "",
-    "": "",
-    "": "",
+    "ruSure": "Delete this job add?",
+    "deleted": "Job deleted!",
+    "sendEmailToUs": "Send message",
+    "subject": "Job interest",
+    "body": "Hi, I'm interested in this job!",
+    "contactMe": "Contact me, and send me more information about how i can apply for this job at SILVERLINING-IT.",
     "": ""
   }
 }

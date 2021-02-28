@@ -3,8 +3,6 @@ import {auth, storage, database} from "./firebase";
 import {showToast} from "../../../../UI_Main_pages_wrapper";
 
 
-
-
 const AuthContext = React.createContext();
 
 export const useAuth = () => {
@@ -76,10 +74,10 @@ export function AuthProvider({children}) {
     }
 
     const update_job = () => {
-
+        //fi
     }
-    const delete_job = () => {
-
+    const delete_job = (jobAdKey) => {
+        return database.ref("jobs/" + jobAdKey).remove();
     }
     //////////////////////////blog list///////////////////////////////
     //type: social | motivasjon/inspirasjon | artikkel | event

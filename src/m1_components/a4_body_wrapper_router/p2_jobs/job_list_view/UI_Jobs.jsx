@@ -3,15 +3,8 @@ import "./ST_Jobs.scss";
 import {useTranslation} from "react-i18next";
 import {IconContext} from "react-icons";
 import {MdWork} from "react-icons/md";
-import {RiArrowDownSLine} from "react-icons/ri";
 import {FaMapMarkerAlt} from "react-icons/fa";
-import {GrStatusGoodSmall} from "react-icons/gr";
 import {UI_jlist_card} from "../../../a0_shared_all/job_list_card/UI_jlist_card";
-import Dropdown from "react-bootstrap/Dropdown";
-import SelectSearch from 'react-select-search';
-import {UI_drop_down} from "../../../a0_shared_all/drop_down/UI_drop_down";
-import projMngr from "../../../../resources/images/project-manager.jpg";
-import {BsPlusCircleFill} from "react-icons/bs";
 import {Link, useHistory, useParams} from "react-router-dom";
 import {MdEmail} from "react-icons/md";
 import {useAuth} from "../../../c1_auth/a0_auth_common/firebase/AuthContext";
@@ -26,8 +19,92 @@ export const UI_Jobs = () => {
     const [loading, setLoading] = useState(false);
     const {read_job} = useAuth();
     const [listOfJobs, setListOfJobs] = useState(null);
+    // const [filteredListOfJobs, setFilteredListOfJobs] = useState(null);
+    //for filter reference, holds original none filtered list of jobs.
+    const [listOfJobsOrigBK, setListOfJobsOrigBK] = useState(null);
+    const [listOfJobsFilteredBK, setListOfJobsFilteredBK] = useState(null);
 
-    let renderPases = 0;
+    //[ IT Developer | Project manager | Architect | Fultime | Part time | Project ]
+    const [filter, setFilter] = useState([false, false, false, false, false, false]);
+    //what filter index was changed?: for if <=2 else..
+    const [filterIndex, setFilterIndex] = useState(0);
+
+
+    useEffect(() => {
+
+        let filteredJobsList = [];
+        // filter for: [IT Developer | Project manager | Architect]
+        if (filterIndex <= 2) {
+            if (listOfJobsOrigBK !== null) {
+                listOfJobsOrigBK.forEach((aJob) => {
+                    if (filter[0] && aJob.jobTypeAndContAr[0] || filter[1] && aJob.jobTypeAndContAr[1] || filter[2] && aJob.jobTypeAndContAr[2]) {
+                        filteredJobsList.push(aJob);
+                    }
+                });
+                if ((filteredJobsList.length >= 1)) {
+                    setListOfJobs(filteredJobsList);
+                    setListOfJobsFilteredBK(filteredJobsList);
+                } else {
+                    setListOfJobs(listOfJobsOrigBK);
+                    setListOfJobsFilteredBK(listOfJobsFilteredBK);
+                }
+            }
+        }
+    }, [filter]);
+
+    useEffect(() => {
+        let filteredJobsList = [];
+        //if there exist filtered list of jobs: filter for: [Fultime | Part time | Project]
+        if (filterIndex >= 3) {
+            if (listOfJobsFilteredBK !== null) {
+                listOfJobsFilteredBK.forEach((aJob) => {
+                    if (filter[3] && aJob.jobTypeAndContAr[3] || filter[4] && aJob.jobTypeAndContAr[4] || filter[5] && aJob.jobTypeAndContAr[5]) {
+                        filteredJobsList.push(aJob);
+                    }
+                });
+                if ((filteredJobsList.length >= 1)) {
+                    setListOfJobs(filteredJobsList);
+                } else {
+                    setListOfJobs(listOfJobsFilteredBK);
+                }
+            }
+        }
+    }, [filter]);
+
+
+    const handleIsIncludedCB = (cbValue, cbName) => {
+        let newWhatToFilter = [...filter];
+        switch (cbName) {
+            case "itdev":
+                newWhatToFilter[0] = cbValue;
+                setFilterIndex(0);
+                break;
+            case "projM":
+                newWhatToFilter[1] = cbValue;
+                setFilterIndex(1);
+                break;
+            case "arch":
+                newWhatToFilter[2] = cbValue;
+                setFilterIndex(2);
+                break;
+            case "fultime":
+                newWhatToFilter[3] = cbValue;
+                setFilterIndex(3);
+                break;
+            case "pt":
+                newWhatToFilter[4] = cbValue;
+                setFilterIndex(4);
+                break;
+            case "project":
+                newWhatToFilter[5] = cbValue;
+                setFilterIndex(5);
+                break;
+            default:
+                newWhatToFilter = [false, false, false, false, false, false];
+                break;
+        }
+        setFilter(newWhatToFilter); //update for tracker for filtered or not!
+    };
 
     const handleJobAddition = () => {
         if (isAdminSignedIn) {
@@ -36,7 +113,7 @@ export const UI_Jobs = () => {
         } else {
             alert("Get in touch with us!");
         }
-    }
+    };
 
     const fetchListOfJobs = async () => {
         setLoading(true);
@@ -50,7 +127,7 @@ export const UI_Jobs = () => {
                         jobTxtRawTableData: null,
                         txtInHTMLform: "",
                         postedDate: ""
-                    }
+                    };
                     snData.snKey = aSnapShot.key;
                     snData.jobTypeAndContAr = JSON.parse(aSnapShot.val()[0]);
                     snData.jobTxtRawTableData = JSON.parse(aSnapShot.val()[1][0]).blocks;
@@ -59,31 +136,19 @@ export const UI_Jobs = () => {
 
                     fetchedJobsList.push(snData);
                 });
+                fetchedJobsList.reverse();
                 setListOfJobs(fetchedJobsList);
+                setListOfJobsOrigBK(fetchedJobsList);
+                setListOfJobsFilteredBK(fetchedJobsList);
                 setLoading(false);
-                // try {
-                //     localStorage.setItem("fbOkDataCache", JSON.stringify(fetchedJobsList));
-                // }catch(e){
-                //     console.log("local storage error! ",e);
-                // }
             }
         });
     }
 
     useEffect(() => {
-        //effect
-        // if (localStorage.getItem("fbOkDataCache") !== null) {
-        //     console.log(":FE: locale (cache)");
-        //     setListOfJobs(JSON.parse(localStorage.getItem("fbOkDataCache")));
-        // } else {
-        //     console.log(":FE: no locale (cache)");
-            fetchListOfJobs().then(r => {
-                setLoading(false);
-            });
-        // }
-        return () => {
-            //cleanup
-        }
+        fetchListOfJobs().then(r => {
+            setLoading(false);
+        });
     }, [/*for update on change*/]);
 
     useEffect(() => {
@@ -116,13 +181,20 @@ export const UI_Jobs = () => {
 
                 <div className={"asideRow_wrapper col-xl-3 py-2"}>
                     <div className={"row asideRow "}>
-
+                        <h5 style={{
+                            color: "#ffffff",
+                            fontWeight: "400",
+                            marginTop: "20px",
+                            marginBottom: "20px"
+                        }}>{t("jobs.filter")}</h5>
                         <div className={"as1  col-xl-12 col-md-6 col-sm-12 "}>
                             <p style={{fontWeight: "600", color: "#248c9d"}}>{t("jform.jobType")}</p>
                             <ul>
                                 <li>
                                     <div className="form-check my-2">
-                                        <input className="form-check-input" type="checkbox" value=""
+                                        <input onChange={(e) => {
+                                            handleIsIncludedCB(e.target.checked, "itdev");
+                                        }} className="form-check-input" type="checkbox" value=""
                                                id="flexCheckDefault"/>
                                         <label className="form-check-label" htmlFor="flexCheckDefault">
                                             {t("jform.itdev")}
@@ -131,7 +203,11 @@ export const UI_Jobs = () => {
                                 </li>
                                 <li>
                                     <div className="form-check my-2">
-                                        <input className="form-check-input" type="checkbox" value=""
+                                        <input onChange={(e) => {
+                                            // setWhatToFilter
+                                            // e.target.checked
+                                            handleIsIncludedCB(e.target.checked, "projM");
+                                        }} className="form-check-input" type="checkbox" value=""
                                                id="flexCheckDefault"/>
                                         <label className="form-check-label" htmlFor="flexCheckDefault">
                                             {t("jform.projM")}
@@ -140,7 +216,11 @@ export const UI_Jobs = () => {
                                 </li>
                                 <li>
                                     <div className="form-check my-2">
-                                        <input className="form-check-input" type="checkbox" value=""
+                                        <input onChange={(e) => {
+                                            // setWhatToFilter
+                                            // e.target.checked
+                                            handleIsIncludedCB(e.target.checked, "arch");
+                                        }} className="form-check-input" type="checkbox" value=""
                                                id="flexCheckDefault"/>
                                         <label className="form-check-label" htmlFor="flexCheckDefault">
                                             {t("jform.arch")}
@@ -155,7 +235,11 @@ export const UI_Jobs = () => {
                             <ul>
                                 <li>
                                     <div className="form-check my-2">
-                                        <input className="form-check-input" type="checkbox" value=""
+                                        <input onChange={(e) => {
+                                            // setWhatToFilter
+                                            // e.target.checked
+                                            handleIsIncludedCB(e.target.checked, "fultime");
+                                        }} className="form-check-input" type="checkbox" value=""
                                                id="flexCheckDefault"/>
                                         <label className="form-check-label" htmlFor="flexCheckDefault">
                                             {t("jform.fultime")}
@@ -164,7 +248,11 @@ export const UI_Jobs = () => {
                                 </li>
                                 <li>
                                     <div className="form-check my-2">
-                                        <input className="form-check-input" type="checkbox" value=""
+                                        <input onChange={(e) => {
+                                            // setWhatToFilter
+                                            // e.target.checked
+                                            handleIsIncludedCB(e.target.checked, "pt");
+                                        }} className="form-check-input" type="checkbox" value=""
                                                id="flexCheckDefault"/>
                                         <label className="form-check-label" htmlFor="flexCheckDefault">
                                             {t("jform.pt")}
@@ -173,7 +261,11 @@ export const UI_Jobs = () => {
                                 </li>
                                 <li>
                                     <div className="form-check my-2">
-                                        <input className="form-check-input" type="checkbox" value=""
+                                        <input onChange={(e) => {
+                                            // setWhatToFilter
+                                            // e.target.checked
+                                            handleIsIncludedCB(e.target.checked, "project");
+                                        }} className="form-check-input" type="checkbox" value=""
                                                id="flexCheckDefault"/>
                                         <label className="form-check-label" htmlFor="flexCheckDefault">
                                             {t("jform.project")}
@@ -214,7 +306,10 @@ export const UI_Jobs = () => {
                                 {/*        <RiArrowDownSLine style={{marginLeft: "10px", color: "#000000"}}/>*/}
                                 {/*    </IconContext.Provider>*/}
                                 {/*</div>*/}
-                                <UI_drop_down/>
+                                {/*<UI_drop_down/>*/}
+                                <div className={"list_header_textDiv"} style={{color: "#ffffff"}}>
+                                    {t("jform.jobType")}
+                                </div>
 
                             </div>
                             {/*/////////////////////hide for any < xl = 1200px*/}
@@ -232,13 +327,10 @@ export const UI_Jobs = () => {
                     </div>
                     {
                         listOfJobs && listOfJobs.map((oneJobL, index) => {
-                            renderPases++;
                             return <UI_jlist_card key={oneJobL.snKey} aJobData={oneJobL}/>
                         })
                     }
                 </div>
-
-
             </section>
 
         </main>
