@@ -1,3 +1,5 @@
+//border: $lineT solid #7e9c6d;
+
 //$lineT: 3px;
 $uiBg: #151515;
 $slColor: #248c9d;
@@ -59,6 +61,8 @@ ul {
 
     }
   }
+
+
 
   .top_bar {
     //border: $lineT solid #615ce5;
@@ -168,5 +172,12 @@ ul {
     align-items: center;
     height: 50px;
     //color: #EDF2F9;
+  }
+
+  .noResult{
+    color: #151515;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 }

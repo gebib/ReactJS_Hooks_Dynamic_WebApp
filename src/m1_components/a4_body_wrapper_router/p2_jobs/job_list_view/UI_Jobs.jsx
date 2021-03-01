@@ -8,6 +8,8 @@ import {UI_jlist_card} from "../../../a0_shared_all/job_list_card/UI_jlist_card"
 import {Link, useHistory, useParams} from "react-router-dom";
 import {MdEmail} from "react-icons/md";
 import {useAuth} from "../../../c1_auth/a0_auth_common/firebase/AuthContext";
+import {showToast} from "../../../../UI_Main_pages_wrapper";
+import jlcStyle from "../../../a0_shared_all/job_list_card/ST_jlist_card.module.scss";
 
 
 export const UI_Jobs = () => {
@@ -29,12 +31,13 @@ export const UI_Jobs = () => {
     //what filter index was changed?: for if <=2 else..
     const [filterIndex, setFilterIndex] = useState(0);
 
+    const [isListOfJobsIsEmpty, setIsListOfJobsEmpty] = useState(false);
+
 
     useEffect(() => {
-
         let filteredJobsList = [];
         // filter for: [IT Developer | Project manager | Architect]
-        if (filterIndex <= 2) {
+        if ((filterIndex <= 2) || (!(filter[filterIndex]))) {
             if (listOfJobsOrigBK !== null) {
                 listOfJobsOrigBK.forEach((aJob) => {
                     if (filter[0] && aJob.jobTypeAndContAr[0] || filter[1] && aJob.jobTypeAndContAr[1] || filter[2] && aJob.jobTypeAndContAr[2]) {
@@ -44,6 +47,7 @@ export const UI_Jobs = () => {
                 if ((filteredJobsList.length >= 1)) {
                     setListOfJobs(filteredJobsList);
                     setListOfJobsFilteredBK(filteredJobsList);
+                    setIsListOfJobsEmpty(false);
                 } else {
                     setListOfJobs(listOfJobsOrigBK);
                     setListOfJobsFilteredBK(listOfJobsFilteredBK);
@@ -55,17 +59,18 @@ export const UI_Jobs = () => {
     useEffect(() => {
         let filteredJobsList = [];
         //if there exist filtered list of jobs: filter for: [Fultime | Part time | Project]
-        if (filterIndex >= 3) {
+        if ((filterIndex >= 3) && (filter[filterIndex])) {
             if (listOfJobsFilteredBK !== null) {
                 listOfJobsFilteredBK.forEach((aJob) => {
                     if (filter[3] && aJob.jobTypeAndContAr[3] || filter[4] && aJob.jobTypeAndContAr[4] || filter[5] && aJob.jobTypeAndContAr[5]) {
                         filteredJobsList.push(aJob);
                     }
                 });
-                if ((filteredJobsList.length >= 1)) {
-                    setListOfJobs(filteredJobsList);
-                } else {
-                    setListOfJobs(listOfJobsFilteredBK);
+                setListOfJobs(filteredJobsList);
+                if (filteredJobsList.length < 1) {
+                    setIsListOfJobsEmpty(true);
+                }else{
+                    setIsListOfJobsEmpty(false);
                 }
             }
         }
@@ -141,6 +146,11 @@ export const UI_Jobs = () => {
                 setListOfJobsOrigBK(fetchedJobsList);
                 setListOfJobsFilteredBK(fetchedJobsList);
                 setLoading(false);
+                if(fetchedJobsList.length < 1){
+                    setIsListOfJobsEmpty(true);
+                }else{
+                    setIsListOfJobsEmpty(false);
+                }
             }
         });
     }
@@ -178,7 +188,6 @@ export const UI_Jobs = () => {
             </header>
 
             <section className={"row asidePmainRow d-flex justify-content-center"}>
-
                 <div className={"asideRow_wrapper col-xl-3 py-2"}>
                     <div className={"row asideRow "}>
                         <h5 style={{
@@ -330,6 +339,9 @@ export const UI_Jobs = () => {
                             return <UI_jlist_card key={oneJobL.snKey} aJobData={oneJobL}/>
                         })
                     }
+                    <div hidden={!isListOfJobsIsEmpty} className={"noResult"}>
+                        <h4>No result!</h4>
+                    </div>
                 </div>
             </section>
 

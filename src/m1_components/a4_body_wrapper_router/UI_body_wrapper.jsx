@@ -5,7 +5,7 @@ import {HomeContent} from "./p1_home/HomeContent";
 import {ErrorPage} from "../../m0_pages_routes/ErrorPage";
 import {JobsContent, UI_Jobs} from "./p2_jobs/job_list_view/UI_Jobs";
 import {ServiceContent} from "./p3_services/ServiceContent";
-import {BlogContent} from "./p4_blog/BlogContent";
+import {UI_Blog} from "./p4_blog/UI_Blog";
 import {AboutContent} from "./p5_about/AboutContent";
 import {UI_login} from "../c1_auth/login/UI_login";
 import {UI_register} from "../c1_auth/register/UI_register";
@@ -41,7 +41,7 @@ export const UI_body_wrapper = (props) => {
                     {/*//////jobs page//////////*/}
 
                     <Route exact path={"/services"}><ServiceContent/></Route>
-                    <Route exact path={"/blog"}><BlogContent/></Route>
+                    <Route exact path={"/blog"}><UI_Blog/></Route>
                     <Route exact path={"/about"}><AboutContent/></Route>
                     {/*<Route exact path={"/jobedit"}><Jobs_form/></Route>*/}
 
