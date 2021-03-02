@@ -8,8 +8,10 @@ import {UI_jlist_card} from "../../../a0_shared_all/job_list_card/UI_jlist_card"
 import {Link, useHistory, useParams} from "react-router-dom";
 import {MdEmail} from "react-icons/md";
 import {useAuth} from "../../../c1_auth/a0_auth_common/firebase/AuthContext";
-import {showToast} from "../../../../UI_Main_pages_wrapper";
+import {showToast, useWindowSize} from "../../../../UI_Main_pages_wrapper";
 import jlcStyle from "../../../a0_shared_all/job_list_card/ST_jlist_card.module.scss";
+import PaginationComponent from "react-reactstrap-pagination";
+
 
 export const UI_Jobs = () => {
 
@@ -25,6 +27,30 @@ export const UI_Jobs = () => {
     const [filter, setFilter] = useState([false, false, false, false, false, false]);
     const [filteredExist, setFilteredExist] = useState(true);
     const [isListOfJobsIsEmpty, setIsListOfJobsEmpty] = useState(false);
+
+    //pagination stuffs
+    const [selectedPage, setSelectedPage] = useState(1);
+    const [numberOfPageButtonsToShow, setNumberOfPageButtonsToShow] = useState(10);
+
+    const sizeHW = useWindowSize();
+
+    useEffect(() => {
+        let windowWidth = sizeHW.width;
+        if (sizeHW[1] < 650) {
+            setNumberOfPageButtonsToShow(5);
+        }
+        if (sizeHW[1] < 420) {
+            setNumberOfPageButtonsToShow(3);
+        }
+
+        if (sizeHW[1] < 325) {
+            setNumberOfPageButtonsToShow(1);
+        }
+
+        if (sizeHW[1] > 650) {
+            setNumberOfPageButtonsToShow(10);
+        }
+    }, [sizeHW]);
 
     useEffect(() => {
         let jobTypeFilter = [];
@@ -165,6 +191,10 @@ export const UI_Jobs = () => {
             //cleanup
         }
     }, [listOfJobs]);
+
+    const handlePaginationSelect = (activePage) => {
+        setSelectedPage(activePage);
+    };
 
 
     return (
@@ -328,11 +358,24 @@ export const UI_Jobs = () => {
                         })
                     }
                     <div hidden={filteredExist} className={"noResult"}>
-                        <h3 style={{color:"white"}}>{t("jobs.noRes")}</h3>
+                        <h3 style={{color: "white"}}>{t("jobs.noRes")}</h3>
                     </div>
                 </div>
             </section>
-
+            <div className="paginationWrapper col-xl-9 col-md-6 col-sm-12  ">
+                <PaginationComponent
+                    totalItems={40}
+                    pageSize={1}
+                    onSelect={handlePaginationSelect}
+                    maxPaginationNumbers={numberOfPageButtonsToShow}
+                    defaultActivePage={1}
+                    firstPageText={"<<"}
+                    previousPageText={"<"}
+                    nextPageText={">"}
+                    lastPageText={">>"}
+                    size={"md"}
+                />
+            </div>
         </main>
     );
 };

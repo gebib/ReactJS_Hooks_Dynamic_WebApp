@@ -18,13 +18,6 @@ import {Jobs_form} from "./p2_jobs/job_form/Jobs_form";
 
 export const UI_body_wrapper = (props) => {
 
-    useEffect(() => {
-        //effect
-        return () => {
-            //cleanup
-        }
-    }, [/*input*/]);
-
     return (
         <div className={"body_outer"}>
             <div className={"body_wrapper"} style={{height: props.wrapperHeight}}>
@@ -61,4 +54,4 @@ export const UI_body_wrapper = (props) => {
             </div>
         </div>
     );
-}
+};
