@@ -100,7 +100,7 @@ export const UI_Job_Viewer = () => {
             setImgToUse(archiImg);
             setJobType(t("jform.arch"));
         }
-    }
+    };
 
 
     const chooseContractType = (snData) => {
@@ -112,22 +112,18 @@ export const UI_Job_Viewer = () => {
         } else if (snData.jobTypeAndContAr[5]) {
             setConType(t("jform.project"));
         }
-    }
+    };
 
 
     return (
         <main className={"jobs_view_main"}>
-
-            {/*<Prompt when={shouldPrompt} message={t("jform.touchedInfo")}/>*/}
-            <div className={"container jobs_view_bgi"}/>
+            <div className={"jobs_view_bgi"}/>
             <div className={"view_wrapper row"}>
                 <div className={"job_view_left col-sm-12 col-xl-8"}>
-                    {/*the job ad text*/}
                     {jobToView ? <div dangerouslySetInnerHTML={{
                         __html: DOMPurify.sanitize(jobToView.txtInHTMLform),
                     }}/> : <div/>}
                 </div>
-                {/*////////////////////////////Right side control panel/////////////////////*/}
                 <div className={"job_view_right col-sm-12 col-xl-4 order-lg-last"}>
                     <div className={"r_side row "}>
                         <div className={"editCP_div"}>{isAdminSignedIn ? <div className={"list_header_textDiv"}>
@@ -168,4 +164,4 @@ export const UI_Job_Viewer = () => {
             </div>
         </main>
     );
-}
+};

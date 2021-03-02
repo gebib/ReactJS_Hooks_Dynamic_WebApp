@@ -1,4 +1,4 @@
-//$lineT: 4px;
+//$lineT: 1px;
 $uiBg: #e5e5e5;
 $slColor: #248c9d;
 
@@ -37,14 +37,14 @@ p {
     background-image: url("../../../../resources/images/headerImgIt2.png");
     background-size: cover;
     height: 300px;
-    width: 92%;
+    width: 100%;
   }
 
 
   .view_wrapper {
     //border: $lineT solid #00faff;
-    width: 92%;
     flex-grow: 1;
+    width: 100%;
 
     .job_view_left {
       //border: $lineT solid #c300ff;
@@ -60,14 +60,14 @@ p {
       .r_side {
         //border: $lineT solid #00ff39;
         color: white;
-        background-color: #151515;
+        background-color: #181818;
 
         .contactForm{
           //border: $lineT solid #5e5e5e;
         }
 
         .list_header_textDiv {
-          //border: $lineT solid #ff3131;
+          //border: $lineT solid #ffb8d9;
           padding: 0;
           display: flex;
 

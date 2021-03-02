@@ -11,7 +11,6 @@ import {useAuth} from "../../../c1_auth/a0_auth_common/firebase/AuthContext";
 import {showToast} from "../../../../UI_Main_pages_wrapper";
 import jlcStyle from "../../../a0_shared_all/job_list_card/ST_jlist_card.module.scss";
 
-
 export const UI_Jobs = () => {
 
     const {t, i18n} = useTranslation("SL_languages");
@@ -21,58 +20,60 @@ export const UI_Jobs = () => {
     const [loading, setLoading] = useState(false);
     const {read_job} = useAuth();
     const [listOfJobs, setListOfJobs] = useState(null);
-    // const [filteredListOfJobs, setFilteredListOfJobs] = useState(null);
-    //for filter reference, holds original none filtered list of jobs.
     const [listOfJobsOrigBK, setListOfJobsOrigBK] = useState(null);
-    const [listOfJobsFilteredBK, setListOfJobsFilteredBK] = useState(null);
-
     //[ IT Developer | Project manager | Architect | Fultime | Part time | Project ]
     const [filter, setFilter] = useState([false, false, false, false, false, false]);
-    //what filter index was changed?: for if <=2 else..
-    const [filterIndex, setFilterIndex] = useState(0);
-
+    const [filteredExist, setFilteredExist] = useState(true);
     const [isListOfJobsIsEmpty, setIsListOfJobsEmpty] = useState(false);
 
-
     useEffect(() => {
-        let filteredJobsList = [];
-        // filter for: [IT Developer | Project manager | Architect]
-        if ((filterIndex <= 2) || (!(filter[filterIndex]))) {
-            if (listOfJobsOrigBK !== null) {
-                listOfJobsOrigBK.forEach((aJob) => {
-                    if (filter[0] && aJob.jobTypeAndContAr[0] || filter[1] && aJob.jobTypeAndContAr[1] || filter[2] && aJob.jobTypeAndContAr[2]) {
-                        filteredJobsList.push(aJob);
+        let jobTypeFilter = [];
+        let workHourFilter = [];
+
+        if (listOfJobsOrigBK !== null && filter.includes(true)) {
+            //Job type filter | stage1 filter
+            let jobTypeFilterBaseAr = (workHourFilter.length < 1) ? listOfJobsOrigBK : jobTypeFilter;
+            if (filter[0] || filter[1] || filter[2]) {
+                jobTypeFilterBaseAr.forEach((aJob) => {
+                    let aJobHasJobType_MatchingFilter = (
+                        (aJob.jobAr[0] & filter[0]) ||
+                        (aJob.jobAr[1] & filter[1]) ||
+                        (aJob.jobAr[2] & filter[2])
+                    );
+                    if (aJobHasJobType_MatchingFilter) {
+                        jobTypeFilter.push(aJob);
                     }
                 });
-                if ((filteredJobsList.length >= 1)) {
-                    setListOfJobs(filteredJobsList);
-                    setListOfJobsFilteredBK(filteredJobsList);
-                    setIsListOfJobsEmpty(false);
-                } else {
-                    setListOfJobs(listOfJobsOrigBK);
-                    setListOfJobsFilteredBK(listOfJobsFilteredBK);
-                }
+                workHourFilter = [];
             }
-        }
-    }, [filter]);
-
-    useEffect(() => {
-        let filteredJobsList = [];
-        //if there exist filtered list of jobs: filter for: [Fultime | Part time | Project]
-        if ((filterIndex >= 3) && (filter[filterIndex])) {
-            if (listOfJobsFilteredBK !== null) {
-                listOfJobsFilteredBK.forEach((aJob) => {
-                    if (filter[3] && aJob.jobTypeAndContAr[3] || filter[4] && aJob.jobTypeAndContAr[4] || filter[5] && aJob.jobTypeAndContAr[5]) {
-                        filteredJobsList.push(aJob);
+            //Work hour filter | | stage2 filter
+            let workHourFilterBaseAr = (jobTypeFilter.length < 1) ? listOfJobsOrigBK : jobTypeFilter;
+            if (filter[3] || filter[4] || filter[5]) {
+                workHourFilterBaseAr.forEach((filteredJob) => {
+                    let aJobHasWorkHours_MatchingFilter = (
+                        (filteredJob.jobAr[3] & filter[3]) ||
+                        (filteredJob.jobAr[4] & filter[4]) ||
+                        (filteredJob.jobAr[5] & filter[5])
+                    );
+                    if (aJobHasWorkHours_MatchingFilter) {
+                        workHourFilter.push(filteredJob);
                     }
                 });
-                setListOfJobs(filteredJobsList);
-                if (filteredJobsList.length < 1) {
-                    setIsListOfJobsEmpty(true);
-                }else{
-                    setIsListOfJobsEmpty(false);
-                }
+                jobTypeFilter = [];
             }
+
+            if (workHourFilter.length > 0) {
+                setListOfJobs(workHourFilter);
+                setFilteredExist(true);
+            } else if (jobTypeFilter.length > 0) {
+                setListOfJobs(jobTypeFilter);
+                setFilteredExist(true);
+            } else {
+                setListOfJobs([]);
+                setFilteredExist(false);
+            }
+        } else {
+            setListOfJobs(listOfJobsOrigBK);
         }
     }, [filter]);
 
@@ -82,27 +83,21 @@ export const UI_Jobs = () => {
         switch (cbName) {
             case "itdev":
                 newWhatToFilter[0] = cbValue;
-                setFilterIndex(0);
                 break;
             case "projM":
                 newWhatToFilter[1] = cbValue;
-                setFilterIndex(1);
                 break;
             case "arch":
                 newWhatToFilter[2] = cbValue;
-                setFilterIndex(2);
                 break;
             case "fultime":
                 newWhatToFilter[3] = cbValue;
-                setFilterIndex(3);
                 break;
             case "pt":
                 newWhatToFilter[4] = cbValue;
-                setFilterIndex(4);
                 break;
             case "project":
                 newWhatToFilter[5] = cbValue;
-                setFilterIndex(5);
                 break;
             default:
                 newWhatToFilter = [false, false, false, false, false, false];
@@ -128,13 +123,13 @@ export const UI_Jobs = () => {
                 snapshot.forEach((aSnapShot) => {
                     let snData = {
                         snKey: "",
-                        jobTypeAndContAr: [],
+                        jobAr: [],
                         jobTxtRawTableData: null,
                         txtInHTMLform: "",
                         postedDate: ""
                     };
                     snData.snKey = aSnapShot.key;
-                    snData.jobTypeAndContAr = JSON.parse(aSnapShot.val()[0]);
+                    snData.jobAr = JSON.parse(aSnapShot.val()[0]);
                     snData.jobTxtRawTableData = JSON.parse(aSnapShot.val()[1][0]).blocks;
                     snData.txtInHTMLform = JSON.parse(aSnapShot.val()[1][1]);
                     snData.postedDate = JSON.parse(aSnapShot.val()[2]);
@@ -144,11 +139,11 @@ export const UI_Jobs = () => {
                 fetchedJobsList.reverse();
                 setListOfJobs(fetchedJobsList);
                 setListOfJobsOrigBK(fetchedJobsList);
-                setListOfJobsFilteredBK(fetchedJobsList);
                 setLoading(false);
-                if(fetchedJobsList.length < 1){
+
+                if (fetchedJobsList.length < 1) {
                     setIsListOfJobsEmpty(true);
-                }else{
+                } else {
                     setIsListOfJobsEmpty(false);
                 }
             }
@@ -173,8 +168,8 @@ export const UI_Jobs = () => {
 
 
     return (
-        <main className={"container jobs_list_main_wrapper "}>
-            <header className={"jobs_header row"}>
+        <main className={"jobs_list_main_wrapper "}>
+            <header className={"jobs_header"}>
                 {
                     isAdminSignedIn ? <div className={"manage_job_List"} onClick={handleJobAddition}>
                         <h3 style={{color: "#248C9D"}}>{t("jobs.t1")}</h3>
@@ -187,7 +182,7 @@ export const UI_Jobs = () => {
                 }
             </header>
 
-            <section className={"row asidePmainRow d-flex justify-content-center"}>
+            <section className={"row asidePmainRow "}>
                 <div className={"asideRow_wrapper col-xl-3 py-2"}>
                     <div className={"row asideRow "}>
                         <h5 style={{
@@ -288,7 +283,7 @@ export const UI_Jobs = () => {
 
                 <div className={"col bmain"}>
                     <section className={"col2 col"}>
-                        <header className={"top_bar row "}>
+                        <header className={"top_bar "}>
                             {/*take up 6 for lg else 8 for md*/}
                             <div className={"job_names col"}>
                                 <div className={"icon_div"}>
@@ -309,19 +304,12 @@ export const UI_Jobs = () => {
                                 </IconContext.Provider>
                             </div>
                             <div className={"type_tag d-none d-md-block col-2 d-flex justify-content-center"}>
-                                {/*<div className={"wortby_wrap"}>*/}
-                                {/*    <div className={"list_header_textDiv"}>Sort by:</div>*/}
-                                {/*    <IconContext.Provider value={{size: "1.5em"}}>*/}
-                                {/*        <RiArrowDownSLine style={{marginLeft: "10px", color: "#000000"}}/>*/}
-                                {/*    </IconContext.Provider>*/}
-                                {/*</div>*/}
-                                {/*<UI_drop_down/>*/}
                                 <div className={"list_header_textDiv"} style={{color: "#ffffff"}}>
                                     {t("jform.jobType")}
                                 </div>
 
                             </div>
-                            {/*/////////////////////hide for any < xl = 1200px*/}
+                            {/* /////////////////hide for any < xl = 1200px*/}
                             <div className={"type_tag col-1 d-none d-sm-block"}>
                                 <div className={"list_header_textDiv"} style={{color: "#ffffff"}}>
                                 </div>
@@ -339,12 +327,13 @@ export const UI_Jobs = () => {
                             return <UI_jlist_card key={oneJobL.snKey} aJobData={oneJobL}/>
                         })
                     }
-                    <div hidden={!isListOfJobsIsEmpty} className={"noResult"}>
-                        <h4>No result!</h4>
+                    <div hidden={filteredExist} className={"noResult"}>
+                        <h3 style={{color:"white"}}>{t("jobs.noRes")}</h3>
                     </div>
                 </div>
             </section>
 
         </main>
     );
-}
+};
+

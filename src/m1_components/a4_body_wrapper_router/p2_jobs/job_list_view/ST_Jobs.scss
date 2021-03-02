@@ -1,7 +1,7 @@
-//border: $lineT solid #7e9c6d;
+////border: $lineT solid #7e9c6d;
 
-//$lineT: 3px;
-$uiBg: #151515;
+//$lineT: 5px;
+$uiBg: #181818;
 $slColor: #248c9d;
 
 
@@ -18,7 +18,7 @@ ul {
 }
 
 .jobs_list_main_wrapper {
-  //border: $lineT solid #7e9c6d;
+  //border: $lineT solid #ff3600;
   color: white;
   //min-height: 100vh;/////////////////////////////////////////
   display: flex;
@@ -31,21 +31,22 @@ ul {
     background-image: url("../../../../resources/images/headerImgIt2.png");
     background-size: cover;
     height: 300px;
-    margin-bottom: -10px;
     display: flex;
     align-content: flex-end;
     justify-content: center;
 
+
     .manage_job_List {
-      margin-bottom: 10px;
-      //border: $lineT solid #37ff00;
+      //margin-bottom: 10px;
+      //border: $lineT solid #00ffd7;
       display: flex;
-      min-height: 60px;
+      height: 60px;
+      align-self: flex-end;
       align-items: flex-end;
       justify-content: center;
       background-color: #151515;
       //border-radius: 60px 60px 0 0;
-      //width: %;
+      width: 100%;
       cursor: pointer;
       transition: 0.5s;
       opacity: 0.8;
@@ -56,13 +57,11 @@ ul {
       }
 
       &:active {
-        background-color: #E34934;
+        background-color: #74e3e1;
       }
 
     }
   }
-
-
 
   .top_bar {
     //border: $lineT solid #615ce5;
@@ -108,12 +107,13 @@ ul {
 
 
     .type_tag {
-      //border: $lineT solid #ff0000;
+      //border: $lineT solid #ffb53c;
       font-weight: 500;
       font-size: 17px;
       color: #2f2f35;
       text-align: center;
       white-space: nowrap;
+
       //min-width: 140px;
       //@media (max-width: 423px) {
       //  display: none;
@@ -131,14 +131,17 @@ ul {
 
   //  //////////////////////////////////////////////
   .asidePmainRow {
-    //border: $lineT solid #ff00ea;
-     flex-grow: 1;
+    //border: $lineT solid #c501ff;
+    flex-grow: 1;
+    background-color: #EDF2F9;
+    width: 100%;
+    align-self: center;
 
     .asideRow_wrapper {
       //border: $lineT solid #0059ff;
       //background: linear-gradient(90deg, rgb(240, 240, 240) 10%, rgba(0, 0, 0, 0) 100%), rgb(240, 240, 240);
       background: $uiBg;
-      padding-left: 3em;
+      //padding-left: 3em;
       //border-radius: 0 0 0 0;
       //@media (max-width: 1200px) {
       //  border-radius: 6px 6px 0 0;
@@ -148,6 +151,7 @@ ul {
       .asideRow {
         //border: $lineT solid #ff8800;
         max-height: 500px;
+        padding-left: 2em;
       }
 
       .as1 {
@@ -162,7 +166,8 @@ ul {
 
     .bmain {
       //border: $lineT solid #000000;
-
+      margin: 0;
+      padding: 0;
     }
   }
 
@@ -174,10 +179,12 @@ ul {
     //color: #EDF2F9;
   }
 
-  .noResult{
-    color: #151515;
+  .noResult {
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color: #248C9D;
+    height: 200px;
   }
+
 }

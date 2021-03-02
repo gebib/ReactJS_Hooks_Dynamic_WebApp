@@ -39,22 +39,22 @@ export const UI_jlist_card = (props) => {
 
     useEffect(() => {
         let jd = props.aJobData;
-        if (jd.jobTypeAndContAr[0]) {
+        if (jd.jobAr[0]) {
             setJobType("itdev");
             setImgToUse(devImg);
-        } else if (jd.jobTypeAndContAr[1]) {
+        } else if (jd.jobAr[1]) {
             setJobType("projM");
             setImgToUse(projMngr);
-        } else if (jd.jobTypeAndContAr[2]) {
+        } else if (jd.jobAr[2]) {
             setJobType("arch");
             setImgToUse(archiImg);
         }
         /////////////contract type
-        if (jd.jobTypeAndContAr[3]) {
+        if (jd.jobAr[3]) {
             setContractType("ft")
-        } else if (jd.jobTypeAndContAr[4]) {
+        } else if (jd.jobAr[4]) {
             setContractType("pt")
-        } else if (jd.jobTypeAndContAr[5]) {
+        } else if (jd.jobAr[5]) {
             setContractType("pr");
         }
         //shorten title if it is too long! max 100 cha, just to limit.
@@ -78,7 +78,7 @@ export const UI_jlist_card = (props) => {
         <div className={"col bmain"} onClick={() => {
             history.push("jobs/jobview/" + props.aJobData.snKey);
         }}>
-            <section className={"col2 col"}>
+            <section className={"col2 col mx-3"}>
                 <header className={jlcStyle.top_bar_list + " row my-1"}>
                     {/*take up 6 for lg else 8 for md*/}
                     <div className={jlcStyle.job_icon_div + " d-none d-sm-block"}>
