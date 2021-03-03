@@ -32,7 +32,6 @@ export const UI_Jobs = () => {
     const [selectedPage, setSelectedPage] = useState(0);
     const [numberOfPageButtonsToShow, setNumberOfPageButtonsToShow] = useState(10);
     const [totalPageOfCards, setTotalPageOfCards] = useState(1);
-    // const [numberOfCardsToShow, setNumberOfCardsToShow] = useState(1);
 
     const sizeHW = useWindowSize();
 
@@ -51,21 +50,21 @@ export const UI_Jobs = () => {
         if (sizeHW[1] > 650) {
             setNumberOfPageButtonsToShow(10);
         }
+
         //adjust pagination depending on changes, after filter etc.
         if ((sizeHW !== null) && (listOfJobs !== null) && (sizeHW[0] > 600)) {
-
             let totalNumberOfJObs = listOfJobs.length;
             let numberOfJobsPpage = Math.floor((sizeHW[0] - 550) / 130);
             let numberOfPages = Math.ceil(totalNumberOfJObs / numberOfJobsPpage);
 
             setTotalPageOfCards(numberOfPages);
-            // setNumberOfCardsToShow(numberOfJobsPpage);
 
             let tmpCards = [];
             let aListOfPagesOfCards = [];
 
+
             for (let i = 1; i <= listOfJobs.length; i++) {
-                tmpCards.push(listOfJobs[i]);
+                tmpCards.push(listOfJobs[i - 1]);
                 if ((i % numberOfJobsPpage) === 0) {
                     aListOfPagesOfCards.push(tmpCards);
                     tmpCards = [];
@@ -74,19 +73,16 @@ export const UI_Jobs = () => {
                 }
             }
 
-            setListOfJobAtPagex(aListOfPagesOfCards);
-
-            console.log("////:windowHW: ", sizeHW[0], " x ", sizeHW[1]);
-            console.log("////:totalJobs: ", totalNumberOfJObs);
-            console.log("////:jobsPpage: ", numberOfJobsPpage);
-            console.log("////:numberOfPages: ", numberOfPages);
-            console.log("////:aListOfPagesOfCards: ", aListOfPagesOfCards);
-            console.log("////:selectedPage: ", selectedPage);
+            if(aListOfPagesOfCards.length > 0){
+                setListOfJobAtPagex(aListOfPagesOfCards);
+            }else{
+                setListOfJobAtPagex(null);
+            }
         }
 
     }, [sizeHW, listOfJobs]);
 
-
+    //filter
     useEffect(() => {
         //when search is initiated: selected should be 0 <=> page 1!
         setSelectedPage(0);
@@ -140,6 +136,14 @@ export const UI_Jobs = () => {
             setListOfJobs(listOfJobsOrigBK);
         }
     }, [filter]);
+
+    // useEffect(() => {
+    //     if (listOfJobs !== null) {
+    //         console.log("////:filterEXIST???___ ", filteredExist);
+    //         console.log("////:listOfJobs????: ", listOfJobs.length);
+    //         console.log("////:filteredExist:?? ", filteredExist);
+    //     }
+    // }, [setFilteredExist, listOfJobs, filteredExist]);
 
 
     const handleIsIncludedCB = (cbValue, cbName) => {
@@ -377,17 +381,16 @@ export const UI_Jobs = () => {
                                   aria-hidden="true"/> : <div/>}
                     </div>
                     {
-                        listOfJobAtPagex && listOfJobAtPagex[selectedPage].map((oneJobL, index) => {
+                        (listOfJobAtPagex !== null) ? listOfJobAtPagex[selectedPage].map((oneJobL, index) => {
                             try {
                                 // console.log("////: render::", oneJobL.snKey);
                                 return <UI_jlist_card key={oneJobL.snKey} aJobData={oneJobL}/>
                             } catch (e) {
                             }
-                        })
+                        }) : <div hidden={filteredExist} className={"noResult"}>
+                            <h3 style={{color: "white"}}>{t("jobs.noRes")}</h3>
+                        </div>
                     }
-                    <div hidden={filteredExist} className={"noResult"}>
-                        <h3 style={{color: "white"}}>{t("jobs.noRes")}</h3>
-                    </div>
                 </div>
             </section>
             <div className="paginationWrapper col-xl-9 col-md-6 col-sm-12  ">
