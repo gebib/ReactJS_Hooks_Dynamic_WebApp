@@ -11,6 +11,8 @@ import language_no from "./resources/locals/no/translation.json";
 import {I18nextProvider} from "react-i18next";
 import {AuthProvider} from "./m1_components/c1_auth/a0_auth_common/firebase/AuthContext";
 
+
+
 //i18next init
 i18next.init({
     interpolation: {escapeValue: false}, // React already does escaping

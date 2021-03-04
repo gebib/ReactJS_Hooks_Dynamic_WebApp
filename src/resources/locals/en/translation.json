@@ -135,5 +135,16 @@
     "body": "Hi, I'm interested in this job!",
     "contactMe": "Contact me, and send me more information about how i can apply for this job at SILVERLINING-IT.",
     "": ""
+  },
+  "blog": {
+    "postBtn": "Post Blog",
+    "addImage": "Add Image",
+    "": "",
+    "": "",
+    "": "",
+    "": "",
+    "": "",
+    "": "",
+    "": ""
   }
 }

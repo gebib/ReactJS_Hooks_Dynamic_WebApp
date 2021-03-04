@@ -110,7 +110,7 @@ export const Jobs_form = () => {
         // console.log("////:RAW", JSON.parse(raw));
         // console.log("////:htmlTxt", JSON.stringify(htmlTxt));
         setRawAndHtmlForm([raw, htmlTxt]);
-    }
+    };
 
     useEffect(() => {
         try {

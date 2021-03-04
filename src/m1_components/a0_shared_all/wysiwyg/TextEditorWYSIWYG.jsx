@@ -51,9 +51,6 @@ export const TextEditorWYSIWYG = (props) => {
             setEditorState(editorState);
             props.setFormData(editorState);
         }
-        return () => {
-            //cleanup
-        }
     }, [t]);
 
     return (
@@ -84,6 +81,6 @@ export const TextEditorWYSIWYG = (props) => {
                 }}/>
         </div>
     );
-}
+};
 
 

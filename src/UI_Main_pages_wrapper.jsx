@@ -84,7 +84,6 @@ export default function UI_Main_pages_wrapper() {
             setShouldHideNavEtc(false);
         }
         if (location.pathname === "/" ||
-            location.pathname === "/blog" ||
             location.pathname === "/about") {
             setHideHomeBgi(false);
         } else {

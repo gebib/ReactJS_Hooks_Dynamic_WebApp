@@ -47,7 +47,7 @@ export const UI_body_wrapper = (props) => {
                         <Route exact path={"/login"}><UI_login/></Route>
                         <Route exact path={"/register"}><UI_register/></Route>
                         <Route exact path={"/forgot_password"}><UI_forgot_password/></Route>
-                        <Route path={"*"}><ErrorPage/></Route>
+                        {/*<Route path={"*"}><ErrorPage/></Route>*/}
                     </Suspense>
                     <Route path={"*"}><ErrorPage/></Route>
                 </Switch>
