@@ -18,10 +18,12 @@ import draftToHtml from "draftjs-to-html";
 import {useTranslation} from "react-i18next";
 import {Editor} from "react-draft-wysiwyg";
 import htmlToDraft from "html-to-draftjs";
+import {Prompt} from "react-router-dom";
+import {showToast} from "../../../UI_Main_pages_wrapper";
 
 
 let blogDefaultTextE = `
-<p>Share your inspirational blog with us!</p>
+<p>Share your inspirational article or blog with us!</p>
 <p></p>
 <p></p>
  
@@ -29,7 +31,7 @@ let blogDefaultTextE = `
 `;
 
 let blogDefaultTextN = `
-<p>Del din inspirasjonsblogg med oss!</p>
+<p>Del din inspirerende artikkel eller blogg med oss!</p>
 <p></p>
 <p></p>
  
@@ -38,12 +40,25 @@ let blogDefaultTextN = `
 
 
 export const UI_Blog = () => {
-    let shouldPrompt = false;
     const {t, i18n} = useTranslation("SL_languages");
     const [editorState, setEditorState] = useState(EditorState.createEmpty());
     const [rawAndHtmlForm, setRawAndHtmlForm] = useState([]);
-    // const [hideEditor, setHideEditor] = useState(true);
+    const [isBlogStatus, setIsBlogStatus] = useState(true);
+    const [isArticleStatus, setIsArticleStatus] = useState(false);
+    const [shouldPrompt, setShouldPrompt] = useState(false);
+    const [listOfSelectedImg, setListOfSelectedImg] = useState(false);
+    const [listOfImgPreview, setListOfImgPreview] = useState(
+        [
+            {thumbnail: 'https://picsum.photos/id/1018/250/150/'},
+            {thumbnail: 'https://picsum.photos/id/1018/250/150/'}
+        ]);
 
+    const [user, setUser] = useState(null);
+
+
+    const blogRef = useRef();
+    const articleRef = useRef();
+    const imgInputRef = useRef();
 
     useEffect(() => {
         let contentBlockBlog;
@@ -62,7 +77,6 @@ export const UI_Blog = () => {
     }, [t]);
 
 
-
     const images = [
         {
             original: 'https://picsum.photos/id/1018/1000/600/',
@@ -78,13 +92,47 @@ export const UI_Blog = () => {
         },
     ];
 
-    const handleTimeelementClick = (e) => {
-        console.log("////:OnCl ", e);
-    };
+    useEffect(() => {
+        if (listOfSelectedImg) {
+            const reader = new FileReader();
+            let prevImgesOfB64 = [];
+            let imgFile = "";
 
-    // const handleShowEditor = () =>{
-    //   setHideEditor(false);
-    // };
+            imgFile = listOfSelectedImg[0];
+            console.log("////: ", listOfImgPreview[0]);
+            console.log("////: ", listOfImgPreview[1]);
+
+            reader.onload = () => {
+                let readerResult = reader.result;
+                // console.log("////: ", readerResult);
+                setListOfImgPreview([{thumbnail: readerResult}]);
+            };
+            reader.readAsDataURL(imgFile);
+            // setListOfImgPreview(tOnlyImages);
+
+
+            // for (let i = 0; i < listOfSelectedImg.length; i++) {
+            //     imgFile = listOfSelectedImg[i];
+            //     reader.onload = () => {
+            //         prevImgesOfB64.push(reader.result);
+            //     };
+            //     reader.readAsDataURL(imgFile);
+            //     console.log("////:b64? ", imgFile);
+            // }
+            //
+            // setListOfImgPreview(prevImgesOfB64);
+            //
+            // prevImgesOfB64.forEach((b64Img)=>{
+            //     // tOnlyImages.push({thumbnail: b64Img});
+            //     console.log("////: ", b64Img);
+            // });
+        }
+
+    }, [listOfSelectedImg]);
+
+    const handleTimeelementClick = (e) => {
+        console.log("////:OnCl ");
+    };
 
     const postBlog = () => {
         let raw = convertToRaw(editorState.getCurrentContent());
@@ -95,12 +143,34 @@ export const UI_Blog = () => {
         console.log("////:htmlTxt: ", htmlTxt);
     };
 
-    const addImage = () =>{
-      console.log("////: upload image: show image list div?");
+    // const addImage = (e) => {
+    //     console.log("////:images?: ", e.target.files);
+    //     // console.log("////: ", convertToRaw(editorState.getCurrentContent()).blocks.length);
+    // };
+
+    const handleCb = () => {
+        console.log("////:Handle_isBlogStatus? ", isBlogStatus);
+
+    };
+
+    useEffect(() => {
+        handleCb();
+    }, [isBlogStatus]);
+
+
+    // window.confirm(t("jform.resetok"))////////////////////
+    const checkShouldPrompt = () => {
+        let editedFormLength = convertToRaw(editorState.getCurrentContent()).blocks.length;
+        if ((editedFormLength > 3) || (editedFormLength < 3)) {
+            setShouldPrompt(true);
+            let whatIsIt = (isBlogStatus) ? t("blog.isBlog") : t("blog.isArticle");
+            showToast(t("blog.toPostYour") + " " + whatIsIt + " " + t("blog.signInPlease"));
+        }
     };
 
     return (
         <div className={"timeLineMainWrapper"}>
+            <Prompt when={shouldPrompt} message={t("blog.youSureWantToLeave")}/>
             <div className={"large_sl_logo_container_blog"}>
                 <img className={"large_logo_image_blog"} src={largeSL_logo} alt={"SILVERLINING logo large"}/>
             </div>
@@ -121,33 +191,83 @@ export const UI_Blog = () => {
                     editorState={editorState}
                     onEditorStateChange={(es) => {
                         setEditorState(es);
-                        try {
-                            let editedToHtml = JSON.stringify(draftToHtml(convertToRaw(editorState.getCurrentContent())));
-                            localStorage.setItem("blogEdit", editedToHtml);
-                        } catch (e) {
-                            console.log("////: Error saving to ls! ", e);
-                            shouldPrompt = true;
-                        }
-                        // props.setFormData(es);
+                        checkShouldPrompt();
                     }}/>
                     <div className={"blogEditorFooter"}>
-                        <div>
-                            <button style={{width: "200px"}} onClick={() => {
+                        <div className={"blogPhotos"}>
+                            <ImageGallery
+                                items={listOfImgPreview}
+                                showPlayButton={false}
+                                showNav={false}
+                                showFullscreenButton={false}
+
+                            />
+                        </div>
+                        <div className={"blogTypeCb mx-2"}>
+                            <div className="form-check">
+                                <input className="form-check-input"
+                                       ref={blogRef}
+                                       checked={isBlogStatus}
+                                       onChange={(e) => {
+                                           // handleCb(!e.target.checked);
+                                           setIsBlogStatus(true);
+                                       }}
+                                       type={"checkbox"}
+                                       id={"bl"}/>
+                                <label className="form-check-label" htmlFor="bl">
+                                    {t("blog.blog")}
+                                </label>
+                            </div>
+                            <div className={"form-check"}>
+                                <input className={"form-check-input"}
+                                       ref={articleRef}
+                                       checked={!isBlogStatus}
+                                       onChange={(e) => {
+                                           // handleCb(!e.target.checked);
+                                           setIsBlogStatus(false);
+                                       }}
+                                       type={"checkbox"}
+                                       id={"ar"}/>
+                                <label className="form-check-label" htmlFor="ar">
+                                    {t("blog.article")}
+                                </label>
+                            </div>
+                        </div>
+
+
+                        <div className="btn-group" role="group" aria-label="Basic outlined example">
+                            <button style={{border: "2px solid white"}} onClick={() => {
                                 postBlog();
-                            }} type="button" className="btn btn-dark mx-1 my-3">
+                            }} type="button" className="btn btn-dark  my-1">
                                 <IconContext.Provider value={{size: "1.5em"}}>
                                     <FaShare style={{color: "#248C9D", marginRight: "10px"}}/>
                                 </IconContext.Provider>
-                                {t("blog.postBtn")}
+                                {isBlogStatus ? t("blog.postBlog") : t("blog.postArticle")}
                             </button>
-                            <button style={{width: "200px"}} onClick={() => {
-                                addImage();
-                            }} type="button" className="btn btn-dark mx-3 my-3">
+                            <button style={{border: "2px solid white"}} onClick={(event) => {
+                                event.preventDefault();
+                                imgInputRef.current.click();
+                            }} type="button" className="btn btn-dark my-1">
+                                <input type="file" hidden/>
                                 <IconContext.Provider value={{size: "1.5em"}}>
                                     <AiFillPicture style={{color: "#248C9D", marginRight: "10px"}}/>
                                 </IconContext.Provider>
                                 {t("blog.addImage")}
                             </button>
+                            <input
+                                ref={imgInputRef}
+                                type={"file"}
+                                className={"d-none"}
+                                multiple={true}
+                                accept={"image/*"}
+                                onChange={(e) => {
+                                    let imgFiles = e.target.files;
+                                    if (imgFiles) {// && imgFiles.type.substr(0, 5) === "image" to really check is it img! etc.
+                                        setListOfSelectedImg(imgFiles);
+                                    } else {
+                                        setListOfSelectedImg(null);
+                                    }
+                                }}/>
                         </div>
                     </div>
                 </div>

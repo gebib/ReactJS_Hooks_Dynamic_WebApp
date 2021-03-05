@@ -137,8 +137,25 @@
     "": ""
   },
   "blog": {
-    "postBtn": "Post Blog",
+    "postBlog": "Post Blog",
+    "postArticle": "Post Article",
     "addImage": "Add Image",
+    "blog": "Write a blog",
+    "article": "Write an article",
+    "youSureWantToLeave": "Your changes in the text editor, will be lost! Are you sure you want to leave this page?",
+    "isBlog": "blog",
+    "isArticle": "article",
+    "toPostYour": "To post your",
+    "signInPlease": "you must be signed in! sign in or create new user please!",
+    "": "",
+    "": "",
+    "": "",
+    "": "",
+    "": "",
+    "": "",
+    "": "",
+    "": "",
+    "": "",
     "": "",
     "": "",
     "": "",
@@ -146,5 +163,6 @@
     "": "",
     "": "",
     "": ""
+
   }
 }

@@ -1,4 +1,4 @@
-//$lineT: 5px;
+//$lineT: 4px;
 $uiBg: #181818;
 $slColor: #248c9d;
 
@@ -19,9 +19,9 @@ $slColor: #248c9d;
     height: 100%;
   }
 
- .verticalTl{
-   border-top: 4px solid #f2f7fe;
- }
+  .verticalTl {
+    //border-top: 4px solid #f2f7fe;
+  }
 
   .large_sl_logo_container_blog {
     //border: $lineT solid #009c21;
@@ -44,31 +44,36 @@ $slColor: #248c9d;
     max-width: 1440px;
     width: 100%;
     //border-bottom: 4px solid #f3f3f3;
-    transition: 1s;
-    opacity: 0.5;
     align-self: center;
-    &:hover{
-      opacity: 1;
-    }
+
     display: flex;
     justify-content: center;
+    border-radius: 0 0 6px 6px;
 
-    .editorInnerWrapper{
+    .editorInnerWrapper {
       max-width: 1324px;
       width: 100%;
-      transition: 1s;
-      &:hover{
-        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-        .btn{
-          opacity: 1;
-          transition: 1s;
-        }
-      }
-      .btn{
-        opacity: 0;
-        transition: 2s;
-      }
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
     }
+
+    .btn{
+      min-width: 150px;
+    }
+
+    .blogPhotos {
+      //border: $lineT solid #00ff19;
+      flex-grow: 1;
+      overflow-x: hidden;
+    }
+
+    .blogTypeCb {
+      //border: $lineT solid #ff0006;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-width: 130px;
+    }
+
   }
 
   .blogReadMoreText {
@@ -81,11 +86,20 @@ $slColor: #248c9d;
     font-size: 17px;
   }
 
-  .blogEditorFooter{
+  .blogEditorFooter {
     //border: $lineT solid #9c4b00;
     width: 100%;
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
+    align-items: center;
     border-radius: 0 0 6px 6px;
+    background-color: white;
+    padding-right: 5px;
+
+    .btn-group{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
   }
 }
