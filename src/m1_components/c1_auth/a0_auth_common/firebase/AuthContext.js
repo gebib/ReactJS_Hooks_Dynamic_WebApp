@@ -81,7 +81,7 @@ export function AuthProvider({children}) {
     };
     //////////////////////////blog list///////////////////////////////
     //type: social | motivasjon/inspirasjon | artikkel | event
-    const create_blog = () => {
+    const create_blog = (blogTxtRawJsonObj) => {
 
     };
     const read_blog = () => {
@@ -93,7 +93,7 @@ export function AuthProvider({children}) {
     const delete_blog = () => {
 
     };
-    /////////////////////////////////////////////////////////
+
     /////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////
 

@@ -26,18 +26,13 @@ let blogDefaultTextE = `
 <p>Share your inspirational article or blog with us!</p>
 <p></p>
 <p></p>
- 
- 
 `;
 
 let blogDefaultTextN = `
 <p>Del din inspirerende artikkel eller blogg med oss!</p>
 <p></p>
 <p></p>
- 
- 
 `;
-
 
 export const UI_Blog = () => {
     const {t, i18n} = useTranslation("SL_languages");
@@ -47,11 +42,8 @@ export const UI_Blog = () => {
     const [isArticleStatus, setIsArticleStatus] = useState(false);
     const [shouldPrompt, setShouldPrompt] = useState(false);
     const [listOfSelectedImg, setListOfSelectedImg] = useState(false);
-    const [listOfImgPreview, setListOfImgPreview] = useState(
-        [
-            {thumbnail: 'https://picsum.photos/id/1018/250/150/'},
-            {thumbnail: 'https://picsum.photos/id/1018/250/150/'}
-        ]);
+
+    const [stagedFiles, setStagedFiles] = useState([]);
 
     const [user, setUser] = useState(null);
 
@@ -95,37 +87,17 @@ export const UI_Blog = () => {
     useEffect(() => {
         if (listOfSelectedImg) {
             const reader = new FileReader();
-            let prevImgesOfB64 = [];
+            let prevImgesOfB64ObjsList = [];
             let imgFile = "";
 
             imgFile = listOfSelectedImg[0];
-            console.log("////: ", listOfImgPreview[0]);
-            console.log("////: ", listOfImgPreview[1]);
-
             reader.onload = () => {
-                let readerResult = reader.result;
-                // console.log("////: ", readerResult);
-                setListOfImgPreview([{thumbnail: readerResult}]);
+                setStagedFiles([{thumbnail: reader.result}]);
             };
             reader.readAsDataURL(imgFile);
-            // setListOfImgPreview(tOnlyImages);
+            // setListOfImgPreview(prevImgesOfB64ObjsList);
 
 
-            // for (let i = 0; i < listOfSelectedImg.length; i++) {
-            //     imgFile = listOfSelectedImg[i];
-            //     reader.onload = () => {
-            //         prevImgesOfB64.push(reader.result);
-            //     };
-            //     reader.readAsDataURL(imgFile);
-            //     console.log("////:b64? ", imgFile);
-            // }
-            //
-            // setListOfImgPreview(prevImgesOfB64);
-            //
-            // prevImgesOfB64.forEach((b64Img)=>{
-            //     // tOnlyImages.push({thumbnail: b64Img});
-            //     console.log("////: ", b64Img);
-            // });
         }
 
     }, [listOfSelectedImg]);
@@ -195,44 +167,57 @@ export const UI_Blog = () => {
                     }}/>
                     <div className={"blogEditorFooter"}>
                         <div className={"blogPhotos"}>
-                            <ImageGallery
-                                items={listOfImgPreview}
-                                showPlayButton={false}
-                                showNav={false}
-                                showFullscreenButton={false}
+                            {/*<ImageGallery*/}
+                            {/*    items={stagedFiles}*/}
+                            {/*    showPlayButton={false}*/}
+                            {/*    showNav={false}*/}
+                            {/*    showFullscreenButton={false}*/}
 
-                            />
+                            {/*/>*/}
+
+                            {stagedFiles && stagedFiles.map(file => {
+                                return (
+                                    <div key={file.file.id}>
+                                        {/*<div>name: {file.file.name}</div>*/}
+                                        {/*<div>type: {file.file.type}</div>*/}
+                                        {/*<div>size: {file.file.size}</div>*/}
+                                        <img style={{margin: "5px"}} alt={"what"} src={`${file.id}`} height={"70px"}/>
+                                    </div>
+                                );
+                            })}
                         </div>
-                        <div className={"blogTypeCb mx-2"}>
-                            <div className="form-check">
-                                <input className="form-check-input"
-                                       ref={blogRef}
-                                       checked={isBlogStatus}
-                                       onChange={(e) => {
-                                           // handleCb(!e.target.checked);
-                                           setIsBlogStatus(true);
-                                       }}
-                                       type={"checkbox"}
-                                       id={"bl"}/>
-                                <label className="form-check-label" htmlFor="bl">
-                                    {t("blog.blog")}
-                                </label>
+
+
+                            <div className={"blogTypeCb mx-2"}>
+                                <div className="form-check">
+                                    <input className="form-check-input"
+                                           ref={blogRef}
+                                           checked={isBlogStatus}
+                                           onChange={(e) => {
+                                               // handleCb(!e.target.checked);
+                                               setIsBlogStatus(true);
+                                           }}
+                                           type={"checkbox"}
+                                           id={"bl"}/>
+                                    <label className="form-check-label" htmlFor="bl">
+                                        {t("blog.blog")}
+                                    </label>
+                                </div>
+                                <div className={"form-check"}>
+                                    <input className={"form-check-input"}
+                                           ref={articleRef}
+                                           checked={!isBlogStatus}
+                                           onChange={(e) => {
+                                               // handleCb(!e.target.checked);
+                                               setIsBlogStatus(false);
+                                           }}
+                                           type={"checkbox"}
+                                           id={"ar"}/>
+                                    <label className="form-check-label" htmlFor="ar">
+                                        {t("blog.article")}
+                                    </label>
+                                </div>
                             </div>
-                            <div className={"form-check"}>
-                                <input className={"form-check-input"}
-                                       ref={articleRef}
-                                       checked={!isBlogStatus}
-                                       onChange={(e) => {
-                                           // handleCb(!e.target.checked);
-                                           setIsBlogStatus(false);
-                                       }}
-                                       type={"checkbox"}
-                                       id={"ar"}/>
-                                <label className="form-check-label" htmlFor="ar">
-                                    {t("blog.article")}
-                                </label>
-                            </div>
-                        </div>
 
 
                         <div className="btn-group" role="group" aria-label="Basic outlined example">
@@ -244,6 +229,7 @@ export const UI_Blog = () => {
                                 </IconContext.Provider>
                                 {isBlogStatus ? t("blog.postBlog") : t("blog.postArticle")}
                             </button>
+
                             <button style={{border: "2px solid white"}} onClick={(event) => {
                                 event.preventDefault();
                                 imgInputRef.current.click();
@@ -261,12 +247,21 @@ export const UI_Blog = () => {
                                 multiple={true}
                                 accept={"image/*"}
                                 onChange={(e) => {
-                                    let imgFiles = e.target.files;
-                                    if (imgFiles) {// && imgFiles.type.substr(0, 5) === "image" to really check is it img! etc.
-                                        setListOfSelectedImg(imgFiles);
-                                    } else {
-                                        setListOfSelectedImg(null);
-                                    }
+                                    // let imgFiles = e.target.files;
+                                    // if (imgFiles) {// && imgFiles.type.substr(0, 5) === "image" to really check is it img! etc.
+                                    //     setListOfSelectedImg(imgFiles);
+                                    // } else {
+                                    //     setListOfSelectedImg(null);
+                                    // }
+                                    const files = e.target.files;
+                                    let convertedFiles = [];
+                                    Object.keys(files).forEach(k => {
+                                        convertedFiles = [...convertedFiles, {
+                                            id: URL.createObjectURL(files[k]),
+                                            file: files[k]
+                                        }];
+                                    });
+                                    setStagedFiles([...stagedFiles, ...convertedFiles]);
                                 }}/>
                         </div>
                     </div>

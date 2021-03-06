@@ -60,10 +60,22 @@ $slColor: #248c9d;
       min-width: 150px;
     }
 
+    .btn-group{
+      display: flex;
+      flex-wrap: wrap;
+    }
+
     .blogPhotos {
       //border: $lineT solid #00ff19;
       flex-grow: 1;
-      overflow-x: hidden;
+      overflow: hidden;
+      //height: 70px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      background-color: #151515;
+      border-radius: 6px;
     }
 
     .blogTypeCb {
@@ -95,6 +107,7 @@ $slColor: #248c9d;
     border-radius: 0 0 6px 6px;
     background-color: white;
     padding-right: 5px;
+    flex-wrap: wrap;
 
     .btn-group{
       display: flex;
