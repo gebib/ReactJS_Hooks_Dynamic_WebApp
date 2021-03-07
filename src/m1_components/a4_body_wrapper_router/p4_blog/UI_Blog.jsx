@@ -11,7 +11,7 @@ import "react-image-gallery/styles/css/image-gallery.css";
 import {RiEditFill} from "react-icons/ri";
 import {IconContext} from "react-icons";
 import {FaShare} from "react-icons/fa";
-import {MdDeleteForever} from "react-icons/md";
+import {MdClear} from "react-icons/md";
 import {AiFillPicture} from "react-icons/ai";
 import {ContentState, convertToRaw, EditorState} from "draft-js";
 import draftToHtml from "draftjs-to-html";
@@ -155,13 +155,6 @@ export const UI_Blog = () => {
         }
     }, []);
 
-    //trigger form check if only image is selected etc.
-    useEffect(() => {
-        return () => {
-            checkShouldPrompt();
-        }
-    }, [stagedFiles]);
-
     const clearBlogForm = () => {
         if (isTextEditorDirty()) {
             if (window.confirm(t("blog.youSure"))) {
@@ -173,7 +166,6 @@ export const UI_Blog = () => {
     };
 
     const saveStuffToLocalStorage = (lsName, dataToSave) => {
-        console.log("////: ", dataToSave);
         try {
             localStorage.setItem(lsName, JSON.stringify(dataToSave));
             setShouldPrompt(false);
@@ -259,7 +251,7 @@ export const UI_Blog = () => {
                             }} type="button"
                                     className={isTextEditorDirty() ? "btn btn-success  my-4" : "btn btn-dark  my-4"}>
                                 <IconContext.Provider value={{size: "1.5em"}}>
-                                    <FaShare style={{color: "#fcffff", marginRight: "10px"}}/>
+                                    <FaShare style={{color: "#ffffff", marginRight: "10px"}}/>
                                 </IconContext.Provider>
                                 {isBlogStatus ? t("blog.postBlog") : t("blog.postArticle")}
                             </button>
@@ -270,7 +262,7 @@ export const UI_Blog = () => {
                             }} type="button" className="btn btn-dark my-4">
                                 <input type="file" hidden/>
                                 <IconContext.Provider value={{size: "1.5em"}}>
-                                    <AiFillPicture style={{color: "#248C9D", marginRight: "10px"}}/>
+                                    <AiFillPicture style={{color: "#ffffff", marginRight: "10px"}}/>
                                 </IconContext.Provider>
                                 {t("blog.addImage")}
                             </button>
@@ -310,14 +302,12 @@ export const UI_Blog = () => {
                             <button style={{border: "2px solid white"}} onClick={(event) => {
                                 clearBlogForm();
 
-                            }} type="button" className="btn btn-secondary my-4">
+                            }} type="button" className="btn btn-dark my-4">
                                 <input type="file" hidden/>
                                 <IconContext.Provider value={{size: "1.5em"}}>
-                                    <MdDeleteForever style={{color: "#151515"}}/>
+                                    <MdClear style={{color: "#0D6EFD"}}/>
                                 </IconContext.Provider>
                             </button>
-
-
                         </div>
                     </div>
                 </div>
@@ -332,7 +322,7 @@ export const UI_Blog = () => {
                         className="vertical-timeline-element--work"
                         iconStyle={{
                             background: "rgb(33, 150, 143)",
-                            color: "#fff",
+                            color: "#ffffff",
                             overflow: "hidden",
                             display: "flex",
                             alignItems: "center",
