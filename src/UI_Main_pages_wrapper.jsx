@@ -35,7 +35,7 @@ export const useWindowSize = () => {
         }
     }, []);
     return size;
-}
+};
 
 //global show toast
 export const showToast = (message, type) => {
@@ -56,7 +56,7 @@ export const showToast = (message, type) => {
     toast(message, {
         className: "good_toast",
         draggable: true,
-        position: toast.POSITION.TOP_CENTER,
+        position: toast.POSITION.BOTTOM_CENTER,
         style: {
             backgroundColor: errorColor
         },

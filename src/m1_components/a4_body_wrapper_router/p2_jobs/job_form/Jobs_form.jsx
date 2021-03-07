@@ -147,7 +147,7 @@ export const Jobs_form = () => {
             console.log("////: could't write to local storage! ", e);
             shouldPrompt = true;
         }
-    }
+    };
 
     return (
         <main className={"jobs_form_main"}>

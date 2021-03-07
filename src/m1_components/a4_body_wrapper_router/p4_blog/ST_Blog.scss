@@ -56,9 +56,9 @@ $slColor: #248c9d;
       box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
     }
 
-    .btn{
-      min-width: 150px;
-    }
+    //.btn{
+    //  min-width: 150px;
+    //}
 
     .btn-group{
       display: flex;
@@ -75,7 +75,6 @@ $slColor: #248c9d;
       align-items: center;
       flex-wrap: wrap;
       background-color: #151515;
-      border-radius: 6px;
     }
 
     .blogTypeCb {
@@ -107,6 +106,7 @@ $slColor: #248c9d;
     border-radius: 0 0 6px 6px;
     background-color: white;
     padding-right: 5px;
+    padding-left: 5px;
     flex-wrap: wrap;
 
     .btn-group{

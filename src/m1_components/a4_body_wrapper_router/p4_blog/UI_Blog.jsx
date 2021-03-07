@@ -1,6 +1,5 @@
 import React, {useEffect, useRef, useState} from "react";
 import "./ST_Blog.scss";
-
 import {VerticalTimeline, VerticalTimelineElement} from "react-vertical-timeline-component";
 import "react-vertical-timeline-component/style.min.css";
 import events from "./timeline/events.json";
@@ -12,6 +11,7 @@ import "react-image-gallery/styles/css/image-gallery.css";
 import {RiEditFill} from "react-icons/ri";
 import {IconContext} from "react-icons";
 import {FaShare} from "react-icons/fa";
+import {MdDeleteForever} from "react-icons/md";
 import {AiFillPicture} from "react-icons/ai";
 import {ContentState, convertToRaw, EditorState} from "draft-js";
 import draftToHtml from "draftjs-to-html";
@@ -53,6 +53,10 @@ export const UI_Blog = () => {
     const imgInputRef = useRef();
 
     useEffect(() => {
+        setResetEditorState();
+    }, [t]);
+
+    const setResetEditorState = () => {
         let contentBlockBlog;
         if (i18n.language === "en") {
             contentBlockBlog = htmlToDraft(blogDefaultTextE);
@@ -66,9 +70,9 @@ export const UI_Blog = () => {
             const editorState = EditorState.createWithContent(contentState);
             setEditorState(editorState);
         }
-    }, [t]);
+    };
 
-
+    ///////////////temp/////////////
     const images = [
         {
             original: 'https://picsum.photos/id/1018/1000/600/',
@@ -83,24 +87,8 @@ export const UI_Blog = () => {
             thumbnail: 'https://picsum.photos/id/1019/250/150/',
         },
     ];
+    ///////////////temp/////////////
 
-    useEffect(() => {
-        if (listOfSelectedImg) {
-            const reader = new FileReader();
-            let prevImgesOfB64ObjsList = [];
-            let imgFile = "";
-
-            imgFile = listOfSelectedImg[0];
-            reader.onload = () => {
-                setStagedFiles([{thumbnail: reader.result}]);
-            };
-            reader.readAsDataURL(imgFile);
-            // setListOfImgPreview(prevImgesOfB64ObjsList);
-
-
-        }
-
-    }, [listOfSelectedImg]);
 
     const handleTimeelementClick = (e) => {
         console.log("////:OnCl ");
@@ -113,30 +101,85 @@ export const UI_Blog = () => {
         setRawAndHtmlForm([raw, htmlTxt]);
         console.log("////:RAW: ", raw);
         console.log("////:htmlTxt: ", htmlTxt);
+
+        localStorage.removeItem("tmpBlogState");
     };
 
-    // const addImage = (e) => {
-    //     console.log("////:images?: ", e.target.files);
-    //     // console.log("////: ", convertToRaw(editorState.getCurrentContent()).blocks.length);
+    // on refresh etc, {should save to localstorage}, if not possible prompt user? is that possible
+    // pictures should hvae remove button, after being stagged etc.constructor
+    // upload.. progress must add too etc.
+    //     button should be green, if is a valid enough to be posted etc.
+
+    // const handleCb = () => {
+    //     console.log("////:Handle_isBlogStatus? ", isBlogStatus);
+    //
     // };
-
-    const handleCb = () => {
-        console.log("////:Handle_isBlogStatus? ", isBlogStatus);
-
-    };
-
-    useEffect(() => {
-        handleCb();
-    }, [isBlogStatus]);
-
+    //
+    // useEffect(() => {
+    //     handleCb();
+    // }, [isBlogStatus]);
 
     // window.confirm(t("jform.resetok"))////////////////////
     const checkShouldPrompt = () => {
-        let editedFormLength = convertToRaw(editorState.getCurrentContent()).blocks.length;
-        if ((editedFormLength > 3) || (editedFormLength < 3)) {
-            setShouldPrompt(true);
+        if (isTextEditorDirty()) {
             let whatIsIt = (isBlogStatus) ? t("blog.isBlog") : t("blog.isArticle");
             showToast(t("blog.toPostYour") + " " + whatIsIt + " " + t("blog.signInPlease"));
+        }
+    };
+
+
+    const isTextEditorDirty = () => {
+        let editedFormLength = convertToRaw(editorState.getCurrentContent()).blocks.length;
+        return (editedFormLength > 3) || (editedFormLength < 3) || (stagedFiles.length !== 0);
+    };
+
+    //check previous saved blog form data on ls
+    useEffect(() => {
+        let localDataBlogTxt = null;
+
+        try {
+            localDataBlogTxt = localStorage.getItem("tmpBlogState");
+        } catch (e) {
+            console.log("////:No local storage temp found!. ", e);
+        }
+
+        if (localDataBlogTxt) {
+            let contentBlockBlog = htmlToDraft(JSON.parse(localDataBlogTxt));
+            if (contentBlockBlog) {
+                const contentState = ContentState.createFromBlockArray(
+                    contentBlockBlog.contentBlocks
+                );
+                const editorState = EditorState.createWithContent(contentState);
+                setEditorState(editorState);
+            }
+        }
+    }, []);
+
+    //trigger form check if only image is selected etc.
+    useEffect(() => {
+        return () => {
+            checkShouldPrompt();
+        }
+    }, [stagedFiles]);
+
+    const clearBlogForm = () => {
+        if (isTextEditorDirty()) {
+            if (window.confirm(t("blog.youSure"))) {
+                localStorage.removeItem("tmpBlogState");
+                setResetEditorState();
+                setStagedFiles([]);
+            }
+        }
+    };
+
+    const saveStuffToLocalStorage = (lsName, dataToSave) => {
+        console.log("////: ", dataToSave);
+        try {
+            localStorage.setItem(lsName, JSON.stringify(dataToSave));
+            setShouldPrompt(false);
+        } catch (e) {
+            console.log("////:Could not save temp data to localstorage! ", e);
+            setShouldPrompt(true);
         }
     };
 
@@ -163,24 +206,14 @@ export const UI_Blog = () => {
                     editorState={editorState}
                     onEditorStateChange={(es) => {
                         setEditorState(es);
+                        saveStuffToLocalStorage("tmpBlogState", draftToHtml(convertToRaw(es.getCurrentContent())));
                         checkShouldPrompt();
                     }}/>
                     <div className={"blogEditorFooter"}>
                         <div className={"blogPhotos"}>
-                            {/*<ImageGallery*/}
-                            {/*    items={stagedFiles}*/}
-                            {/*    showPlayButton={false}*/}
-                            {/*    showNav={false}*/}
-                            {/*    showFullscreenButton={false}*/}
-
-                            {/*/>*/}
-
                             {stagedFiles && stagedFiles.map(file => {
                                 return (
                                     <div key={file.file.id}>
-                                        {/*<div>name: {file.file.name}</div>*/}
-                                        {/*<div>type: {file.file.type}</div>*/}
-                                        {/*<div>size: {file.file.size}</div>*/}
                                         <img style={{margin: "5px"}} alt={"what"} src={`${file.id}`} height={"70px"}/>
                                     </div>
                                 );
@@ -188,44 +221,45 @@ export const UI_Blog = () => {
                         </div>
 
 
-                            <div className={"blogTypeCb mx-2"}>
-                                <div className="form-check">
-                                    <input className="form-check-input"
-                                           ref={blogRef}
-                                           checked={isBlogStatus}
-                                           onChange={(e) => {
-                                               // handleCb(!e.target.checked);
-                                               setIsBlogStatus(true);
-                                           }}
-                                           type={"checkbox"}
-                                           id={"bl"}/>
-                                    <label className="form-check-label" htmlFor="bl">
-                                        {t("blog.blog")}
-                                    </label>
-                                </div>
-                                <div className={"form-check"}>
-                                    <input className={"form-check-input"}
-                                           ref={articleRef}
-                                           checked={!isBlogStatus}
-                                           onChange={(e) => {
-                                               // handleCb(!e.target.checked);
-                                               setIsBlogStatus(false);
-                                           }}
-                                           type={"checkbox"}
-                                           id={"ar"}/>
-                                    <label className="form-check-label" htmlFor="ar">
-                                        {t("blog.article")}
-                                    </label>
-                                </div>
+                        <div className={"blogTypeCb mx-2"}>
+                            <div className="form-check">
+                                <input className="form-check-input"
+                                       ref={blogRef}
+                                       checked={isBlogStatus}
+                                       onChange={(e) => {
+                                           // handleCb(!e.target.checked);
+                                           setIsBlogStatus(true);
+                                       }}
+                                       type={"checkbox"}
+                                       id={"bl"}/>
+                                <label className="form-check-label" htmlFor="bl">
+                                    {t("blog.blog")}
+                                </label>
                             </div>
+                            <div className={"form-check"}>
+                                <input className={"form-check-input"}
+                                       ref={articleRef}
+                                       checked={!isBlogStatus}
+                                       onChange={(e) => {
+                                           // handleCb(!e.target.checked);
+                                           setIsBlogStatus(false);
+                                       }}
+                                       type={"checkbox"}
+                                       id={"ar"}/>
+                                <label className="form-check-label" htmlFor="ar">
+                                    {t("blog.article")}
+                                </label>
+                            </div>
+                        </div>
 
 
                         <div className="btn-group" role="group" aria-label="Basic outlined example">
-                            <button style={{border: "2px solid white"}} onClick={() => {
+                            <button style={{border: "2px solid white", transition: "2s"}} onClick={() => {
                                 postBlog();
-                            }} type="button" className="btn btn-dark  my-1">
+                            }} type="button"
+                                    className={isTextEditorDirty() ? "btn btn-success  my-4" : "btn btn-dark  my-4"}>
                                 <IconContext.Provider value={{size: "1.5em"}}>
-                                    <FaShare style={{color: "#248C9D", marginRight: "10px"}}/>
+                                    <FaShare style={{color: "#fcffff", marginRight: "10px"}}/>
                                 </IconContext.Provider>
                                 {isBlogStatus ? t("blog.postBlog") : t("blog.postArticle")}
                             </button>
@@ -233,7 +267,7 @@ export const UI_Blog = () => {
                             <button style={{border: "2px solid white"}} onClick={(event) => {
                                 event.preventDefault();
                                 imgInputRef.current.click();
-                            }} type="button" className="btn btn-dark my-1">
+                            }} type="button" className="btn btn-dark my-4">
                                 <input type="file" hidden/>
                                 <IconContext.Provider value={{size: "1.5em"}}>
                                     <AiFillPicture style={{color: "#248C9D", marginRight: "10px"}}/>
@@ -247,22 +281,43 @@ export const UI_Blog = () => {
                                 multiple={true}
                                 accept={"image/*"}
                                 onChange={(e) => {
-                                    // let imgFiles = e.target.files;
-                                    // if (imgFiles) {// && imgFiles.type.substr(0, 5) === "image" to really check is it img! etc.
-                                    //     setListOfSelectedImg(imgFiles);
-                                    // } else {
-                                    //     setListOfSelectedImg(null);
-                                    // }
                                     const files = e.target.files;
                                     let convertedFiles = [];
-                                    Object.keys(files).forEach(k => {
-                                        convertedFiles = [...convertedFiles, {
-                                            id: URL.createObjectURL(files[k]),
-                                            file: files[k]
-                                        }];
+                                    Object.keys(files).forEach(i => {
+                                        let newFileName = files[i].name;
+                                        let existsInState = false;
+                                        for (let j = 0; j < stagedFiles.length; j++) {
+                                            if (newFileName === stagedFiles[j].file.name) {
+                                                existsInState = true;
+                                                break;
+                                            }
+                                        }
+                                        if (!existsInState) {
+                                            convertedFiles = [...convertedFiles, {
+                                                id: URL.createObjectURL(files[i]),
+                                                file: files[i]
+                                            }];
+                                        }
+
                                     });
-                                    setStagedFiles([...stagedFiles, ...convertedFiles]);
+                                    let filesToBeStaged = [...stagedFiles, ...convertedFiles];
+                                    if (filesToBeStaged.length > 0) {
+                                        setStagedFiles(filesToBeStaged);
+                                    }
                                 }}/>
+
+
+                            <button style={{border: "2px solid white"}} onClick={(event) => {
+                                clearBlogForm();
+
+                            }} type="button" className="btn btn-secondary my-4">
+                                <input type="file" hidden/>
+                                <IconContext.Provider value={{size: "1.5em"}}>
+                                    <MdDeleteForever style={{color: "#151515"}}/>
+                                </IconContext.Provider>
+                            </button>
+
+
                         </div>
                     </div>
                 </div>
