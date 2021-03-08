@@ -41,6 +41,7 @@ export const UI_Blog = () => {
     const [isBlogStatus, setIsBlogStatus] = useState(true);
     const [shouldPrompt, setShouldPrompt] = useState(false);
 
+
     const [stagedFiles, setStagedFiles] = useState([]);
 
     const [user, setUser] = useState(false);
@@ -49,6 +50,7 @@ export const UI_Blog = () => {
     const blogRef = useRef();
     const articleRef = useRef();
     const imgInputRef = useRef();
+    const imgRef = useRef();
 
     useEffect(() => {
         setResetEditorState();
@@ -93,14 +95,16 @@ export const UI_Blog = () => {
     };
 
     const postBlog = () => {
-        let raw = convertToRaw(editorState.getCurrentContent());
-        let htmlTxt = draftToHtml(convertToRaw(editorState.getCurrentContent()));
+        // let raw = convertToRaw(editorState.getCurrentContent());
+        // let htmlTxt = draftToHtml(convertToRaw(editorState.getCurrentContent()));
+        //
+        // setRawAndHtmlForm([raw, htmlTxt]);
+        // console.log("////:RAW: ", raw);
+        // console.log("////:htmlTxt: ", htmlTxt);
 
-        setRawAndHtmlForm([raw, htmlTxt]);
-        console.log("////:RAW: ", raw);
-        console.log("////:htmlTxt: ", htmlTxt);
+        // localStorage.removeItem("tmpBlogState");
 
-        localStorage.removeItem("tmpBlogState");
+        console.log("////:imgId? ", stagedFiles[0]);
     };
 
     // on refresh etc, {should save to localstorage}, if not possible prompt user? is that possible
@@ -108,14 +112,24 @@ export const UI_Blog = () => {
     // upload.. progress must add too etc.
     //     button should be green, if is a valid enough to be posted etc.
 
-    // const handleCb = () => {
-    //     console.log("////:Handle_isBlogStatus? ", isBlogStatus);
-    //
-    // };
-    //
-    // useEffect(() => {
-    //     handleCb();
-    // }, [isBlogStatus]);
+    const handleCb = () => {
+        console.log("////:Handle_isBlogStatus? ", isBlogStatus);
+
+    };
+
+    const handleStagedImgRemove = (clickedId) => {
+        let updatedArray = [];
+        for (let i = 0; i < stagedFiles.length; i++) {
+            if (!(stagedFiles[i].id === clickedId)) {
+                updatedArray.push(stagedFiles[i]);
+            }
+        }
+        setStagedFiles(updatedArray);
+    };
+
+    useEffect(() => {
+        handleCb();
+    }, [isBlogStatus]);
 
     // window.confirm(t("jform.resetok"))////////////////////
     const checkShouldPrompt = () => {
@@ -211,8 +225,21 @@ export const UI_Blog = () => {
                         <div className={"blogPhotos"}>
                             {stagedFiles && stagedFiles.map(file => {
                                 return (
-                                    <div key={file.file.id}>
-                                        <img style={{margin: "5px"}} alt={"what"} src={`${file.id}`} height={"70px"}/>
+                                    <div className={"overlay-fade"} key={file.file.id}>
+                                        <img
+                                            ref={imgRef}
+                                            style={{
+                                                margin: "5px"
+                                            }}
+                                            alt={"what"}
+                                            src={`${file.id}`}
+                                            height={"70px"}/>
+                                        <div id={`${file.id}`} className={"overlayIcon"}
+                                             onClick={(e) => {
+                                                 handleStagedImgRemove(e.target.getAttribute('id'));
+                                             }}>
+                                            <h1 id={`${file.id}`} style={{color: "#ff4500"}}>x</h1>
+                                        </div>
                                     </div>
                                 );
                             })}
@@ -252,9 +279,10 @@ export const UI_Blog = () => {
 
 
                         <div className="btn-group mx-3" role="group" aria-label="Basic outlined example">
-                            <button style={{border: "2px solid white", transition: "2s", minWidth: "150px"}} onClick={() => {
-                                postBlog();
-                            }} type="button"
+                            <button style={{border: "2px solid white", transition: "2s", minWidth: "150px"}}
+                                    onClick={() => {
+                                        postBlog();
+                                    }} type="button"
                                     className={isTextEditorDirty() ? "btn btn-success  my-4" : "btn btn-dark  my-4"}>
                                 <IconContext.Provider value={{size: "1.5em"}}>
                                     <FaShare style={{color: "#ffffff", marginRight: "10px"}}/>
@@ -345,7 +373,7 @@ export const UI_Blog = () => {
                         <div className={"blogReadMoreText"}>
                             <h3 className="vertical-timeline-element-title">Creative Director</h3>
                             {/*<h4 className="vertical-timeline-element-subtitle">Miami, FL</h4>*/}
-                            <p style={{ fontWeight: "400", fontSize: "16px"}}>
+                            <p style={{fontWeight: "400", fontSize: "16px"}}>
                                 Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores corporis impedit
                                 nobis
                                 omnis quam quasi vitae, voluptatem? Ad architecto doloremque earum est excepturi facere
