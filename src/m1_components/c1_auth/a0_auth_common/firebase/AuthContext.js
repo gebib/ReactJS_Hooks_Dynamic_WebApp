@@ -1,6 +1,7 @@
 import React, {useContext, useEffect, useState} from "react";
 import {auth, storage, database} from "./firebase";
 import {showToast} from "../../../../UI_Main_pages_wrapper";
+import {v4 as uuid} from "uuid";
 
 
 const AuthContext = React.createContext();
@@ -12,6 +13,7 @@ export const useAuth = () => {
 export function AuthProvider({children}) {
     const [currentUser, setCurrentUser] = useState();
     const [loading, setLoading] = useState(true);
+    const [blogPostLoading, setBlogPostLoading] = useState(false);
 
 
     /////////////Auth | sign up | login | forgot /////////////////////
@@ -80,21 +82,47 @@ export function AuthProvider({children}) {
         return database.ref("jobs/" + jobAdKey).remove();
     };
     //////////////////////////blog list///////////////////////////////
-    //type: social | motivasjon/inspirasjon | artikkel | event
-    const create_blog = (blogTxtRawJsonObj) => {
+    ////////////////////////////blog/////////////////////////////
+    const create_blog = async (raw, htmlTxt, stagedFilesAr, blogType, postDate) => {
+        let blogId = uuid();
+        let listOfThisBlogImagesURL = [];
+
+        if (stagedFilesAr.length > 0) {
+            setBlogPostLoading(true);
+            for (let i = 0; i < stagedFilesAr.length; i++) {
+                const imagesRef = storage.ref("blogImages").child(blogId + "/" + blogId + stagedFilesAr[i].file.name);
+                await imagesRef.put(stagedFilesAr[i].file).then(() => {
+                    imagesRef.getDownloadURL().then((url) => {
+                        listOfThisBlogImagesURL.push(url);
+                    });
+                }).catch((e) => {
+                    setBlogPostLoading(false);
+                    console.log("////:e ", e);
+                });
+
+            }
+            await database.ref("/blogs").child(blogId).push(JSON.stringify([raw, htmlTxt, blogType, listOfThisBlogImagesURL, postDate])).then(() => {
+                console.log("////: ok blog too: ");
+                setBlogPostLoading(false);
+            }).catch((e) => {
+                setBlogPostLoading(false);
+                console.log("////:e ", e);
+            });
+        } else {
+            console.log("////: NOTupded!", stagedFilesAr[0].file.name);
+        }
+
 
     };
+    
     const read_blog = () => {
-
-    };
-    const update_blog = () => {
 
     };
     const delete_blog = () => {
 
     };
+    //////////////////////////blog///////////////////////////////
 
-    /////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////
 
 
@@ -109,6 +137,7 @@ export function AuthProvider({children}) {
     const value = {
         currentUser,
         setCurrentUser,
+        blogPostLoading,
         login,
         signup,
         logout,
@@ -126,7 +155,6 @@ export function AuthProvider({children}) {
         //blog
         create_blog,
         read_blog,
-        update_blog,
         delete_blog
 
     };

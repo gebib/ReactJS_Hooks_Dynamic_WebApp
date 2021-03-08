@@ -22,6 +22,13 @@ import draftToHtml from "draftjs-to-html";
 import {useAuth} from "../../../c1_auth/a0_auth_common/firebase/AuthContext";
 import {TextEditorWYSIWYG} from "../../../a0_shared_all/wysiwyg/TextEditorWYSIWYG";
 
+export const getLocalDate = () => {
+    let date = new Date().getDate();
+    let month = new Date().getMonth() + 1;
+    let year = new Date().getFullYear();
+    console.log(date + '-' + month + '-' + year);
+    return JSON.stringify([date, month, year]);
+};
 
 export const Jobs_form = () => {
     const {t, i18n} = useTranslation("SL_languages");
@@ -68,13 +75,7 @@ export const Jobs_form = () => {
     };
     ///////////////////////////////////
 
-    const getLocalDate = () => {
-        let date = new Date().getDate();
-        let month = new Date().getMonth() + 1;
-        let year = new Date().getFullYear();
-        console.log(date + '-' + month + '-' + year);
-        return JSON.stringify([date, month, year]);
-    }
+
 
     const handleButton = async (actionType) => {
         if (actionType === "cancel") {
@@ -101,7 +102,7 @@ export const Jobs_form = () => {
                 setLoading(false);
             });
         }
-    }
+    };
 
     //used by WYSIWYG through prop to pass here the data.
     const handleWYSIWYG = (editorState) => {

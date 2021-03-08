@@ -20,6 +20,8 @@ import {Editor} from "react-draft-wysiwyg";
 import htmlToDraft from "html-to-draftjs";
 import {Prompt} from "react-router-dom";
 import {showToast} from "../../../UI_Main_pages_wrapper";
+import {useAuth} from "../../c1_auth/a0_auth_common/firebase/AuthContext";
+import {getLocalDate} from "../p2_jobs/job_form/Jobs_form";
 
 
 let blogDefaultTextE = `
@@ -40,9 +42,8 @@ export const UI_Blog = () => {
     const [rawAndHtmlForm, setRawAndHtmlForm] = useState([]);
     const [isBlogStatus, setIsBlogStatus] = useState(true);
     const [shouldPrompt, setShouldPrompt] = useState(false);
-
-
     const [stagedFiles, setStagedFiles] = useState([]);
+
 
     const [user, setUser] = useState(false);
 
@@ -51,6 +52,9 @@ export const UI_Blog = () => {
     const articleRef = useRef();
     const imgInputRef = useRef();
     const imgRef = useRef();
+
+    const {create_blog} = useAuth();
+    const {blogPostLoading} = useAuth();
 
     useEffect(() => {
         setResetEditorState();
@@ -70,6 +74,7 @@ export const UI_Blog = () => {
             const editorState = EditorState.createWithContent(contentState);
             setEditorState(editorState);
         }
+        setStagedFiles([]);
     };
 
     ///////////////temp/////////////
@@ -94,18 +99,31 @@ export const UI_Blog = () => {
         console.log("////:OnCl ");
     };
 
+
     const postBlog = () => {
-        // let raw = convertToRaw(editorState.getCurrentContent());
-        // let htmlTxt = draftToHtml(convertToRaw(editorState.getCurrentContent()));
-        //
+        let raw = convertToRaw(editorState.getCurrentContent());
+        let htmlTxt = draftToHtml(convertToRaw(editorState.getCurrentContent()));
+
         // setRawAndHtmlForm([raw, htmlTxt]);
+
         // console.log("////:RAW: ", raw);
         // console.log("////:htmlTxt: ", htmlTxt);
+        // console.log("////:Imgs: ", stagedFiles);
 
-        // localStorage.removeItem("tmpBlogState");
+        if (raw.blocks.length > 0) {
+            let blogType = (isBlogStatus) ? "blog" : "article";
+            create_blog(raw, htmlTxt, stagedFiles, blogType, getLocalDate);
+        }
 
-        console.log("////:imgId? ", stagedFiles[0]);
+
     };
+
+    useEffect(() => {
+        if (!blogPostLoading) {
+            localStorage.removeItem("tmpBlogState");
+            setResetEditorState();
+        }
+    }, [blogPostLoading]);
 
     // on refresh etc, {should save to localstorage}, if not possible prompt user? is that possible
     // pictures should hvae remove button, after being stagged etc.constructor
@@ -203,11 +221,12 @@ export const UI_Blog = () => {
             <div className={"editorWrapper"}>
                 <div className={"editorInnerWrapper"}>
                     <Editor
+                        readOnly={blogPostLoading}
                         editorStyle={{backgroundColor: "#fdfdfd"}}
-                        toolbarClassName="mainToolBarWrapper"
-                        wrapperClassName="toolWrapper"
-                        editorClassName="editor"
-                        size="normal"
+                        toolbarClassName={"mainToolBarWrapper"}
+                        wrapperClassName={"toolWrapper"}
+                        editorClassName={"editor"}
+                        size={"normal"}
                         toolbar={{
                             // options: ["inline", "textAlign", "blockType", "fontSize", "fontFamily", "list", "link", "colorPicker", "history", "emoji"],
                             options: ["textAlign", "fontSize", "link", "history", "emoji"],
@@ -248,7 +267,7 @@ export const UI_Blog = () => {
 
                         <div className={"blogTypeCb mx-2"}>
                             <div className="form-check">
-                                <input className="form-check-input"
+                                <input disabled={blogPostLoading} className="form-check-input"
                                        ref={blogRef}
                                        checked={isBlogStatus}
                                        onChange={(e) => {
@@ -262,7 +281,7 @@ export const UI_Blog = () => {
                                 </label>
                             </div>
                             <div className={"form-check"}>
-                                <input className={"form-check-input"}
+                                <input disabled={blogPostLoading} className={"form-check-input"}
                                        ref={articleRef}
                                        checked={!isBlogStatus}
                                        onChange={(e) => {
@@ -279,18 +298,21 @@ export const UI_Blog = () => {
 
 
                         <div className="btn-group mx-3" role="group" aria-label="Basic outlined example">
-                            <button style={{border: "2px solid white", transition: "2s", minWidth: "150px"}}
+                            <button disabled={blogPostLoading}
+                                    style={{border: "2px solid white", transition: "2s", minWidth: "150px"}}
                                     onClick={() => {
                                         postBlog();
                                     }} type="button"
                                     className={isTextEditorDirty() ? "btn btn-success  my-4" : "btn btn-dark  my-4"}>
-                                <IconContext.Provider value={{size: "1.5em"}}>
-                                    <FaShare style={{color: "#ffffff", marginRight: "10px"}}/>
-                                </IconContext.Provider>
+                                {blogPostLoading ?
+                                    <span className="spinner-border mx-1 text-info spinner-border-sm" role="status"
+                                          aria-hidden="true"/> : <IconContext.Provider value={{size: "1.5em"}}>
+                                        <FaShare style={{color: "#ffffff", marginRight: "10px"}}/>
+                                    </IconContext.Provider>}
                                 {isBlogStatus ? t("blog.postBlog") : t("blog.postArticle")}
                             </button>
 
-                            <button style={{border: "2px solid white"}} onClick={(event) => {
+                            <button disabled={blogPostLoading} style={{border: "2px solid white"}} onClick={(event) => {
                                 event.preventDefault();
                                 imgInputRef.current.click();
                             }} type="button" className="btn btn-dark my-4">
@@ -333,7 +355,7 @@ export const UI_Blog = () => {
                                 }}/>
 
 
-                            <button style={{border: "2px solid white"}} onClick={(event) => {
+                            <button disabled={blogPostLoading} style={{border: "2px solid white"}} onClick={(event) => {
                                 clearBlogForm();
 
                             }} type="button" className="btn btn-dark my-4">
