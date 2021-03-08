@@ -64,7 +64,7 @@ export const showToast = (message, type) => {
         closeButton: false,
         type: "SUCCESS",
     });
-}
+};
 
 export default function UI_Main_pages_wrapper() {
     const [shouldHideNavEtc, setShouldHideNavEtc] = useState(false);

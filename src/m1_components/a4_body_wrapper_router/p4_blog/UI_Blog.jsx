@@ -39,13 +39,11 @@ export const UI_Blog = () => {
     const [editorState, setEditorState] = useState(EditorState.createEmpty());
     const [rawAndHtmlForm, setRawAndHtmlForm] = useState([]);
     const [isBlogStatus, setIsBlogStatus] = useState(true);
-    const [isArticleStatus, setIsArticleStatus] = useState(false);
     const [shouldPrompt, setShouldPrompt] = useState(false);
-    const [listOfSelectedImg, setListOfSelectedImg] = useState(false);
 
     const [stagedFiles, setStagedFiles] = useState([]);
 
-    const [user, setUser] = useState(null);
+    const [user, setUser] = useState(false);
 
 
     const blogRef = useRef();
@@ -121,11 +119,16 @@ export const UI_Blog = () => {
 
     // window.confirm(t("jform.resetok"))////////////////////
     const checkShouldPrompt = () => {
-        if (isTextEditorDirty()) {
+        if (isTextEditorDirty() && (!user)) {
             let whatIsIt = (isBlogStatus) ? t("blog.isBlog") : t("blog.isArticle");
             showToast(t("blog.toPostYour") + " " + whatIsIt + " " + t("blog.signInPlease"));
         }
     };
+
+    //prompt also if img added, but not signed in!
+    useEffect(() => {
+        checkShouldPrompt();
+    }, [stagedFiles]);
 
 
     const isTextEditorDirty = () => {
@@ -145,7 +148,8 @@ export const UI_Blog = () => {
 
         if (localDataBlogTxt) {
             let contentBlockBlog = htmlToDraft(JSON.parse(localDataBlogTxt));
-            if (contentBlockBlog) {
+
+            if (contentBlockBlog.contentBlocks.length > 3) {
                 const contentState = ContentState.createFromBlockArray(
                     contentBlockBlog.contentBlocks
                 );
@@ -183,24 +187,26 @@ export const UI_Blog = () => {
             </div>
             {/*/////////blog editor///////////*/}
             <div className={"editorWrapper"}>
-                <div className={"editorInnerWrapper"}><Editor
-                    editorStyle={{backgroundColor: "#fdfdfd"}}
-                    toolbarClassName="mainToolBarWrapper"
-                    wrapperClassName="toolWrapper"
-                    editorClassName="editor"
-                    size="normal"
-                    toolbar={{
-                        options: ["inline", "textAlign", "blockType", "fontSize", "fontFamily", "list", "link", "colorPicker", "history", "emoji"],
-                        // image: { uploadCallback: uploadImageCallBack, alt: { present: true, mandatory: true } },
-                        link: {inDropdown: false},
-                        list: {inDropdown: false}
-                    }}
-                    editorState={editorState}
-                    onEditorStateChange={(es) => {
-                        setEditorState(es);
-                        saveStuffToLocalStorage("tmpBlogState", draftToHtml(convertToRaw(es.getCurrentContent())));
-                        checkShouldPrompt();
-                    }}/>
+                <div className={"editorInnerWrapper"}>
+                    <Editor
+                        editorStyle={{backgroundColor: "#fdfdfd"}}
+                        toolbarClassName="mainToolBarWrapper"
+                        wrapperClassName="toolWrapper"
+                        editorClassName="editor"
+                        size="normal"
+                        toolbar={{
+                            // options: ["inline", "textAlign", "blockType", "fontSize", "fontFamily", "list", "link", "colorPicker", "history", "emoji"],
+                            options: ["textAlign", "fontSize", "link", "history", "emoji"],
+                            link: {inDropdown: false},
+                            list: {inDropdown: false},
+                        }}
+
+                        editorState={editorState}
+                        onEditorStateChange={(es) => {
+                            setEditorState(es);
+                            saveStuffToLocalStorage("tmpBlogState", draftToHtml(convertToRaw(es.getCurrentContent())));
+                            checkShouldPrompt();
+                        }}/>
                     <div className={"blogEditorFooter"}>
                         <div className={"blogPhotos"}>
                             {stagedFiles && stagedFiles.map(file => {
@@ -245,8 +251,8 @@ export const UI_Blog = () => {
                         </div>
 
 
-                        <div className="btn-group" role="group" aria-label="Basic outlined example">
-                            <button style={{border: "2px solid white", transition: "2s"}} onClick={() => {
+                        <div className="btn-group mx-3" role="group" aria-label="Basic outlined example">
+                            <button style={{border: "2px solid white", transition: "2s", minWidth: "150px"}} onClick={() => {
                                 postBlog();
                             }} type="button"
                                     className={isTextEditorDirty() ? "btn btn-success  my-4" : "btn btn-dark  my-4"}>
@@ -305,7 +311,7 @@ export const UI_Blog = () => {
                             }} type="button" className="btn btn-dark my-4">
                                 <input type="file" hidden/>
                                 <IconContext.Provider value={{size: "1.5em"}}>
-                                    <MdClear style={{color: "#0D6EFD"}}/>
+                                    <MdClear style={{color: "#ffffff"}}/>
                                 </IconContext.Provider>
                             </button>
                         </div>
@@ -337,17 +343,17 @@ export const UI_Blog = () => {
                             className="blogImg"
                             src="https://images.pexels.com/photos/104827/cat-pet-animal-domestic-104827.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"/>}>
                         <div className={"blogReadMoreText"}>
-                            <h3 className="vertical-timeline-element-title">Creative
-                                Director</h3>
-                            <h4 className="vertical-timeline-element-subtitle">Miami, FL</h4>
-                            <p>
+                            <h3 className="vertical-timeline-element-title">Creative Director</h3>
+                            {/*<h4 className="vertical-timeline-element-subtitle">Miami, FL</h4>*/}
+                            <p style={{ fontWeight: "400", fontSize: "16px"}}>
                                 Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores corporis impedit
                                 nobis
                                 omnis quam quasi vitae, voluptatem? Ad architecto doloremque earum est excepturi facere
                                 fugiat fugit in ipsa ipsum nobis obcaecati quia quod rem repellendus tempore, tenetur
                                 ullam
                                 ut veniam voluptatem. Ab ducimus quaerat rem. Harum incidunt numquam possimus. Debitis.
-                            </p></div>
+                            </p>
+                        </div>
                         <div className={"blogListFooterEmbedWrapper"}>
                             <ImageGallery
                                 items={images}

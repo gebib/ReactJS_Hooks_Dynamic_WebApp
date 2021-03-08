@@ -172,4 +172,4 @@ export const HomeContent = () => {
             </footer>
         </main>
     );
-}
+};
