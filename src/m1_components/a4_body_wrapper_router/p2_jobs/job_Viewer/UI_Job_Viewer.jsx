@@ -43,7 +43,7 @@ export const UI_Job_Viewer = () => {
 
     const fetchSingleJobById = async () => {
         return await read_job_single(jobId.id);
-    }
+    };
 
     useEffect(() => {
         fetchSingleJobById().then(child => {
@@ -54,7 +54,7 @@ export const UI_Job_Viewer = () => {
                     jobTxtRawTableData: JSON.parse(child.val()[1][0]).blocks,
                     txtInHTMLform: JSON.parse(child.val()[1][1]),
                     postedDate: JSON.parse(child.val()[2])
-                }
+                };
                 chooseImageToUse(snData);
                 chooseContractType(snData);
                 setJobToView(snData);
@@ -78,7 +78,7 @@ export const UI_Job_Viewer = () => {
             );
             return EditorState.createWithContent(contentState);
         }
-    }
+    };
 
     //handle delete!
     const handleAdminTaskDelete = (childKey) => {
@@ -87,7 +87,7 @@ export const UI_Job_Viewer = () => {
             showToast(t("vjob.deleted", "info"));
             history.push("/jobs");
         }
-    }
+    };
 
     const chooseImageToUse = (snData) => {
         if (snData.jobTypeAndContAr[0]) {

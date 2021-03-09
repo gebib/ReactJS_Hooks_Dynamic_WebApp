@@ -2,6 +2,7 @@ import React, {useContext, useEffect, useState} from "react";
 import {auth, storage, database} from "./firebase";
 import {showToast} from "../../../../UI_Main_pages_wrapper";
 import {v4 as uuid} from "uuid";
+import {useTranslation} from "react-i18next";
 
 
 const AuthContext = React.createContext();
@@ -11,9 +12,12 @@ export const useAuth = () => {
 };
 
 export function AuthProvider({children}) {
+
+    const {t, i18n} = useTranslation("SL_languages");
     const [currentUser, setCurrentUser] = useState();
     const [loading, setLoading] = useState(true);
     const [blogPostLoading, setBlogPostLoading] = useState(false);
+    const [resetFormFromAuth, setResetFormFromAuth] = useState(false);
 
 
     /////////////Auth | sign up | login | forgot /////////////////////
@@ -82,46 +86,63 @@ export function AuthProvider({children}) {
         return database.ref("jobs/" + jobAdKey).remove();
     };
     //////////////////////////blog list///////////////////////////////
-    ////////////////////////////blog/////////////////////////////
-    const create_blog = async (raw, htmlTxt, stagedFilesAr, blogType, postDate) => {
+
+    ////////////////////////////blog list/////////////////////////////
+    const create_blog = (stringifiedRaw, htmlTxt, stagedFilesAr, blogType, postDate) => {
         let blogId = uuid();
         let listOfThisBlogImagesURL = [];
+        setBlogPostLoading(true);
+
+        let dataToStore = {
+            stringifiedRaw: stringifiedRaw,
+            htmlTxt: htmlTxt,
+            blogType: blogType,
+            listOfBlogImgUrls: listOfThisBlogImagesURL,
+            postDate: postDate
+        };
 
         if (stagedFilesAr.length > 0) {
-            setBlogPostLoading(true);
             for (let i = 0; i < stagedFilesAr.length; i++) {
                 const imagesRef = storage.ref("blogImages").child(blogId + "/" + blogId + stagedFilesAr[i].file.name);
-                await imagesRef.put(stagedFilesAr[i].file).then(() => {
+                imagesRef.put(stagedFilesAr[i].file).then(() => {
                     imagesRef.getDownloadURL().then((url) => {
                         listOfThisBlogImagesURL.push(url);
+                        if (listOfThisBlogImagesURL.length === stagedFilesAr.length) {
+                            addBlogRTdbPost(blogId, dataToStore);
+                        }
                     });
                 }).catch((e) => {
                     setBlogPostLoading(false);
                     console.log("////:e ", e);
                 });
-
             }
-            await database.ref("/blogs").child(blogId).push(JSON.stringify([raw, htmlTxt, blogType, listOfThisBlogImagesURL, postDate])).then(() => {
-                console.log("////: ok blog too: ");
-                setBlogPostLoading(false);
-            }).catch((e) => {
-                setBlogPostLoading(false);
-                console.log("////:e ", e);
-            });
         } else {
-            console.log("////: NOTupded!", stagedFilesAr[0].file.name);
+            addBlogRTdbPost(blogId, dataToStore);
         }
-
+    };
+    const addBlogRTdbPost = (blogId, dataToStore) => {
+        setBlogPostLoading(false);
+        database.ref("/blogs").child(blogId).push(dataToStore).then(() => {
+            setBlogPostLoading(false);
+            showToast(t("blog.posted"),"info");
+            localStorage.removeItem("tmpBlogState");
+            setResetFormFromAuth(true);
+        }).catch((e) => {
+            setBlogPostLoading(false);
+            console.log("////:e ", e);
+        });
 
     };
-    
-    const read_blog = () => {
 
+
+    const read_blog = () => {
+        setBlogPostLoading(true);
+        return database.ref("/blogs").once("value");
     };
     const delete_blog = () => {
 
     };
-    //////////////////////////blog///////////////////////////////
+    //////////////////////////blog list///////////////////////////////
 
     /////////////////////////////////////////////////////////
 
@@ -138,6 +159,9 @@ export function AuthProvider({children}) {
         currentUser,
         setCurrentUser,
         blogPostLoading,
+        setBlogPostLoading,
+        resetFormFromAuth,
+        setResetFormFromAuth,
         login,
         signup,
         logout,

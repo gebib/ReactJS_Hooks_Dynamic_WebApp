@@ -26,7 +26,7 @@ export const getLocalDate = () => {
     let date = new Date().getDate();
     let month = new Date().getMonth() + 1;
     let year = new Date().getFullYear();
-    console.log(date + '-' + month + '-' + year);
+    // console.log(date + '-' + month + '-' + year);
     return JSON.stringify([date, month, year]);
 };
 

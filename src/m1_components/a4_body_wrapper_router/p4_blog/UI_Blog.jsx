@@ -43,6 +43,7 @@ export const UI_Blog = () => {
     const [isBlogStatus, setIsBlogStatus] = useState(true);
     const [shouldPrompt, setShouldPrompt] = useState(false);
     const [stagedFiles, setStagedFiles] = useState([]);
+    const [listOfBlogs, setListOfBlogs] = useState([]);
 
 
     const [user, setUser] = useState(false);
@@ -52,9 +53,13 @@ export const UI_Blog = () => {
     const articleRef = useRef();
     const imgInputRef = useRef();
     const imgRef = useRef();
-
     const {create_blog} = useAuth();
+
     const {blogPostLoading} = useAuth();
+    const {setBlogPostLoading} = useAuth();
+    const {read_blog} = useAuth();
+    const {resetFormFromAuth} = useAuth();
+    const {setResetFormFromAuth} = useAuth();
 
     useEffect(() => {
         setResetEditorState();
@@ -96,44 +101,54 @@ export const UI_Blog = () => {
 
 
     const handleTimeelementClick = (e) => {
-        console.log("////:OnCl ");
+        console.log("////:handleTimeelementClick ");
     };
 
 
     const postBlog = () => {
         let raw = convertToRaw(editorState.getCurrentContent());
         let htmlTxt = draftToHtml(convertToRaw(editorState.getCurrentContent()));
-
-        // setRawAndHtmlForm([raw, htmlTxt]);
-
-        // console.log("////:RAW: ", raw);
-        // console.log("////:htmlTxt: ", htmlTxt);
-        // console.log("////:Imgs: ", stagedFiles);
-
         if (raw.blocks.length > 0) {
             let blogType = (isBlogStatus) ? "blog" : "article";
-            create_blog(raw, htmlTxt, stagedFiles, blogType, getLocalDate);
+            let localDate = getLocalDate();
+            create_blog(JSON.stringify(raw), htmlTxt, stagedFiles, blogType, localDate);
         }
-
-
     };
+
+    const fetchListOfBlogs = async () => {
+        await read_blog().then((snapshot) => {
+            let listOfBlogs = [];
+            if (snapshot.val() !== null) {
+                snapshot.forEach((snData) => {
+                    listOfBlogs.push(snData.val());
+                });
+            }
+            setListOfBlogs(listOfBlogs);
+            setBlogPostLoading(false);
+        });
+    };
+
+
+    //fetch list of blogs
+    useEffect(() => {
+        fetchListOfBlogs().then(() => {
+            console.log("////:Fetch once: SET state:!");
+        }).catch((e) => {
+            console.log("////:e ", e);
+        });
+    }, [/*deps*/]);
 
     useEffect(() => {
-        if (!blogPostLoading) {
-            localStorage.removeItem("tmpBlogState");
+        console.log("////:listOfBlogs STATE:: ", listOfBlogs);
+    }, [listOfBlogs]);
+
+
+    useEffect(() => {
+        if (!blogPostLoading && resetFormFromAuth) {
             setResetEditorState();
+            setResetFormFromAuth(false);
         }
-    }, [blogPostLoading]);
-
-    // on refresh etc, {should save to localstorage}, if not possible prompt user? is that possible
-    // pictures should hvae remove button, after being stagged etc.constructor
-    // upload.. progress must add too etc.
-    //     button should be green, if is a valid enough to be posted etc.
-
-    const handleCb = () => {
-        console.log("////:Handle_isBlogStatus? ", isBlogStatus);
-
-    };
+    }, [blogPostLoading, resetFormFromAuth]);
 
     const handleStagedImgRemove = (clickedId) => {
         let updatedArray = [];
@@ -144,10 +159,6 @@ export const UI_Blog = () => {
         }
         setStagedFiles(updatedArray);
     };
-
-    useEffect(() => {
-        handleCb();
-    }, [isBlogStatus]);
 
     // window.confirm(t("jform.resetok"))////////////////////
     const checkShouldPrompt = () => {
