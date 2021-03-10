@@ -89,7 +89,7 @@ export function AuthProvider({children}) {
     //////////////////////////blog list///////////////////////////////
 
     ////////////////////////////blog list/////////////////////////////
-    const create_blog = (stringifiedRaw, htmlTxt, stagedFilesAr, blogType, postDate) => {
+    const create_blog = (stringifiedRaw, htmlTxt, stagedFilesAr, blogType, postDate, rating) => {
         let blogId = uuid();
         let listOfThisBlogImagesURL = [];
         setBlogPostLoading(true);
@@ -103,7 +103,8 @@ export function AuthProvider({children}) {
             listOfBlogImgUrls: listOfThisBlogImagesURL,
             postDate: postDate,
             authorName: currentUserInfo[1],
-            authorProfileImgUrl: currentUserInfo[3]
+            authorProfileImgUrl: currentUserInfo[3],
+            ratingStars: rating
         };
 
         if (stagedFilesAr.length > 0) {

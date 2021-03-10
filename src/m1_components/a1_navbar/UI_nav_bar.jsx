@@ -105,12 +105,10 @@ export const UI_nav_bar = (props) => {
         try {
             if (currentUserInfo !== null) {
                 await logout().then((r)=>{
-
                 }).catch((e) => {
                     console.log("////:e ", e);
                 });
                 showToast(t("sign_in.log_out_ok"), "info");
-                history.goBack();
             } else {
                 history.push("/login");
             }
@@ -118,8 +116,6 @@ export const UI_nav_bar = (props) => {
             showToast(t("sign_in.log_out_fail"), "error");
         }
     };
-
-
 
 
     return (

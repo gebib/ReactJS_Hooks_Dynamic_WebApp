@@ -1,4 +1,4 @@
-//$lineT: 4px;
+//$lineT: 2px;
 $uiBg: #181818;
 $slColor: #248c9d;
 
@@ -15,7 +15,7 @@ $slColor: #248c9d;
     width: 100px;
   }
 
-  .blogImg {
+  .blogProfileImg {
     height: 100%;
   }
 
@@ -151,5 +151,32 @@ $slColor: #248c9d;
       justify-content: center;
       align-items: center;
     }
+  }
+
+  //stars div
+  .stars{
+    //border: $lineT solid #0053f1;
+  }
+
+  //stars div
+  .stars div{
+    //border: $lineT solid #43f100;
+  }
+
+  //stars div
+  .stars div div{
+    //border: $lineT solid #9c4f00;
+  }
+
+  //stars wrapper
+  .stars div div span{
+    //border: $lineT solid #000000;
+
+  }
+
+  //actual stars
+  .stars div div span svg{
+    //border: $lineT solid #139c00;
+    display: flex;
   }
 }

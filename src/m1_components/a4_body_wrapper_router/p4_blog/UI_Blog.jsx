@@ -22,6 +22,8 @@ import {Prompt} from "react-router-dom";
 import {showToast} from "../../../UI_Main_pages_wrapper";
 import {useAuth} from "../../c1_auth/a0_auth_common/firebase/AuthContext";
 import {getLocalDate} from "../p2_jobs/job_form/Jobs_form";
+import ReactStars from "react-rating-stars-component";
+import {AiFillStar, AiOutlineStar} from "react-icons/ai";
 
 
 let blogDefaultTextE = `
@@ -40,17 +42,24 @@ export const UI_Blog = () => {
     const {t, i18n} = useTranslation("SL_languages");
     const [editorState, setEditorState] = useState(EditorState.createEmpty());
     const [rawAndHtmlForm, setRawAndHtmlForm] = useState([]);
-    const [isBlogStatus, setIsBlogStatus] = useState(true);
+
+    const [isBlogChecked, setIsBlogChecked] = useState(true);
+    const [isArticleChecked, setIsArticleChecked] = useState(false);
+    const [isReviewChecked, setIsReviewChecked] = useState(false);
+
     const [shouldPrompt, setShouldPrompt] = useState(false);
     const [stagedFiles, setStagedFiles] = useState([]);
     const [listOfBlogs, setListOfBlogs] = useState([]);
 
-
+    //rating stars
+    const [rating, setRating] = useState(5);
 
     const blogRef = useRef();
     const articleRef = useRef();
+    const reviewRef = useRef();
     const imgInputRef = useRef();
     const imgRef = useRef();
+    const starsRef = useRef();
 
     const {
         create_blog,
@@ -65,6 +74,7 @@ export const UI_Blog = () => {
     useEffect(() => {
         setResetEditorState();
     }, [t]);
+
 
     const setResetEditorState = () => {
         let contentBlockBlog;
@@ -107,27 +117,55 @@ export const UI_Blog = () => {
 
 
     const postBlog = () => {
-        let raw = convertToRaw(editorState.getCurrentContent());
-        let htmlTxt = draftToHtml(convertToRaw(editorState.getCurrentContent()));
-        if (raw.blocks.length > 0) {
-            let blogType = (isBlogStatus) ? "blog" : "article";
-            let localDate = getLocalDate();
-            create_blog(JSON.stringify(raw), htmlTxt, stagedFiles, blogType, localDate);
+        if (currentUserInfo !== null) {
+            let raw = convertToRaw(editorState.getCurrentContent());
+            let htmlTxt = draftToHtml(convertToRaw(editorState.getCurrentContent()));
+            if (raw.blocks.length > 0) {
+                let blogType = whatIsTheBlogType();
+                let localDate = getLocalDate();
+                create_blog(JSON.stringify(raw), htmlTxt, stagedFiles, blogType, localDate, rating);
+            }
+        } else {
+            checkShouldPrompt();
         }
     };
 
+    //fetch and decompose blog/article data for view.
     const fetchListOfBlogs = async () => {
         await read_blog().then((snapshot) => {
             let listOfBlogs = [];
             if (snapshot.val() !== null) {
                 snapshot.forEach((snData) => {
-                    listOfBlogs.push(snData.val());
+                    let aBlogDataes = {
+                        authorName: Object.values(snData.val())[0].authorName,
+                        authorProfileImgUrl: Object.values(snData.val())[0].authorProfileImgUrl,
+                        blogType: Object.values(snData.val())[0].blogType,
+                        htmlTxt: Object.values(snData.val())[0].htmlTxt,
+                        listOfBlogImgUrls: Object.values(snData.val())[0].listOfBlogImgUrls,
+                        postDate: Object.values(snData.val())[0].postDate,
+                        stringifiedRaw: Object.values(snData.val())[0].stringifiedRaw,
+                    };
+                    listOfBlogs.push(aBlogDataes);
                 });
             }
+            //refine farther view data
+            listOfBlogs.forEach((blogData) => {
+                let viewData = {};
+            });
             setListOfBlogs(listOfBlogs);
             setBlogPostLoading(false);
         });
     };
+
+    //todo: find and use first line text from RAW as title and truncate, depending on the width:
+    //todo: check if article has image or not to display
+    //todo: set authour date
+    //todo: set authour name on footer of article
+    //todo: on click article should show, without fetching again.. use ls?
+    //todo: user can delete their blog: with r u sure?
+    //todo: blog godkjennelse of adm... blog is visible to the user.. so lenge
+    //todo: fix page bg if no blog etc.
+    //todo: !ok?
 
 
     //fetch list of blogs,
@@ -162,6 +200,11 @@ export const UI_Blog = () => {
         if (!blogPostLoading && resetFormFromAuth) {
             setResetEditorState();
             setResetFormFromAuth(false);
+            fetchListOfBlogs().then(() => {
+                console.log("////:Fetch DONE posting: SET state:!");
+            }).catch((e) => {
+                console.log("////:e ", e);
+            });
         }
     }, [blogPostLoading, resetFormFromAuth]);
 
@@ -175,25 +218,40 @@ export const UI_Blog = () => {
         setStagedFiles(updatedArray);
     };
 
+    //return type of blog
+    const whatIsTheBlogType = () => {
+        let whatIsIt = "";
+        if (isBlogChecked) {
+            whatIsIt = t("blog.isBlog");
+        } else if (isArticleChecked) {
+            whatIsIt = t("blog.isArticle");
+        } else if (isReviewChecked) {
+            whatIsIt = t("blog.isReview");
+        }
+        return whatIsIt;
+    };
+
     // window.confirm(t("jform.resetok"))////////////////////
     const checkShouldPrompt = () => {
         if (isTextEditorDirty() && (currentUserInfo === null)) {
-            let whatIsIt = (isBlogStatus) ? t("blog.isBlog") : t("blog.isArticle");
-            showToast(t("blog.toPostYour") + " " + whatIsIt + " " + t("blog.signInPlease"));
+            showToast(t("blog.toPostYour") + " " + whatIsTheBlogType() + " " + t("blog.signInPlease"));
         }
     };
 
     //prompt also if img added, but not signed in!
     useEffect(() => {
-       if(stagedFiles.length > 0){
-           checkShouldPrompt();
-       }
+        if (stagedFiles.length > 0) {
+            checkShouldPrompt();
+        }
     }, [stagedFiles]);
 
 
     const isTextEditorDirty = () => {
-        let editedFormLength = convertToRaw(editorState.getCurrentContent()).blocks.length;
-        return (editedFormLength > 3) || (editedFormLength < 3) || (stagedFiles.length !== 0);
+        let raw = convertToRaw(editorState.getCurrentContent());
+        let rawLengthChanged = raw.blocks.length !== 3;
+        let defaultTextEdited = (raw.blocks[0].text !== "Share your inspirational article or blog with us!") &&
+            (raw.blocks[0].text !== "Del din inspirerende artikkel eller blogg med oss!");
+        return (rawLengthChanged || defaultTextEdited);
     };
 
     //check previous saved blog form data on ls
@@ -292,15 +350,67 @@ export const UI_Blog = () => {
                             })}
                         </div>
 
+                        <div className={"blogTypeCb mx-2"}>
+                            <div className={"form-check"}>
+                                <input disabled={blogPostLoading} className={"form-check-input"}
+                                       ref={reviewRef}
+                                       checked={isReviewChecked}
+                                       onChange={(e) => {
+                                           // handleCb(!e.target.checked);
+                                           setIsReviewChecked(true);
+                                           setIsArticleChecked(false);
+                                           setIsBlogChecked(false);
+                                       }}
+                                       type={"checkbox"}
+                                       id={"ar"}/>
+                                <label className="form-check-label" htmlFor="ar">
+                                    {t("blog.review")}
+                                </label>
+                            </div>
+                            <div className={"stars"}>
+                                {isReviewChecked && <ReactStars
+                                    edit={true}
+                                    size={23}
+                                    count={5}
+                                    color={"#c6c6c6"}
+                                    activeColor={"#248C9D"}
+                                    value={rating}
+                                    a11y={true}
+                                    emptyIcon={<AiOutlineStar/>}
+                                    filledIcon={<AiFillStar/>}
+                                    onChange={(newValue) => {
+                                        setRating(newValue);
+                                    }}
+                                />}
+                                {!isReviewChecked && <ReactStars
+                                    edit={false}
+                                    size={23}
+                                    count={5}
+                                    color={"#c6c6c6"}
+                                    activeColor={"#248C9D"}
+                                    value={0}
+                                    a11y={true}
+                                    emptyIcon={<AiOutlineStar/>}
+                                    filledIcon={<AiFillStar/>}
+                                    onChange={(newValue) => {
+                                        setRating(newValue);
+                                    }}
+                                />}
+                            </div>
+                        </div>
+
 
                         <div className={"blogTypeCb mx-2"}>
                             <div className="form-check">
                                 <input disabled={blogPostLoading} className="form-check-input"
                                        ref={blogRef}
-                                       checked={isBlogStatus}
+                                       checked={isBlogChecked}
                                        onChange={(e) => {
                                            // handleCb(!e.target.checked);
-                                           setIsBlogStatus(true);
+                                           setIsReviewChecked(false);
+                                           setIsArticleChecked(false);
+                                           setIsBlogChecked(true);
+
                                        }}
                                        type={"checkbox"}
                                        id={"bl"}/>
@@ -311,10 +421,13 @@ export const UI_Blog = () => {
                             <div className={"form-check"}>
                                 <input disabled={blogPostLoading} className={"form-check-input"}
                                        ref={articleRef}
-                                       checked={!isBlogStatus}
+                                       checked={isArticleChecked}
                                        onChange={(e) => {
                                            // handleCb(!e.target.checked);
-                                           setIsBlogStatus(false);
+                                           setIsReviewChecked(false);
+                                           setIsArticleChecked(true);
+                                           setIsBlogChecked(false);
+
                                        }}
                                        type={"checkbox"}
                                        id={"ar"}/>
@@ -337,7 +450,9 @@ export const UI_Blog = () => {
                                           aria-hidden="true"/> : <IconContext.Provider value={{size: "1.5em"}}>
                                         <FaShare style={{color: "#ffffff", marginRight: "10px"}}/>
                                     </IconContext.Provider>}
-                                {isBlogStatus ? t("blog.postBlog") : t("blog.postArticle")}
+                                {isBlogChecked && t("blog.postBlog")}
+                                {isReviewChecked && t("blog.postReview")}
+                                {isArticleChecked && t("blog.postArticle")}
                             </button>
 
                             <button disabled={blogPostLoading} style={{border: "2px solid white"}} onClick={(event) => {
@@ -400,6 +515,7 @@ export const UI_Blog = () => {
 
             <VerticalTimeline className={"verticalTl"}>
                 {listOfBlogs.map((blogData, i) => (
+
                     <VerticalTimelineElement
                         onTimelineElementClick={(e) => {
                             handleTimeelementClick(e);
@@ -418,9 +534,9 @@ export const UI_Blog = () => {
                         contentArrowStyle={{borderRight: "7px solid  #d3412a"}}
                         date="2011 - present"
                         icon={<img
-                            alt=""
-                            className="blogImg"
-                            src="https://images.pexels.com/photos/104827/cat-pet-animal-domestic-104827.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"/>}>
+                            className={"blogProfileImg"}
+                            alt={"profile image"}
+                            src={blogData.authorProfileImgUrl}/>}>
                         <div className={"blogReadMoreText"}>
                             <h3 className="vertical-timeline-element-title">Creative Director</h3>
                             {/*<h4 className="vertical-timeline-element-subtitle">Miami, FL</h4>*/}

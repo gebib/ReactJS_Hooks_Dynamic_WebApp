@@ -25,6 +25,11 @@
     line-height: 0;
   }
 
+  .good_toast{
+    &:hover{
+      cursor: default;
+    }
+  }
 
 }
 
