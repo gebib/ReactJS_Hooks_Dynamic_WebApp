@@ -46,20 +46,21 @@ export const UI_Blog = () => {
     const [listOfBlogs, setListOfBlogs] = useState([]);
 
 
-    const [user, setUser] = useState(false);
-
 
     const blogRef = useRef();
     const articleRef = useRef();
     const imgInputRef = useRef();
     const imgRef = useRef();
-    const {create_blog} = useAuth();
 
-    const {blogPostLoading} = useAuth();
-    const {setBlogPostLoading} = useAuth();
-    const {read_blog} = useAuth();
-    const {resetFormFromAuth} = useAuth();
-    const {setResetFormFromAuth} = useAuth();
+    const {
+        create_blog,
+        blogPostLoading,
+        setBlogPostLoading,
+        read_blog,
+        resetFormFromAuth,
+        setResetFormFromAuth,
+        currentUserInfo
+    } = useAuth();
 
     useEffect(() => {
         setResetEditorState();
@@ -84,18 +85,18 @@ export const UI_Blog = () => {
 
     ///////////////temp/////////////
     const images = [
-        {
-            original: 'https://picsum.photos/id/1018/1000/600/',
-            thumbnail: 'https://picsum.photos/id/1018/250/150/',
-        },
-        {
-            original: 'https://picsum.photos/id/1015/1000/600/',
-            thumbnail: 'https://picsum.photos/id/1015/250/150/',
-        },
-        {
-            original: 'https://picsum.photos/id/1019/1000/600/',
-            thumbnail: 'https://picsum.photos/id/1019/250/150/',
-        },
+        // {
+        //     original: 'https://picsum.photos/id/1018/1000/600/',
+        //     thumbnail: 'https://picsum.photos/id/1018/250/150/',
+        // },
+        // {
+        //     original: 'https://picsum.photos/id/1015/1000/600/',
+        //     thumbnail: 'https://picsum.photos/id/1015/250/150/',
+        // },
+        // {
+        //     original: 'https://picsum.photos/id/1019/1000/600/',
+        //     thumbnail: 'https://picsum.photos/id/1019/250/150/',
+        // },
     ];
     ///////////////temp/////////////
 
@@ -129,7 +130,7 @@ export const UI_Blog = () => {
     };
 
 
-    //fetch list of blogs
+    //fetch list of blogs,
     useEffect(() => {
         fetchListOfBlogs().then(() => {
             console.log("////:Fetch once: SET state:!");
@@ -138,9 +139,23 @@ export const UI_Blog = () => {
         });
     }, [/*deps*/]);
 
+    //And make viewable, once fetched!.
     useEffect(() => {
-        console.log("////:listOfBlogs STATE:: ", listOfBlogs);
+        if (listOfBlogs.length > 0) {
+            console.log("////:listOfBlogs STATE:: ", listOfBlogs);
+        }
     }, [listOfBlogs]);
+
+    //monitor current user change in auth! if signed out etc..
+    useEffect(() => {
+        if (currentUserInfo !== null) {
+            console.log("////:CURRENTuser UI_Blog: ", currentUserInfo);
+        } else {
+            //TODO thigs that needs to be done if user sings out etc.
+            console.log("////: No use!");
+        }
+
+    }, [currentUserInfo]);
 
 
     useEffect(() => {
@@ -162,7 +177,7 @@ export const UI_Blog = () => {
 
     // window.confirm(t("jform.resetok"))////////////////////
     const checkShouldPrompt = () => {
-        if (isTextEditorDirty() && (!user)) {
+        if (isTextEditorDirty() && (currentUserInfo === null)) {
             let whatIsIt = (isBlogStatus) ? t("blog.isBlog") : t("blog.isArticle");
             showToast(t("blog.toPostYour") + " " + whatIsIt + " " + t("blog.signInPlease"));
         }
@@ -170,7 +185,9 @@ export const UI_Blog = () => {
 
     //prompt also if img added, but not signed in!
     useEffect(() => {
-        checkShouldPrompt();
+       if(stagedFiles.length > 0){
+           checkShouldPrompt();
+       }
     }, [stagedFiles]);
 
 
@@ -380,8 +397,9 @@ export const UI_Blog = () => {
                 </div>
             </div>
             {/*//////////blog editor//////////*/}
+
             <VerticalTimeline className={"verticalTl"}>
-                {events.map(event => (
+                {listOfBlogs.map((blogData, i) => (
                     <VerticalTimelineElement
                         onTimelineElementClick={(e) => {
                             handleTimeelementClick(e);
@@ -425,6 +443,55 @@ export const UI_Blog = () => {
                     </VerticalTimelineElement>
                 ))}
             </VerticalTimeline>
+
+
+            {/*<VerticalTimeline className={"verticalTl"}>*/}
+            {/*    {events.map(event => (*/}
+            {/*        <VerticalTimelineElement*/}
+            {/*            onTimelineElementClick={(e) => {*/}
+            {/*                handleTimeelementClick(e);*/}
+            {/*            }}*/}
+            {/*            className="vertical-timeline-element--work"*/}
+            {/*            iconStyle={{*/}
+            {/*                background: "rgb(33, 150, 143)",*/}
+            {/*                color: "#ffffff",*/}
+            {/*                overflow: "hidden",*/}
+            {/*                display: "flex",*/}
+            {/*                alignItems: "center",*/}
+            {/*                justifyContent: "center"*/}
+            {/*                // boxShadow: "0 0 0 4px #248C9D",*/}
+            {/*            }}*/}
+
+            {/*            contentArrowStyle={{borderRight: "7px solid  #d3412a"}}*/}
+            {/*            date="2011 - present"*/}
+            {/*            icon={<img*/}
+            {/*                alt=""*/}
+            {/*                className="blogImg"*/}
+            {/*                src="https://images.pexels.com/photos/104827/cat-pet-animal-domestic-104827.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"/>}>*/}
+            {/*            <div className={"blogReadMoreText"}>*/}
+            {/*                <h3 className="vertical-timeline-element-title">Creative Director</h3>*/}
+            {/*                /!*<h4 className="vertical-timeline-element-subtitle">Miami, FL</h4>*!/*/}
+            {/*                <p style={{fontWeight: "400", fontSize: "16px"}}>*/}
+            {/*                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores corporis impedit*/}
+            {/*                    nobis*/}
+            {/*                    omnis quam quasi vitae, voluptatem? Ad architecto doloremque earum est excepturi facere*/}
+            {/*                    fugiat fugit in ipsa ipsum nobis obcaecati quia quod rem repellendus tempore, tenetur*/}
+            {/*                    ullam*/}
+            {/*                    ut veniam voluptatem. Ab ducimus quaerat rem. Harum incidunt numquam possimus. Debitis.*/}
+            {/*                </p>*/}
+            {/*            </div>*/}
+            {/*            <div className={"blogListFooterEmbedWrapper"}>*/}
+            {/*                <ImageGallery*/}
+            {/*                    items={images}*/}
+            {/*                    showPlayButton={false}*/}
+            {/*                    showNav={false}*/}
+            {/*                />*/}
+            {/*            </div>*/}
+            {/*        </VerticalTimelineElement>*/}
+            {/*    ))}*/}
+            {/*</VerticalTimeline>*/}
+
+
         </div>
 
     );

@@ -16,7 +16,7 @@ import {showToast} from "../../../UI_Main_pages_wrapper";
 import ReactCrop from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
 import {useResizeObserver} from "./useResizeObserver";
-
+import ReCAPTCHA from "react-google-recaptcha";
 
 
 export const UI_register = () => {
@@ -46,6 +46,20 @@ export const UI_register = () => {
     const [cropingDone, setCropingDone] = useState(false);///////////////////////////////////
     const [tempProfileImg, setTempProfileImg] = useState(null);
     const [progressNr, setProgressNr] = useState(0);
+
+    //////////////recaptcha//////////////////////
+    const SITE_KEY = '6Lc83XgaAAAAAKqZIVnRoWAWRXdUScInPXTsOiQJ';
+    const [expired, setExpired] = useState(true);
+
+
+    // triggered when recatpcha is triggered or expires
+    const handleRecaptchaChange = (value) => {
+        if (value) {
+            setExpired(false);
+        } else {
+            setExpired(true);
+        }
+    };
 
 
     const onSelectFile = (e) => {
@@ -110,9 +124,9 @@ export const UI_register = () => {
     const clearRegisteringProcess = () => {
         setLoading(false);
         setTimeout(() => {
-            history.push("/")
+            history.goBack();
         }, 1000);
-    }
+    };
 
     function getCroppedImage(canvas, crop) {
         if (!crop || !canvas) {
@@ -212,7 +226,7 @@ export const UI_register = () => {
         }
     }, [name]);
 
-    const cropState = (c) =>{
+    const cropState = (c) => {
         setCompletedCrop(c);
         setCropingDone(true);
     }
@@ -369,7 +383,7 @@ export const UI_register = () => {
                                    type="checkbox"/>
                             <label className="form-check-label"
                                    htmlFor="flexCheckIndeterminate">{t("register.i_accept_the")}
-                                {t("register.terms")}  {t("register.and")}
+                                {t("register.terms")} {t("register.and")}
                                 <Link style={{textDecoration: 'none'}}
                                       to={`/privacypolicy`}> {t("register.privacy_policy")} </Link>
                             </label>
@@ -391,6 +405,14 @@ export const UI_register = () => {
                     {/*<UI_hl_divider middleText={t("register.lbl_or_register_with")}/>*/}
                     {/*/!*SocialMedia buttons*!/*/}
                     {/*<UI_sm_buttons/>*/}
+                    {/*TODO add exception include recaptcha check before registration is valid!*/}
+                    <div className={"reCaptcha"}>
+                        <ReCAPTCHA
+                            theme="dark"
+                            onChange={handleRecaptchaChange}
+                            sitekey={SITE_KEY}
+                        />
+                    </div>
 
                     <div className={"progress_wrapper"}>
                         <div className="progress">

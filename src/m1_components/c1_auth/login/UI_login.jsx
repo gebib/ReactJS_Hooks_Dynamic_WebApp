@@ -32,7 +32,7 @@ export const UI_login = () => {
         try {
             setLoading(true);
             await login(formData.email, formData.password);
-            history.push("/");
+            history.goBack();
         } catch { // in case signup has failed
             showToast(t("sign_in.try_again"), "error");
         }

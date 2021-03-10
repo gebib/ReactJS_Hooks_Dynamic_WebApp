@@ -14,7 +14,7 @@ export const useAuth = () => {
 export function AuthProvider({children}) {
 
     const {t, i18n} = useTranslation("SL_languages");
-    const [currentUser, setCurrentUser] = useState();
+    const [currentUserInfo, setCurrentUserInfo] = useState(null);
     const [loading, setLoading] = useState(true);
     const [blogPostLoading, setBlogPostLoading] = useState(false);
     const [resetFormFromAuth, setResetFormFromAuth] = useState(false);
@@ -32,7 +32,8 @@ export function AuthProvider({children}) {
     const addUserDataToList = (usersName, auth) => {
         const rtDBref = database.ref("users_data/");
         rtDBref.child(auth.user.uid).set({
-            name: usersName
+            name: usersName,
+            isAdmin: false //for all users except administrators.
         }).then(r => {
             // console.log("////: user data set!", r);
         }).catch(err => {
@@ -63,7 +64,7 @@ export function AuthProvider({children}) {
     };
 
     const logout = () => {
-        setCurrentUser(null);
+        setCurrentUserInfo(null);
         return auth.signOut();
     };
 
@@ -93,12 +94,16 @@ export function AuthProvider({children}) {
         let listOfThisBlogImagesURL = [];
         setBlogPostLoading(true);
 
+        console.log("////:CU ", currentUserInfo);
+
         let dataToStore = {
             stringifiedRaw: stringifiedRaw,
             htmlTxt: htmlTxt,
             blogType: blogType,
             listOfBlogImgUrls: listOfThisBlogImagesURL,
-            postDate: postDate
+            postDate: postDate,
+            authorName: currentUserInfo[1],
+            authorProfileImgUrl: currentUserInfo[3]
         };
 
         if (stagedFilesAr.length > 0) {
@@ -120,11 +125,12 @@ export function AuthProvider({children}) {
             addBlogRTdbPost(blogId, dataToStore);
         }
     };
+    ////////post rtDb data.
     const addBlogRTdbPost = (blogId, dataToStore) => {
         setBlogPostLoading(false);
         database.ref("/blogs").child(blogId).push(dataToStore).then(() => {
             setBlogPostLoading(false);
-            showToast(t("blog.posted"),"info");
+            showToast(t("blog.posted"), "info");
             localStorage.removeItem("tmpBlogState");
             setResetFormFromAuth(true);
         }).catch((e) => {
@@ -146,18 +152,39 @@ export function AuthProvider({children}) {
 
     /////////////////////////////////////////////////////////
 
-
+//fetch user information to local on user sign in or register.
     useEffect(() => {
         auth.onAuthStateChanged((user) => {
-            setCurrentUser(user);
+            if (user !== null) {
+                let userId = user.uid;
+                let userName = "";
+                let userType = "";
+                let profileImgUrl = "";
+
+                database.ref("users_data/" + userId).once("value").then((sn) => {
+                    userType = sn.val().isAdmin;
+                    userName = sn.val().name;
+                    storage.ref("profile_imgs/").child(user.uid + "/profile.png").getDownloadURL().then((url) => {
+                        profileImgUrl = url;
+                        setCurrentUserInfo([userId, userName, userType, profileImgUrl]);
+                    }).catch((e) => {
+                        // console.log("////:e ", e);
+                    });
+
+                }).catch((e) => {
+                    // console.log("////:e ", e);
+                });
+            } else {
+                setCurrentUserInfo(null);
+            }
             setLoading(false);
         });
     }, []);
 
     //context values that will be available to all that use the context.
     const value = {
-        currentUser,
-        setCurrentUser,
+        currentUserInfo,
+        // setCurrentUserInfo,
         blogPostLoading,
         setBlogPostLoading,
         resetFormFromAuth,

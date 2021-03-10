@@ -33,7 +33,7 @@ $new-shadow-active: 0px 0px 10px 6px rgba(0, 0, 0, 0.1);
   //grid layout
   display: grid;
   grid-template-columns: auto auto; // i need 2 columns 1fraction each
-  grid-template-rows: auto auto auto auto auto auto auto 19px auto; // i need 10 rows 1fraction each
+  grid-template-rows: auto auto auto auto auto auto auto 19px auto auto; // i need 10 rows 1fraction each
   align-items: center;
   //grid-column-gap: 5px;
   grid-row-gap: 17px;
@@ -54,7 +54,8 @@ $new-shadow-active: 0px 0px 10px 6px rgba(0, 0, 0, 0.1);
   "btn_register btn_register"
   //"hr_centered hr_centered"
   //"sm_buttons sm_buttons"
-  "prog_bar prog_bar";
+  "prog_bar prog_bar"
+  "reCap reCap";
 
   .input_wrappers { //by default no text!
     //border: $lineT solid #00e1ff;
@@ -70,6 +71,7 @@ $new-shadow-active: 0px 0px 10px 6px rgba(0, 0, 0, 0.1);
       font-size: 14px;
     }
   }
+
 
   .profilePic {
     //border: $lineT solid #ff0000;
@@ -259,6 +261,15 @@ $new-shadow-active: 0px 0px 10px 6px rgba(0, 0, 0, 0.1);
 ///////////////////////////////////
 input[type="file"] {
   display: none;
+}
+
+.reCaptcha{
+  grid-area: reCap;
+  //background-color: #D3D3D3;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 

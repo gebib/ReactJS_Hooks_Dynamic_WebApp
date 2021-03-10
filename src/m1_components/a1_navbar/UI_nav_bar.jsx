@@ -22,7 +22,7 @@ import {showToast} from "../../UI_Main_pages_wrapper";
 
 export const UI_nav_bar = (props) => {
     const {t, i18n} = useTranslation("SL_languages");
-    const location = useLocation();
+
 
     const [onHome, setOnHome] = useState(true);
     const [onJobs, setOnJobs] = useState(false);
@@ -30,11 +30,16 @@ export const UI_nav_bar = (props) => {
     const [onBlog, setOnBlog] = useState(false);
     const [onAbout, setOnAbout] = useState(false);
 
+    const location = useLocation();
+    const [prevCurrentLocation, setPrevCurrenLocation] = useState(["/", "/"]);
+
+
+
     const {ref, inView, entry} = useInView({
         threshold: 0,
     });
     const history = useHistory();
-    const {currentUser, logout} = useAuth();
+    const {currentUserInfo, logout} = useAuth();
     // const {error, setError} = useState();
 
     const handleLanguageChange = () => {
@@ -45,7 +50,7 @@ export const UI_nav_bar = (props) => {
             i18n.changeLanguage("en").then(r => {
             });
         }
-    }
+    };
 
     //should fire only when routing path changes:
     useEffect(() => {
@@ -98,17 +103,23 @@ export const UI_nav_bar = (props) => {
 
     const handleLoginLogout = async () => {
         try {
-            if (currentUser !== null) {
-                await logout();
+            if (currentUserInfo !== null) {
+                await logout().then((r)=>{
+
+                }).catch((e) => {
+                    console.log("////:e ", e);
+                });
                 showToast(t("sign_in.log_out_ok"), "info");
-                history.push("/");
+                history.goBack();
             } else {
                 history.push("/login");
             }
         } catch {
             showToast(t("sign_in.log_out_fail"), "error");
         }
-    }
+    };
+
+
 
 
     return (
@@ -126,8 +137,8 @@ export const UI_nav_bar = (props) => {
                         <div className={"sign_in"}>
                             <IconContext.Provider value={{size: "1em"}}>
                                 <div className={"sign_in_lbl"} onClick={() => handleLoginLogout()}
-                                     style={currentUser !== null ? {color: "#24818D"} : {color: "#24818D"}
-                                     }>{currentUser !== null ? t("sign_in.logout") : t("sign_in.login")}<ImArrowUp/>
+                                     style={currentUserInfo !== null ? {color: "#24818D"} : {color: "#24818D"}
+                                     }>{currentUserInfo !== null ? t("sign_in.logout") : t("sign_in.login")}<ImArrowUp/>
                                 </div>
                             </IconContext.Provider>
                         </div>
@@ -217,4 +228,4 @@ export const UI_nav_bar = (props) => {
             {/*{console.log("/////:: ", inView)}*/}
         </div>
     );
-}
+};

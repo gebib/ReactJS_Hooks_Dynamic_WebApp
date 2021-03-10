@@ -21,7 +21,7 @@ export const UI_forgot_password = () => {
             setLoading(true);
             await resetPassword(formData.email);
             showToast(t("forgot.resetLinkInfo"), "info");
-            history.push("/");
+            history.goBack();
         } catch { // in any error
             showToast(t("forgot.resendMeLink"), "error");
         }
