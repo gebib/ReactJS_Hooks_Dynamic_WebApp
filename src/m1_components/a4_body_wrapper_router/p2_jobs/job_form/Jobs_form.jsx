@@ -26,8 +26,12 @@ export const getLocalDate = () => {
     let date = new Date().getDate();
     let month = new Date().getMonth() + 1;
     let year = new Date().getFullYear();
+
+    let hour = new Date().getHours();
+    let minute = new Date().getMinutes();
+    let second = new Date().getSeconds();
     // console.log(date + '-' + month + '-' + year);
-    return JSON.stringify([date, month, year]);
+    return JSON.stringify([date, month, year, hour, minute, second]);
 };
 
 export const Jobs_form = () => {

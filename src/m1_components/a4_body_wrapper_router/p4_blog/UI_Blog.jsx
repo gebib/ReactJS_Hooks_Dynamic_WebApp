@@ -169,13 +169,7 @@ export const UI_Blog = () => {
                     // build blog images array for gallery, if any.
                     let blogImages = [];
                     let imagesUrlList = Object.values(snData.val())[0].listOfBlogImgUrls;
-                    console.log("////:URLLL??? ", imagesUrlList);
-
-                    // for (let i = 0; i < imagesUrlList.length; i++) {
-                    //     let imgUrl = imagesUrlList[i];
-                    //     console.log("////: ", imgUrl);
-                    // }
-
+                    // console.log("////:URLLL??? ", imagesUrlList);
 
                     let aBlogDataes = {
                         authorName: Object.values(snData.val())[0].authorName,
@@ -190,10 +184,30 @@ export const UI_Blog = () => {
                         isBlogApproved: JSON.parse(Object.values(snData.val())[0].isBlogApproved)
                     };
                     listOfBlogs.push(aBlogDataes);
-                    console.log("////:AblogDataes ", aBlogDataes);
+                    // console.log("////:AblogDataes ", aBlogDataes);
                 });
             }
 
+            //sort list of blogs by date!
+
+            let sortedListOfBlogs = [];
+            listOfBlogs.sort((a, b) => {
+                let pDa = JSON.parse(a.postDate);
+                let pDb = JSON.parse(b.postDate);
+
+                //add 0 to month/d/h/m/s case < 10
+                let m0 = (pDa[1] < 10) ? "0" : "";
+                let d0 = (pDa[0] < 10) ? "0" : "";
+                let h0 = (pDa[3] < 10) ? "0" : "";
+                let mi0 = (pDa[4] < 10) ? "0" : "";
+                let s0 = (pDa[5] < 10) ? "0" : "";
+
+                let aDate = (pDa[2] + "-" + m0 + pDa[1] + "-" + d0 + pDa[0] + "T" + h0 + pDa[3] + ":" + mi0 + pDa[4] + ":" + s0 + pDa[5]);
+                let bDate = (pDb[2] + "-" + m0 + pDb[1] + "-" + d0 + pDb[0] + "T" + h0 + pDb[3] + ":" + mi0 + pDb[4] + ":" + s0 + pDb[5]);
+
+                // console.log("////: ", aDate, " ..bDate: ", bDate);
+                return (Date.parse(aDate) - Date.parse(bDate));
+            });
             setListOfBlogs(listOfBlogs.reverse());/////
             setBlogPostLoading(false);
         });
@@ -654,7 +668,7 @@ export const UI_Blog = () => {
                                 <div className={"typeOfBlog"}>
                                     <div style={{color: "#a9c0bf"}} hidden={!(aBlogData.blogType === "blog")}>
                                         <IconContext.Provider value={{size: "1.5em"}}>
-                                            <SiMicroDotBlog style={{color: "#a9c0bf", marginRight: "10px"}}/>
+                                            <SiMicroDotBlog style={{color: "#248c9d", marginRight: "10px"}}/>
                                             {t("blog.iAmBlog")}
                                         </IconContext.Provider>
                                     </div>
@@ -692,7 +706,7 @@ export const UI_Blog = () => {
                         {/*{console.log("////:aBlogData!", aBlogData.listOfBlogImgUrls)}*/}
                         {/*{console.log("////:URL ", Object.values(aBlogData)[4] ? Object.values(aBlogData)[4].length : "oiuoiuoiuoiu")}*/}
 
-                        <div hidden={Object.values(aBlogData)[4]} className={"blogListFooterEmbedWrapper"}>
+                        <div hidden={!Object.values(aBlogData)[4]} className={"blogListFooterEmbedWrapper"}>
                             < ImageGallery
                                 items={getAblogsImages(index)}
                                 showPlayButton={false}

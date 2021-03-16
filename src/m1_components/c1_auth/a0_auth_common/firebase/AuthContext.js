@@ -94,7 +94,7 @@ export function AuthProvider({children}) {
         let listOfThisBlogImagesURL = [];
         setBlogPostLoading(true);
 
-        console.log("////:CU ", currentUserInfo);
+        // console.log("////:CU ", currentUserInfo);
 
         let dataToStore = {
             stringifiedRaw: stringifiedRaw,
