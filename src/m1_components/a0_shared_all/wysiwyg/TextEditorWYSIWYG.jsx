@@ -26,6 +26,8 @@ export const TextEditorWYSIWYG = (props) => {
     const {t, i18n} = useTranslation("SL_languages");
     let shouldPrompt = false;
     const [editorState, setEditorState] = useState(EditorState.createEmpty());
+    const [spellCheck, setSpellCheck] = useState(true);
+
 
 
     useEffect(() => {
@@ -40,8 +42,10 @@ export const TextEditorWYSIWYG = (props) => {
         let contentBlock;
         if (i18n.language === "en") {
             contentBlock = htmlToDraft(newJobTemplateE);
+            setSpellCheck(true);
         } else {
             contentBlock = htmlToDraft(newJobTemplateN);
+            setSpellCheck(false);
         }
         if (contentBlock) {
             const contentState = ContentState.createFromBlockArray(
@@ -61,6 +65,8 @@ export const TextEditorWYSIWYG = (props) => {
                 toolbarClassName="mainToolBarWrapper"
                 wrapperClassName="toolWrapper"
                 editorClassName="editor"
+                stripPastedStyles={true}
+                spellCheck={spellCheck}
                 toolbar={{
                     options: ["inline", "textAlign", "blockType", "fontSize", "fontFamily", "list", "link", "colorPicker", "history", "emoji"],
                     // image: { uploadCallback: uploadImageCallBack, alt: { present: true, mandatory: true } },

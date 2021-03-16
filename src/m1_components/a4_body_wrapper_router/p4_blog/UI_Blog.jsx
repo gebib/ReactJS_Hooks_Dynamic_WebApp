@@ -5,10 +5,9 @@ import "react-vertical-timeline-component/style.min.css";
 import events from "./timeline/events.json";
 import {FaBriefcase} from "react-icons/fa";
 import largeSL_logo from "../../a2_logo_with_image/sl_logo_big.svg";
-import {TextEditorWYSIWYG} from "../../a0_shared_all/wysiwyg/TextEditorWYSIWYG";
 import ImageGallery from "react-image-gallery";
 import "react-image-gallery/styles/css/image-gallery.css";
-import {RiEditFill} from "react-icons/ri";
+import {RiCloseFill} from "react-icons/ri";
 import {IconContext} from "react-icons";
 import {FaShare} from "react-icons/fa";
 import {MdClear} from "react-icons/md";
@@ -24,6 +23,15 @@ import {useAuth} from "../../c1_auth/a0_auth_common/firebase/AuthContext";
 import {getLocalDate} from "../p2_jobs/job_form/Jobs_form";
 import ReactStars from "react-rating-stars-component";
 import {AiFillStar, AiOutlineStar} from "react-icons/ai";
+import {SiMicroDotBlog} from "react-icons/si";
+import {MdCheck} from "react-icons/md";
+import {FaInfo} from "react-icons/fa";
+
+
+import {RiFeedbackFill} from "react-icons/ri";
+import {BsBoxArrowUpRight} from "react-icons/bs";
+
+import DOMPurify from "dompurify";
 
 
 let blogDefaultTextE = `
@@ -41,6 +49,12 @@ let blogDefaultTextN = `
 export const UI_Blog = () => {
     const {t, i18n} = useTranslation("SL_languages");
     const [editorState, setEditorState] = useState(EditorState.createEmpty());
+    const [editorTouched, setEditorTouched] = useState(false);
+    const [spellCheck, setSpellCheck] = useState(true);
+
+    const [userNotAdmin, setUserNotAdmin] = useState(true);
+
+
     const [rawAndHtmlForm, setRawAndHtmlForm] = useState([]);
 
     const [isBlogChecked, setIsBlogChecked] = useState(true);
@@ -72,7 +86,9 @@ export const UI_Blog = () => {
     } = useAuth();
 
     useEffect(() => {
-        setResetEditorState();
+        if (!editorTouched) {
+            setResetEditorState();
+        }
     }, [t]);
 
 
@@ -80,8 +96,10 @@ export const UI_Blog = () => {
         let contentBlockBlog;
         if (i18n.language === "en") {
             contentBlockBlog = htmlToDraft(blogDefaultTextE);
+            setSpellCheck(true);//spell check available for English.
         } else {
             contentBlockBlog = htmlToDraft(blogDefaultTextN);
+            setSpellCheck(false);
         }
         if (contentBlockBlog) {
             const contentState = ContentState.createFromBlockArray(
@@ -93,24 +111,6 @@ export const UI_Blog = () => {
         setStagedFiles([]);
     };
 
-    ///////////////temp/////////////
-    const images = [
-        // {
-        //     original: 'https://picsum.photos/id/1018/1000/600/',
-        //     thumbnail: 'https://picsum.photos/id/1018/250/150/',
-        // },
-        // {
-        //     original: 'https://picsum.photos/id/1015/1000/600/',
-        //     thumbnail: 'https://picsum.photos/id/1015/250/150/',
-        // },
-        // {
-        //     original: 'https://picsum.photos/id/1019/1000/600/',
-        //     thumbnail: 'https://picsum.photos/id/1019/250/150/',
-        // },
-    ];
-    ///////////////temp/////////////
-
-
     const handleTimeelementClick = (e) => {
         console.log("////:handleTimeelementClick ");
     };
@@ -120,10 +120,25 @@ export const UI_Blog = () => {
         if (currentUserInfo !== null) {
             let raw = convertToRaw(editorState.getCurrentContent());
             let htmlTxt = draftToHtml(convertToRaw(editorState.getCurrentContent()));
-            if (raw.blocks.length > 0) {
+
+            let editorIsEmpty = true;
+            for (let i = 0; i < raw.blocks.length; i++) {
+                if (raw.blocks[i].text.length > 0) {
+                    editorIsEmpty = false;
+                    break;
+                }
+            }
+
+            //blog is preapproved case case the user is admin!:
+            let isBlogApproved = currentUserInfo[2];
+
+            if (!editorIsEmpty && editorTouched) {
                 let blogType = whatIsTheBlogType();
                 let localDate = getLocalDate();
-                create_blog(JSON.stringify(raw), htmlTxt, stagedFiles, blogType, localDate, rating);
+                create_blog(JSON.stringify(raw), htmlTxt, stagedFiles, blogType, localDate, rating, isBlogApproved);
+                setEditorTouched(false);
+            } else {
+                showToast(t("blog.empty"), "error")
             }
         } else {
             checkShouldPrompt();
@@ -133,26 +148,53 @@ export const UI_Blog = () => {
     //fetch and decompose blog/article data for view.
     const fetchListOfBlogs = async () => {
         await read_blog().then((snapshot) => {
+            // console.log("////:SSSSSNNNNNNN ", snapshot.val());
             let listOfBlogs = [];
             if (snapshot.val() !== null) {
                 snapshot.forEach((snData) => {
+                    let raw = JSON.parse(Object.values(snData.val())[0].stringifiedRaw);
+                    let title = "";
+                    //get first line text as tittle.
+                    for (let i = 0; i < raw.blocks.length; i++) {
+                        let textAtLinex = raw.blocks[i].text;
+                        if (textAtLinex.length > 0) {
+                            title = textAtLinex;
+                            break;
+                        }
+                    }
+                    //trim title if it is too long! max 20 cha, just to limit.
+                    if (title.length > 25) {
+                        title = title.substring(0, 15) + ". . .";
+                    }
+                    // build blog images array for gallery, if any.
+                    let blogImages = [];
+                    let imagesUrlList = Object.values(snData.val())[0].listOfBlogImgUrls;
+                    console.log("////:URLLL??? ", imagesUrlList);
+
+                    // for (let i = 0; i < imagesUrlList.length; i++) {
+                    //     let imgUrl = imagesUrlList[i];
+                    //     console.log("////: ", imgUrl);
+                    // }
+
+
                     let aBlogDataes = {
                         authorName: Object.values(snData.val())[0].authorName,
                         authorProfileImgUrl: Object.values(snData.val())[0].authorProfileImgUrl,
                         blogType: Object.values(snData.val())[0].blogType,
                         htmlTxt: Object.values(snData.val())[0].htmlTxt,
-                        listOfBlogImgUrls: Object.values(snData.val())[0].listOfBlogImgUrls,
+                        urlsOfBlogImages: imagesUrlList,
                         postDate: Object.values(snData.val())[0].postDate,
-                        stringifiedRaw: Object.values(snData.val())[0].stringifiedRaw,
+                        ratingStars: Object.values(snData.val())[0].ratingStars,
+                        deStringifiedRaw: JSON.parse(Object.values(snData.val())[0].stringifiedRaw),
+                        title: title,
+                        isBlogApproved: JSON.parse(Object.values(snData.val())[0].isBlogApproved)
                     };
                     listOfBlogs.push(aBlogDataes);
+                    console.log("////:AblogDataes ", aBlogDataes);
                 });
             }
-            //refine farther view data
-            listOfBlogs.forEach((blogData) => {
-                let viewData = {};
-            });
-            setListOfBlogs(listOfBlogs);
+
+            setListOfBlogs(listOfBlogs.reverse());/////
             setBlogPostLoading(false);
         });
     };
@@ -165,8 +207,11 @@ export const UI_Blog = () => {
     //todo: user can delete their blog: with r u sure?
     //todo: blog godkjennelse of adm... blog is visible to the user.. so lenge
     //todo: fix page bg if no blog etc.
-    //todo: !ok?
+    //todo: check form is dirty if switching language?
+    //todo: language change is temporal!! save to ls?
+    //todo:
 
+    // cant sign in no longer wtf is that now, check firebase warning blalblab.
 
     //fetch list of blogs,
     useEffect(() => {
@@ -187,10 +232,10 @@ export const UI_Blog = () => {
     //monitor current user change in auth! if signed out etc..
     useEffect(() => {
         if (currentUserInfo !== null) {
-            console.log("////:CURRENTuser UI_Blog: ", currentUserInfo);
+            currentUserInfo[2] ? setUserNotAdmin(false) : setUserNotAdmin(true);
         } else {
             //TODO thigs that needs to be done if user sings out etc.
-            console.log("////: No use!");
+            console.log("////: No user!");
         }
 
     }, [currentUserInfo]);
@@ -233,7 +278,7 @@ export const UI_Blog = () => {
 
     // window.confirm(t("jform.resetok"))////////////////////
     const checkShouldPrompt = () => {
-        if (isTextEditorDirty() && (currentUserInfo === null)) {
+        if (editorTouched && (currentUserInfo === null)) {
             showToast(t("blog.toPostYour") + " " + whatIsTheBlogType() + " " + t("blog.signInPlease"));
         }
     };
@@ -245,14 +290,6 @@ export const UI_Blog = () => {
         }
     }, [stagedFiles]);
 
-
-    const isTextEditorDirty = () => {
-        let raw = convertToRaw(editorState.getCurrentContent());
-        let rawLengthChanged = raw.blocks.length !== 3;
-        let defaultTextEdited = (raw.blocks[0].text !== "Share your inspirational article or blog with us!") &&
-            (raw.blocks[0].text !== "Del din inspirerende artikkel eller blogg med oss!");
-        return (rawLengthChanged || defaultTextEdited);
-    };
 
     //check previous saved blog form data on ls
     useEffect(() => {
@@ -274,27 +311,97 @@ export const UI_Blog = () => {
                 const editorState = EditorState.createWithContent(contentState);
                 setEditorState(editorState);
             }
+            isEditorChanged();
         }
     }, []);
 
     const clearBlogForm = () => {
-        if (isTextEditorDirty()) {
+        if (editorTouched) {
             if (window.confirm(t("blog.youSure"))) {
                 localStorage.removeItem("tmpBlogState");
                 setResetEditorState();
                 setStagedFiles([]);
+                setEditorTouched(false);
             }
         }
     };
 
-    const saveStuffToLocalStorage = (lsName, dataToSave) => {
-        try {
-            localStorage.setItem(lsName, JSON.stringify(dataToSave));
-            setShouldPrompt(false);
-        } catch (e) {
-            console.log("////:Could not save temp data to localstorage! ", e);
-            setShouldPrompt(true);
+    const isEditorChanged = () => {
+        let raw = convertToRaw(editorState.getCurrentContent());
+
+        let isDefaultText = ((raw.blocks[0].text === "Share your inspirational article or blog with us!") ||
+            (raw.blocks[0].text === "Del din inspirerende artikkel eller blogg med oss!"));
+        let areThereTexts = false;
+
+        for (let i = 1; i < raw.blocks.length; i++) {
+            if (raw.blocks[i].text.length > 0) {
+                areThereTexts = true;
+                break;
+            }
         }
+        let isEditorChanged = (!isDefaultText || areThereTexts);
+        // console.log("////:isDefaultText ", isDefaultText);
+        // console.log("////:areThereTexts ", areThereTexts);
+        // console.log("////:changed__ ", isEditorChanged);
+
+        setEditorTouched(isEditorChanged);
+        return isEditorChanged;
+    };
+
+
+    const saveTempEditorState = (lsName, dataToSave) => {
+        if (isEditorChanged()) {
+            try {
+                localStorage.setItem(lsName, JSON.stringify(dataToSave));
+                setShouldPrompt(false);
+            } catch (e) {
+                console.log("////:Could not save temp data to localstorage! ", e);
+                setShouldPrompt(true);
+            }
+            setEditorTouched(true);
+        }
+    };
+
+    ///////////////temp/////////////
+    const images = [
+        {
+            original: 'https://picsum.photos/id/1018/1000/600/',
+            thumbnail: 'https://picsum.photos/id/1018/1000/600/',
+        },
+        {
+            original: 'https://picsum.photos/id/1015/1000/600/',
+            thumbnail: 'https://picsum.photos/id/1015/1000/600/',
+        },
+        {
+            original: 'https://picsum.photos/id/1019/1000/600/',
+            thumbnail: 'https://picsum.photos/id/1019/1000/600/',
+        },
+    ];
+    ///////////////temp/////////////
+
+
+    //construct list of blog images array to display.
+    const getAblogsImages = (aBlogsImages) => {
+        let anImage = {
+            original: "url",
+            thumbnail: "url"
+        };
+
+        let arrayOfImages = [];
+
+        //     anImage.original = imgUrl;
+        //     anImage.thumbnail = imgUrl;
+        //     arrayOfImages.push(anImage);
+
+        // Object.values(aBlogsImages).forEach((imgUrl) =>{
+        //
+        // });
+
+        // console.log("////:Array??____________ ", aBlogsImages);
+
+
+        // return arrayOfImages;
+        return images;
     };
 
     return (
@@ -313,18 +420,23 @@ export const UI_Blog = () => {
                         wrapperClassName={"toolWrapper"}
                         editorClassName={"editor"}
                         size={"normal"}
+                        stripPastedStyles={true}
+                        spellCheck={spellCheck}
                         toolbar={{
-                            // options: ["inline", "textAlign", "blockType", "fontSize", "fontFamily", "list", "link", "colorPicker", "history", "emoji"],
-                            options: ["textAlign", "fontSize", "link", "history", "emoji"],
-                            link: {inDropdown: false},
-                            list: {inDropdown: false},
+                            options: ["inline", "textAlign", "fontSize", "fontFamily", "list", "link", "colorPicker", "history", "emoji"],
+                            inline: {
+                                inDropdown: false,
+                                options: ['bold', 'italic', 'underline', 'strikethrough']
+                            },
                         }}
 
                         editorState={editorState}
                         onEditorStateChange={(es) => {
+                            saveTempEditorState("tmpBlogState", draftToHtml(convertToRaw(es.getCurrentContent())));
                             setEditorState(es);
-                            saveStuffToLocalStorage("tmpBlogState", draftToHtml(convertToRaw(es.getCurrentContent())));
                             checkShouldPrompt();
+                            isEditorChanged();
+
                         }}/>
                     <div className={"blogEditorFooter"}>
                         <div className={"blogPhotos"}>
@@ -440,28 +552,28 @@ export const UI_Blog = () => {
 
                         <div className="btn-group mx-3" role="group" aria-label="Basic outlined example">
                             <button disabled={blogPostLoading}
-                                    style={{border: "2px solid white", transition: "2s", minWidth: "150px"}}
+                                    style={{minWidth: "150px", color: "#a9c0bf"}}
                                     onClick={() => {
                                         postBlog();
                                     }} type="button"
-                                    className={isTextEditorDirty() ? "btn btn-success  my-4" : "btn btn-dark  my-4"}>
+                                    className={editorTouched ? "btn btn-success  my-4 mx-1" : "btn btn-dark  my-4 mx-1"}>
                                 {blogPostLoading ?
                                     <span className="spinner-border mx-1 text-info spinner-border-sm" role="status"
                                           aria-hidden="true"/> : <IconContext.Provider value={{size: "1.5em"}}>
-                                        <FaShare style={{color: "#ffffff", marginRight: "10px"}}/>
+                                        <FaShare style={{color: "#a9c0bf", marginRight: "10px"}}/>
                                     </IconContext.Provider>}
                                 {isBlogChecked && t("blog.postBlog")}
                                 {isReviewChecked && t("blog.postReview")}
                                 {isArticleChecked && t("blog.postArticle")}
                             </button>
 
-                            <button disabled={blogPostLoading} style={{border: "2px solid white"}} onClick={(event) => {
+                            <button disabled={blogPostLoading} style={{color: "#a9c0bf"}} onClick={(event) => {
                                 event.preventDefault();
                                 imgInputRef.current.click();
-                            }} type="button" className="btn btn-dark my-4">
+                            }} type="button" className="btn btn-dark my-4 mx-1">
                                 <input type="file" hidden/>
                                 <IconContext.Provider value={{size: "1.5em"}}>
-                                    <AiFillPicture style={{color: "#ffffff", marginRight: "10px"}}/>
+                                    <AiFillPicture style={{color: "#a9c0bf", marginRight: "10px"}}/>
                                 </IconContext.Provider>
                                 {t("blog.addImage")}
                             </button>
@@ -498,13 +610,12 @@ export const UI_Blog = () => {
                                 }}/>
 
 
-                            <button disabled={blogPostLoading} style={{border: "2px solid white"}} onClick={(event) => {
+                            <button disabled={blogPostLoading} style={{color: "#a9c0bf"}} onClick={(event) => {
                                 clearBlogForm();
-
-                            }} type="button" className="btn btn-dark my-4">
+                            }} type="button" className="btn btn-dark my-4 mx-1">
                                 <input type="file" hidden/>
                                 <IconContext.Provider value={{size: "1.5em"}}>
-                                    <MdClear style={{color: "#ffffff"}}/>
+                                    <MdClear style={{color: "#a9c0bf"}}/>
                                 </IconContext.Provider>
                             </button>
                         </div>
@@ -512,10 +623,8 @@ export const UI_Blog = () => {
                 </div>
             </div>
             {/*//////////blog editor//////////*/}
-
             <VerticalTimeline className={"verticalTl"}>
-                {listOfBlogs.map((blogData, i) => (
-
+                {listOfBlogs.map((aBlogData, index) => (
                     <VerticalTimelineElement
                         onTimelineElementClick={(e) => {
                             handleTimeelementClick(e);
@@ -523,7 +632,7 @@ export const UI_Blog = () => {
                         className="vertical-timeline-element--work"
                         iconStyle={{
                             background: "rgb(33, 150, 143)",
-                            color: "#ffffff",
+                            color: "#a9c0bf",
                             overflow: "hidden",
                             display: "flex",
                             alignItems: "center",
@@ -536,78 +645,77 @@ export const UI_Blog = () => {
                         icon={<img
                             className={"blogProfileImg"}
                             alt={"profile image"}
-                            src={blogData.authorProfileImgUrl}/>}>
+                            src={aBlogData.authorProfileImgUrl}/>}>
                         <div className={"blogReadMoreText"}>
-                            <h3 className="vertical-timeline-element-title">Creative Director</h3>
+
+                            {/*{console.log("////:aBlogData: ", aBlogData)} ////////////////////////////////////////////////////////////////////////////////////////////////*/}
+
+                            <div className={"badgeTitleWraper"}>
+                                <div className={"typeOfBlog"}>
+                                    <div style={{color: "#a9c0bf"}} hidden={!(aBlogData.blogType === "blog")}>
+                                        <IconContext.Provider value={{size: "1.5em"}}>
+                                            <SiMicroDotBlog style={{color: "#a9c0bf", marginRight: "10px"}}/>
+                                            {t("blog.iAmBlog")}
+                                        </IconContext.Provider>
+                                    </div>
+
+                                    <div style={{color: "#a9c0bf"}} hidden={!(aBlogData.blogType === "article")}>
+                                        <IconContext.Provider value={{size: "1.5em"}}>
+                                            <FaInfo style={{color: "#248c9d", marginRight: "10px"}}/>
+                                            {t("blog.iAmArticle")}
+                                        </IconContext.Provider>
+                                    </div>
+
+                                    <div style={{color: "#a9c0bf"}} hidden={!(aBlogData.blogType === "review")}>
+                                        <IconContext.Provider value={{size: "1.5em"}}>
+                                            <RiFeedbackFill style={{color: "#248c9d", marginRight: "10px"}}/>
+                                            {t("blog.iAmReview")}
+                                        </IconContext.Provider>
+                                    </div>
+                                </div>
+                                <h3 style={{color: "#a9c0bf"}}
+                                    className="vertical-timeline-element-title mx-5">{aBlogData.title}</h3>
+                            </div>
                             {/*<h4 className="vertical-timeline-element-subtitle">Miami, FL</h4>*/}
-                            <p style={{fontWeight: "400", fontSize: "16px"}}>
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores corporis impedit
-                                nobis
-                                omnis quam quasi vitae, voluptatem? Ad architecto doloremque earum est excepturi facere
-                                fugiat fugit in ipsa ipsum nobis obcaecati quia quod rem repellendus tempore, tenetur
-                                ullam
-                                ut veniam voluptatem. Ab ducimus quaerat rem. Harum incidunt numquam possimus. Debitis.
-                            </p>
+
+                            <div className={"articleArraysWrapper"}>
+                                <div dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(aBlogData.htmlTxt)}}/>
+                            </div>
+                            <div className={"readMoreDiv"}>
+                                <IconContext.Provider value={{size: "2em"}}>
+                                    <BsBoxArrowUpRight style={{color: "#a9c0bf"}}/>
+                                </IconContext.Provider>
+                            </div>
                         </div>
-                        <div className={"blogListFooterEmbedWrapper"}>
-                            <ImageGallery
-                                items={images}
+
+
+                        {/*{console.log("////:aBlogData!", aBlogData.listOfBlogImgUrls)}*/}
+                        {/*{console.log("////:URL ", Object.values(aBlogData)[4] ? Object.values(aBlogData)[4].length : "oiuoiuoiuoiu")}*/}
+
+                        <div hidden={Object.values(aBlogData)[4]} className={"blogListFooterEmbedWrapper"}>
+                            < ImageGallery
+                                items={getAblogsImages(index)}
                                 showPlayButton={false}
-                                showNav={false}
-                            />
+                                showNav={false}/>
+                        </div>
+
+                        {/*hidden if user signed in is not admin!*/}
+                        <div hidden={userNotAdmin} className={"blogFooter"}>
+                            <IconContext.Provider value={{size: "2em"}}>
+                                <MdCheck onClick={() => {
+
+                                }} hidden={aBlogData.isBlogApproved} className={"blogFooterButtonsApprove"}/>
+                            </IconContext.Provider>
+
+                            <IconContext.Provider value={{size: "2em"}}>
+                                <RiCloseFill onClick={() => {
+
+                                }} className={"blogFooterButtonsDelete"}/>
+                            </IconContext.Provider>
                         </div>
                     </VerticalTimelineElement>
                 ))}
             </VerticalTimeline>
-
-
-            {/*<VerticalTimeline className={"verticalTl"}>*/}
-            {/*    {events.map(event => (*/}
-            {/*        <VerticalTimelineElement*/}
-            {/*            onTimelineElementClick={(e) => {*/}
-            {/*                handleTimeelementClick(e);*/}
-            {/*            }}*/}
-            {/*            className="vertical-timeline-element--work"*/}
-            {/*            iconStyle={{*/}
-            {/*                background: "rgb(33, 150, 143)",*/}
-            {/*                color: "#ffffff",*/}
-            {/*                overflow: "hidden",*/}
-            {/*                display: "flex",*/}
-            {/*                alignItems: "center",*/}
-            {/*                justifyContent: "center"*/}
-            {/*                // boxShadow: "0 0 0 4px #248C9D",*/}
-            {/*            }}*/}
-
-            {/*            contentArrowStyle={{borderRight: "7px solid  #d3412a"}}*/}
-            {/*            date="2011 - present"*/}
-            {/*            icon={<img*/}
-            {/*                alt=""*/}
-            {/*                className="blogImg"*/}
-            {/*                src="https://images.pexels.com/photos/104827/cat-pet-animal-domestic-104827.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"/>}>*/}
-            {/*            <div className={"blogReadMoreText"}>*/}
-            {/*                <h3 className="vertical-timeline-element-title">Creative Director</h3>*/}
-            {/*                /!*<h4 className="vertical-timeline-element-subtitle">Miami, FL</h4>*!/*/}
-            {/*                <p style={{fontWeight: "400", fontSize: "16px"}}>*/}
-            {/*                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores corporis impedit*/}
-            {/*                    nobis*/}
-            {/*                    omnis quam quasi vitae, voluptatem? Ad architecto doloremque earum est excepturi facere*/}
-            {/*                    fugiat fugit in ipsa ipsum nobis obcaecati quia quod rem repellendus tempore, tenetur*/}
-            {/*                    ullam*/}
-            {/*                    ut veniam voluptatem. Ab ducimus quaerat rem. Harum incidunt numquam possimus. Debitis.*/}
-            {/*                </p>*/}
-            {/*            </div>*/}
-            {/*            <div className={"blogListFooterEmbedWrapper"}>*/}
-            {/*                <ImageGallery*/}
-            {/*                    items={images}*/}
-            {/*                    showPlayButton={false}*/}
-            {/*                    showNav={false}*/}
-            {/*                />*/}
-            {/*            </div>*/}
-            {/*        </VerticalTimelineElement>*/}
-            {/*    ))}*/}
-            {/*</VerticalTimeline>*/}
-
-
         </div>
 
     );

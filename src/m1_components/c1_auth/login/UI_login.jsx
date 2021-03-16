@@ -36,14 +36,14 @@ export const UI_login = () => {
         } catch { // in case signup has failed
             showToast(t("sign_in.try_again"), "error");
         }
-    }
+    };
 
     const handleSMclick = () =>{
             if(smButtonsDisabled){
                 setShowPrivacyConsentError(true);
                 checkBoxRef.current.focus();
             }
-    }
+    };
 
     return (
         <div className={"login_page_container"}>

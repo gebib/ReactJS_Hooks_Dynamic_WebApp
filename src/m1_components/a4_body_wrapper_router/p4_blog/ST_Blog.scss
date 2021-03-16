@@ -1,10 +1,10 @@
-//$lineT: 2px;
+//$lineT: 3px;
 $uiBg: #181818;
 $slColor: #248c9d;
 
 .timeLineMainWrapper {
   //border: $lineT solid #9c3600;
-  background-color: #EDF2F9;
+  background-color: #1C1F23;
 
   .vertical-timeline {
     min-width: 92%;
@@ -53,12 +53,10 @@ $slColor: #248c9d;
     .editorInnerWrapper {
       max-width: 1324px;
       width: 100%;
-      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+      //box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
     }
 
-    //.btn{
-    //  min-width: 150px;
-    //}
+
 
     .btn-group {
       display: flex;
@@ -83,7 +81,7 @@ $slColor: #248c9d;
       }
 
       .overlay-fade:hover div {
-       background-color: #151515;
+        background-color: #151515;
         opacity: 0.8;
         transition: all 0.2s;
         cursor: pointer;
@@ -94,22 +92,10 @@ $slColor: #248c9d;
         opacity: 1;
       }
 
-      .overlay-fade div {
-        position: absolute;
-        top: 0;
-        background-color: rgba(255, 255, 255, 0.3);
-        width: 100%;
-        height: 100%;
-        opacity: 0;
-        transition: all 0.2s ease-in;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-
       .overlayIcon {
         background-color: #1c5bb1;
       }
+
       ///////////overlay////////////////////
     }
 
@@ -141,10 +127,11 @@ $slColor: #248c9d;
     justify-content: flex-end;
     align-items: center;
     border-radius: 0 0 6px 6px;
-    background-color: white;
+    background-color: #151515;
     padding-right: 5px;
     padding-left: 5px;
     flex-wrap: wrap;
+    color: #a9c0bf;
 
     .btn-group {
       display: flex;
@@ -154,29 +141,100 @@ $slColor: #248c9d;
   }
 
   //stars div
-  .stars{
+  .stars {
     //border: $lineT solid #0053f1;
   }
 
   //stars div
-  .stars div{
+  .stars div {
     //border: $lineT solid #43f100;
   }
 
   //stars div
-  .stars div div{
+  .stars div div {
     //border: $lineT solid #9c4f00;
   }
 
   //stars wrapper
-  .stars div div span{
+  .stars div div span {
     //border: $lineT solid #000000;
 
   }
 
   //actual stars
-  .stars div div span svg{
+  .stars div div span svg {
     //border: $lineT solid #139c00;
     display: flex;
+  }
+
+  .badgeTitleWraper {
+    //border: $lineT solid #39879c;
+    display: flex;
+    white-space: nowrap;
+
+    .typeOfBlog {
+      //border: $lineT solid #9c8f00;
+      //background-color: #202020;
+      padding: 5px 10px 5px 10px;
+      border-radius: 6px;
+      border: 1px solid black;
+    }
+  }
+
+  .articleArraysWrapper {
+    //border: $lineT solid #9c5400;
+    max-height: 150px;
+    overflow: hidden;
+    word-wrap: break-word;
+    margin-bottom: 20px;
+
+    .articleArraysWrapper, div, p {
+      //border: $lineT solid #00fffe;
+      line-height: 2em;
+      color: #a9c0bf;
+      //background-color: #ffffff;
+    }
+  }
+
+  .readMoreDiv{
+    //border: $lineT solid #00ff49;
+    height: 50px;
+    background-color: #202020;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 6px 6px 0 0;
+    color: white;
+  }
+
+  .vertical-timeline-element-content{
+    background-color: #151515;
+  }
+  .blogFooter{
+    display: flex;
+    justify-content: flex-end;
+    align-content: center;
+  }
+  .blogFooterButtonsDelete{
+    border-radius: 6px;
+    border: 1px solid black;
+    color: #ff7100;
+    margin-left: 10px;
+    margin-right: 10px;
+   &:hover{
+     background-color: #ff1000;
+     cursor: pointer;
+   }
+  }
+  .blogFooterButtonsApprove{
+    border-radius: 6px;
+    border: 1px solid black;
+    color: #75b400;
+    margin-left: 10px;
+    margin-right: 10px;
+    &:hover{
+      background-color: #00b418;
+      cursor: pointer;
+    }
   }
 }

@@ -34,7 +34,6 @@ export const UI_nav_bar = (props) => {
     const [prevCurrentLocation, setPrevCurrenLocation] = useState(["/", "/"]);
 
 
-
     const {ref, inView, entry} = useInView({
         threshold: 0,
     });
@@ -45,12 +44,38 @@ export const UI_nav_bar = (props) => {
     const handleLanguageChange = () => {
         if (i18n.language === "en") {
             i18n.changeLanguage("no").then(r => {
+                try {
+                    localStorage.setItem("lang", "no");
+                } catch (e) {
+                    console.log("////: ", e);
+                }
             });
         } else if (i18n.language === "no") {
             i18n.changeLanguage("en").then(r => {
+                try {
+                    localStorage.setItem("lang", "en");
+                } catch (e) {
+                    console.log("////: ", e);
+                }
             });
         }
     };
+
+    //load preferred language if exist on ls
+    useEffect(() => {
+        let preferredLang = null;
+        try {
+            preferredLang = localStorage.getItem("lang");
+        } catch (e) {
+            console.log("////: ", e);
+        }
+        if ((preferredLang !== null) && ((preferredLang === "en") || (preferredLang === "no"))) {
+            i18n.changeLanguage(preferredLang).then((r) => {
+            }).catch((e) => {
+                console.log("////:e ", e);
+            });
+        }
+    }, [/*deps*/]);
 
     //should fire only when routing path changes:
     useEffect(() => {
@@ -104,7 +129,7 @@ export const UI_nav_bar = (props) => {
     const handleLoginLogout = async () => {
         try {
             if (currentUserInfo !== null) {
-                await logout().then((r)=>{
+                await logout().then((r) => {
                 }).catch((e) => {
                     console.log("////:e ", e);
                 });

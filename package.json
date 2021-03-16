@@ -44,6 +44,7 @@
     "react-intersection-observer": "^8.31.0",
     "react-rating-stars-component": "^2.2.0",
     "react-reactstrap-pagination": "^2.0.3",
+    "react-resizable": "^1.11.1",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^2.0.5",
     "react-select-search": "^3.0.1",

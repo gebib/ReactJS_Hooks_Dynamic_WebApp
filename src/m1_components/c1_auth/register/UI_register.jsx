@@ -124,7 +124,7 @@ export const UI_register = () => {
     const clearRegisteringProcess = () => {
         setLoading(false);
         setTimeout(() => {
-            history.goBack();
+            history.push("/");
         }, 1000);
     };
 
