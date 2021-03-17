@@ -223,11 +223,24 @@ $slColor: #248c9d;
     background-color: #151515;
   }
 
+  .vertical-timeline-element-date{
+    color: #a9c0bf;
+  }
+
   .blogFooter {
     display: flex;
     justify-content: flex-end;
     align-content: center;
   }
+
+  .image-gallery-thumbnail-inner{
+    overflow: hidden;
+    .image-gallery-thumbnail-image{
+      max-height: 70px;
+      width: auto!important;
+    }
+  }
+
 
   .blogFooterButtonsDelete {
     border-radius: 6px;
@@ -254,4 +267,6 @@ $slColor: #248c9d;
       cursor: pointer;
     }
   }
+
+
 }

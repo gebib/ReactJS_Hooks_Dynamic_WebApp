@@ -2,7 +2,6 @@ import React, {useEffect, useRef, useState} from "react";
 import "./ST_Blog.scss";
 import {VerticalTimeline, VerticalTimelineElement} from "react-vertical-timeline-component";
 import "react-vertical-timeline-component/style.min.css";
-import events from "./timeline/events.json";
 import {FaBriefcase} from "react-icons/fa";
 import largeSL_logo from "../../a2_logo_with_image/sl_logo_big.svg";
 import ImageGallery from "react-image-gallery";
@@ -82,7 +81,9 @@ export const UI_Blog = () => {
         read_blog,
         resetFormFromAuth,
         setResetFormFromAuth,
-        currentUserInfo
+        currentUserInfo,
+        delete_blog,
+        approve_blog
     } = useAuth();
 
     useEffect(() => {
@@ -151,8 +152,10 @@ export const UI_Blog = () => {
             // console.log("////:SSSSSNNNNNNN ", snapshot.val());
             let listOfBlogs = [];
             if (snapshot.val() !== null) {
+                let i = 0;
                 snapshot.forEach((snData) => {
-                    let raw = JSON.parse(Object.values(snData.val())[0].stringifiedRaw);
+                    let raw = JSON.parse(snData.val().stringifiedRaw);
+                    let blogId = Object.keys(snapshot.val())[i];
                     let title = "";
                     //get first line text as tittle.
                     for (let i = 0; i < raw.blocks.length; i++) {
@@ -168,54 +171,33 @@ export const UI_Blog = () => {
                     }
                     // build blog images array for gallery, if any.
                     let blogImages = [];
-                    let imagesUrlList = Object.values(snData.val())[0].listOfBlogImgUrls;
+                    let imagesUrlList = snData.val().listOfBlogImgUrls;
                     // console.log("////:URLLL??? ", imagesUrlList);
 
                     let aBlogDataes = {
-                        authorName: Object.values(snData.val())[0].authorName,
-                        authorProfileImgUrl: Object.values(snData.val())[0].authorProfileImgUrl,
-                        blogType: Object.values(snData.val())[0].blogType,
-                        htmlTxt: Object.values(snData.val())[0].htmlTxt,
+                        authorName: snData.val().authorName,
+                        authorProfileImgUrl: snData.val().authorProfileImgUrl,
+                        blogType: snData.val().blogType,
+                        htmlTxt: snData.val().htmlTxt,
                         urlsOfBlogImages: imagesUrlList,
-                        postDate: Object.values(snData.val())[0].postDate,
-                        ratingStars: Object.values(snData.val())[0].ratingStars,
-                        deStringifiedRaw: JSON.parse(Object.values(snData.val())[0].stringifiedRaw),
+                        postDate: snData.val().postDate,
+                        ratingStars: snData.val().ratingStars,
+                        deStringifiedRaw: JSON.parse(snData.val().stringifiedRaw),
                         title: title,
-                        isBlogApproved: JSON.parse(Object.values(snData.val())[0].isBlogApproved)
+                        isBlogApproved: JSON.parse(snData.val().isBlogApproved),
+                        blogKey: blogId
                     };
                     listOfBlogs.push(aBlogDataes);
                     // console.log("////:AblogDataes ", aBlogDataes);
+                    i++;
                 });
             }
-
-            //sort list of blogs by date!
-
-            let sortedListOfBlogs = [];
-            listOfBlogs.sort((a, b) => {
-                let pDa = JSON.parse(a.postDate);
-                let pDb = JSON.parse(b.postDate);
-
-                //add 0 to month/d/h/m/s case < 10
-                let m0 = (pDa[1] < 10) ? "0" : "";
-                let d0 = (pDa[0] < 10) ? "0" : "";
-                let h0 = (pDa[3] < 10) ? "0" : "";
-                let mi0 = (pDa[4] < 10) ? "0" : "";
-                let s0 = (pDa[5] < 10) ? "0" : "";
-
-                let aDate = (pDa[2] + "-" + m0 + pDa[1] + "-" + d0 + pDa[0] + "T" + h0 + pDa[3] + ":" + mi0 + pDa[4] + ":" + s0 + pDa[5]);
-                let bDate = (pDb[2] + "-" + m0 + pDb[1] + "-" + d0 + pDb[0] + "T" + h0 + pDb[3] + ":" + mi0 + pDb[4] + ":" + s0 + pDb[5]);
-
-                // console.log("////: ", aDate, " ..bDate: ", bDate);
-                return (Date.parse(aDate) - Date.parse(bDate));
-            });
             setListOfBlogs(listOfBlogs.reverse());/////
             setBlogPostLoading(false);
         });
     };
 
-    //todo: find and use first line text from RAW as title and truncate, depending on the width:
-    //todo: check if article has image or not to display
-    //todo: set authour date
+
     //todo: set authour name on footer of article
     //todo: on click article should show, without fetching again.. use ls?
     //todo: user can delete their blog: with r u sure?
@@ -376,47 +358,28 @@ export const UI_Blog = () => {
         }
     };
 
-    ///////////////temp/////////////
-    const images = [
-        {
-            original: 'https://picsum.photos/id/1018/1000/600/',
-            thumbnail: 'https://picsum.photos/id/1018/1000/600/',
-        },
-        {
-            original: 'https://picsum.photos/id/1015/1000/600/',
-            thumbnail: 'https://picsum.photos/id/1015/1000/600/',
-        },
-        {
-            original: 'https://picsum.photos/id/1019/1000/600/',
-            thumbnail: 'https://picsum.photos/id/1019/1000/600/',
-        },
-    ];
-    ///////////////temp/////////////
-
-
     //construct list of blog images array to display.
     const getAblogsImages = (aBlogsImages) => {
-        let anImage = {
-            original: "url",
-            thumbnail: "url"
-        };
-
         let arrayOfImages = [];
-
-        //     anImage.original = imgUrl;
-        //     anImage.thumbnail = imgUrl;
-        //     arrayOfImages.push(anImage);
-
-        // Object.values(aBlogsImages).forEach((imgUrl) =>{
-        //
-        // });
-
-        // console.log("////:Array??____________ ", aBlogsImages);
-
-
-        // return arrayOfImages;
-        return images;
+        if (aBlogsImages) {
+            aBlogsImages.forEach((url) => {
+                arrayOfImages.push({original: url, thumbnail: url});
+            });
+        }
+        return arrayOfImages;
     };
+
+
+    const approveBlog = (blogId) => {
+        approve_blog(blogId);
+    };
+
+    const deleteBlog = (blogId) => {
+        if (window.confirm(t("blog.deleteSure"))) {
+            delete_blog(blogId);
+        }
+    };
+
 
     return (
         <div className={"timeLineMainWrapper"}>
@@ -655,15 +618,12 @@ export const UI_Blog = () => {
                         }}
 
                         contentArrowStyle={{borderRight: "7px solid  #d3412a"}}
-                        date="2011 - present"
+                        date={aBlogData.authorName.toUpperCase() + " " + JSON.parse(aBlogData.postDate)[0] + "." + JSON.parse(aBlogData.postDate)[1] + "." + JSON.parse(aBlogData.postDate)[2]}
                         icon={<img
                             className={"blogProfileImg"}
                             alt={"profile image"}
                             src={aBlogData.authorProfileImgUrl}/>}>
                         <div className={"blogReadMoreText"}>
-
-                            {/*{console.log("////:aBlogData: ", aBlogData)} ////////////////////////////////////////////////////////////////////////////////////////////////*/}
-
                             <div className={"badgeTitleWraper"}>
                                 <div className={"typeOfBlog"}>
                                     <div style={{color: "#a9c0bf"}} hidden={!(aBlogData.blogType === "blog")}>
@@ -702,13 +662,9 @@ export const UI_Blog = () => {
                             </div>
                         </div>
 
-
-                        {/*{console.log("////:aBlogData!", aBlogData.listOfBlogImgUrls)}*/}
-                        {/*{console.log("////:URL ", Object.values(aBlogData)[4] ? Object.values(aBlogData)[4].length : "oiuoiuoiuoiu")}*/}
-
                         <div hidden={!Object.values(aBlogData)[4]} className={"blogListFooterEmbedWrapper"}>
-                            < ImageGallery
-                                items={getAblogsImages(index)}
+                            <ImageGallery
+                                items={getAblogsImages(Object.values(aBlogData)[4])}
                                 showPlayButton={false}
                                 showNav={false}/>
                         </div>
@@ -717,13 +673,13 @@ export const UI_Blog = () => {
                         <div hidden={userNotAdmin} className={"blogFooter"}>
                             <IconContext.Provider value={{size: "2em"}}>
                                 <MdCheck onClick={() => {
-
+                                    approveBlog(aBlogData.blogKey);
                                 }} hidden={aBlogData.isBlogApproved} className={"blogFooterButtonsApprove"}/>
                             </IconContext.Provider>
 
                             <IconContext.Provider value={{size: "2em"}}>
                                 <RiCloseFill onClick={() => {
-
+                                    deleteBlog(aBlogData.blogKey);
                                 }} className={"blogFooterButtonsDelete"}/>
                             </IconContext.Provider>
                         </div>

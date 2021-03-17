@@ -130,7 +130,7 @@ export function AuthProvider({children}) {
     ////////post rtDb data.
     const addBlogRTdbPost = (blogId, dataToStore) => {
         setBlogPostLoading(false);
-        database.ref("/blogs").child(blogId).push(dataToStore).then(() => {
+        database.ref("/blogs").push(dataToStore).then(() => {
             setBlogPostLoading(false);
             showToast(t("blog.posted"), "info");
             localStorage.removeItem("tmpBlogState");
@@ -147,9 +147,19 @@ export function AuthProvider({children}) {
         setBlogPostLoading(true);
         return database.ref("/blogs").once("value");
     };
-    const delete_blog = () => {
+    //used to delete by adm, or if over limit.
+    const delete_blog = (blogId) => {
+        database.ref("blogs/" + blogId).remove().then((r)=>{
+            showToast(t("blog.removed"), "info");
+        }).catch((e) => {
+            console.log("////:e ", e);
+        });
+    };
+    const approve_blog = (blogId) =>{
 
     };
+
+
     //////////////////////////blog list///////////////////////////////
 
     /////////////////////////////////////////////////////////
@@ -187,8 +197,7 @@ export function AuthProvider({children}) {
     const value = {
         currentUserInfo,
         // setCurrentUserInfo,
-        blogPostLoading,
-        setBlogPostLoading,
+
         resetFormFromAuth,
         setResetFormFromAuth,
         login,
@@ -207,8 +216,11 @@ export function AuthProvider({children}) {
         delete_job,
         //blog
         create_blog,
+        blogPostLoading,
+        setBlogPostLoading,
         read_blog,
-        delete_blog
+        delete_blog,
+        approve_blog
 
     };
 
