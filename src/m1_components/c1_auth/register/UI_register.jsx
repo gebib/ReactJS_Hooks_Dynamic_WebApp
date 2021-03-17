@@ -123,9 +123,9 @@ export const UI_register = () => {
 
     const clearRegisteringProcess = () => {
         setLoading(false);
-        setTimeout(() => {
-            history.push("/");
-        }, 1000);
+        // setTimeout(() => {
+        //     history.push("/");
+        // }, 1000);
     };
 
     function getCroppedImage(canvas, crop) {

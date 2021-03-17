@@ -228,9 +228,11 @@ $slColor: #248c9d;
   }
 
   .blogFooter {
+    //border: $lineT solid #9c8f00;
     display: flex;
     justify-content: flex-end;
     align-content: center;
+    margin-top: 20px;
   }
 
   .image-gallery-thumbnail-inner{

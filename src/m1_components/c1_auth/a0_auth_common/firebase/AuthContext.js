@@ -102,7 +102,7 @@ export function AuthProvider({children}) {
             blogType: blogType,
             listOfBlogImgUrls: listOfThisBlogImagesURL,
             postDate: postDate,
-            authorName: currentUserInfo[1],
+            authorNameAndId: [currentUserInfo[1],currentUserInfo[0]],
             authorProfileImgUrl: currentUserInfo[3],
             ratingStars: rating,
             isBlogApproved: isBlogApproved
@@ -149,14 +149,21 @@ export function AuthProvider({children}) {
     };
     //used to delete by adm, or if over limit.
     const delete_blog = (blogId) => {
-        database.ref("blogs/" + blogId).remove().then((r)=>{
+        database.ref("blogs/" + blogId).remove().then((r) => {
             showToast(t("blog.removed"), "info");
         }).catch((e) => {
             console.log("////:e ", e);
         });
     };
-    const approve_blog = (blogId) =>{
-
+    const approve_blog = (blogId) => {
+        database.ref("blogs/").child(blogId).update({
+                isBlogApproved: true
+            }
+        ).then((r) => {
+            showToast(t("blog.blogApproved"), "info");
+        }).catch((e) => {
+            console.log("////:e ", e);
+        });
     };
 
 

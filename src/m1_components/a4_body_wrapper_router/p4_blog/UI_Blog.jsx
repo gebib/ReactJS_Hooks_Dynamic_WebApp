@@ -51,10 +51,10 @@ export const UI_Blog = () => {
     const [editorTouched, setEditorTouched] = useState(false);
     const [spellCheck, setSpellCheck] = useState(true);
 
-    const [userNotAdmin, setUserNotAdmin] = useState(true);
+    const [isAdmin, setIsAdmin] = useState(false);
 
 
-    const [rawAndHtmlForm, setRawAndHtmlForm] = useState([]);
+    const [cuInfo, setCuInfo] = useState([]);
 
     const [isBlogChecked, setIsBlogChecked] = useState(true);
     const [isArticleChecked, setIsArticleChecked] = useState(false);
@@ -112,8 +112,9 @@ export const UI_Blog = () => {
         setStagedFiles([]);
     };
 
-    const handleTimeelementClick = (e) => {
-        console.log("////:handleTimeelementClick ");
+    const handleTimeelementClick = (e, aBlogKey) => {
+        e.stopPropagation();
+        console.log("////:handleTimeelementClick ", aBlogKey);
     };
 
 
@@ -130,7 +131,7 @@ export const UI_Blog = () => {
                 }
             }
 
-            //blog is preapproved case case the user is admin!:
+            //blog is preapproved case the user is admin!:
             let isBlogApproved = currentUserInfo[2];
 
             if (!editorIsEmpty && editorTouched) {
@@ -173,9 +174,8 @@ export const UI_Blog = () => {
                     let blogImages = [];
                     let imagesUrlList = snData.val().listOfBlogImgUrls;
                     // console.log("////:URLLL??? ", imagesUrlList);
-
                     let aBlogDataes = {
-                        authorName: snData.val().authorName,
+                        authorNameAndId: snData.val().authorNameAndId,
                         authorProfileImgUrl: snData.val().authorProfileImgUrl,
                         blogType: snData.val().blogType,
                         htmlTxt: snData.val().htmlTxt,
@@ -187,8 +187,25 @@ export const UI_Blog = () => {
                         isBlogApproved: JSON.parse(snData.val().isBlogApproved),
                         blogKey: blogId
                     };
-                    listOfBlogs.push(aBlogDataes);
-                    // console.log("////:AblogDataes ", aBlogDataes);
+
+                    // let cuIsAdmin = isAdmin;
+                    let cuIsAdmin = "";
+                    let cuOwnsTheBlog = "";
+                    let blogIsApproved = aBlogDataes.isBlogApproved;
+
+                    if (currentUserInfo !== null) {
+                        cuIsAdmin = currentUserInfo[2];
+                        cuOwnsTheBlog = currentUserInfo[0] === aBlogDataes.authorNameAndId[1];
+                    }
+                    // console.log("////:cuIsAdmin: ", cuIsAdmin, " cuOwnsTheBlog: ", cuOwnsTheBlog, "blogIsApproved: ", blogIsApproved);
+
+                    if (cuIsAdmin) { //current user is admin! : show all.
+                        listOfBlogs.push(aBlogDataes);
+                    } else if (!blogIsApproved && cuOwnsTheBlog) { //add unapproved blog to view list, only if cu owns it.
+                        listOfBlogs.push(aBlogDataes);
+                    } else if (blogIsApproved) {
+                        listOfBlogs.push(aBlogDataes);
+                    }
                     i++;
                 });
             }
@@ -207,45 +224,32 @@ export const UI_Blog = () => {
     //todo: language change is temporal!! save to ls?
     //todo:
 
-    // cant sign in no longer wtf is that now, check firebase warning blalblab.
-
-    //fetch list of blogs,
+    //monitor current user change in auth! if signed out etc..
     useEffect(() => {
+        if (currentUserInfo !== null) {
+            setIsAdmin(currentUserInfo[2]);
+            setCuInfo(currentUserInfo);
+        } else {
+            setIsAdmin(false);
+            setCuInfo(null);
+            console.log("////: No user!");
+        }
+        fetchBlog();
+    }, [currentUserInfo]);
+
+    const fetchBlog = () =>{
         fetchListOfBlogs().then(() => {
             console.log("////:Fetch once: SET state:!");
         }).catch((e) => {
             console.log("////:e ", e);
         });
-    }, [/*deps*/]);
-
-    //And make viewable, once fetched!.
-    useEffect(() => {
-        if (listOfBlogs.length > 0) {
-            console.log("////:listOfBlogs STATE:: ", listOfBlogs);
-        }
-    }, [listOfBlogs]);
-
-    //monitor current user change in auth! if signed out etc..
-    useEffect(() => {
-        if (currentUserInfo !== null) {
-            currentUserInfo[2] ? setUserNotAdmin(false) : setUserNotAdmin(true);
-        } else {
-            //TODO thigs that needs to be done if user sings out etc.
-            console.log("////: No user!");
-        }
-
-    }, [currentUserInfo]);
-
+    };
 
     useEffect(() => {
         if (!blogPostLoading && resetFormFromAuth) {
             setResetEditorState();
             setResetFormFromAuth(false);
-            fetchListOfBlogs().then(() => {
-                console.log("////:Fetch DONE posting: SET state:!");
-            }).catch((e) => {
-                console.log("////:e ", e);
-            });
+            fetchBlog();
         }
     }, [blogPostLoading, resetFormFromAuth]);
 
@@ -360,6 +364,7 @@ export const UI_Blog = () => {
 
     //construct list of blog images array to display.
     const getAblogsImages = (aBlogsImages) => {
+        // console.log("////:BLOG emages:??  ", aBlogsImages);
         let arrayOfImages = [];
         if (aBlogsImages) {
             aBlogsImages.forEach((url) => {
@@ -369,14 +374,17 @@ export const UI_Blog = () => {
         return arrayOfImages;
     };
 
-
-    const approveBlog = (blogId) => {
+    const approveBlog = (e, blogId) => {
+        e.stopPropagation();
         approve_blog(blogId);
+        fetchBlog();
     };
 
-    const deleteBlog = (blogId) => {
+    const deleteBlog = (e, blogId) => {
+        e.stopPropagation();
         if (window.confirm(t("blog.deleteSure"))) {
             delete_blog(blogId);
+            fetchBlog();
         }
     };
 
@@ -417,9 +425,9 @@ export const UI_Blog = () => {
                         }}/>
                     <div className={"blogEditorFooter"}>
                         <div className={"blogPhotos"}>
-                            {stagedFiles && stagedFiles.map(file => {
+                            {stagedFiles && stagedFiles.map((file) => {
                                 return (
-                                    <div className={"overlay-fade"} key={file.file.id}>
+                                    <div className={"overlay-fade"} key={file.id}>
                                         <img
                                             ref={imgRef}
                                             style={{
@@ -603,8 +611,9 @@ export const UI_Blog = () => {
             <VerticalTimeline className={"verticalTl"}>
                 {listOfBlogs.map((aBlogData, index) => (
                     <VerticalTimelineElement
+                        key={aBlogData.blogKey}
                         onTimelineElementClick={(e) => {
-                            handleTimeelementClick(e);
+                            handleTimeelementClick(e, aBlogData.blogKey);
                         }}
                         className="vertical-timeline-element--work"
                         iconStyle={{
@@ -618,7 +627,7 @@ export const UI_Blog = () => {
                         }}
 
                         contentArrowStyle={{borderRight: "7px solid  #d3412a"}}
-                        date={aBlogData.authorName.toUpperCase() + " " + JSON.parse(aBlogData.postDate)[0] + "." + JSON.parse(aBlogData.postDate)[1] + "." + JSON.parse(aBlogData.postDate)[2]}
+                        date={aBlogData.authorNameAndId[0].toUpperCase() + " " + JSON.parse(aBlogData.postDate)[0] + "." + JSON.parse(aBlogData.postDate)[1] + "." + JSON.parse(aBlogData.postDate)[2]}
                         icon={<img
                             className={"blogProfileImg"}
                             alt={"profile image"}
@@ -647,39 +656,42 @@ export const UI_Blog = () => {
                                         </IconContext.Provider>
                                     </div>
                                 </div>
-                                <h3 style={{color: "#a9c0bf"}}
-                                    className="vertical-timeline-element-title mx-5">{aBlogData.title}</h3>
+                                <h3 style={{color: "#e2fffe"}}
+                                    className="vertical-timeline-element-title mx-5">{aBlogData.title}
+                                    <IconContext.Provider value={{size: "1em"}}>
+                                        <BsBoxArrowUpRight style={{color: "#a9c0bf", marginLeft: "10px"}}/>
+                                    </IconContext.Provider></h3>
                             </div>
                             {/*<h4 className="vertical-timeline-element-subtitle">Miami, FL</h4>*/}
 
                             <div className={"articleArraysWrapper"}>
                                 <div dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(aBlogData.htmlTxt)}}/>
                             </div>
-                            <div className={"readMoreDiv"}>
-                                <IconContext.Provider value={{size: "2em"}}>
-                                    <BsBoxArrowUpRight style={{color: "#a9c0bf"}}/>
-                                </IconContext.Provider>
-                            </div>
+                            {/*<div className={"readMoreDiv"}>*/}
+                            {/*    <IconContext.Provider value={{size: "2em"}}>*/}
+                            {/*        <BsBoxArrowUpRight style={{color: "#a9c0bf"}}/>*/}
+                            {/*    </IconContext.Provider>*/}
+                            {/*</div>*/}
                         </div>
 
-                        <div hidden={!Object.values(aBlogData)[4]} className={"blogListFooterEmbedWrapper"}>
+                        <div hidden={!(aBlogData.urlsOfBlogImages)} className={"blogListFooterEmbedWrapper"}>
                             <ImageGallery
-                                items={getAblogsImages(Object.values(aBlogData)[4])}
+                                items={getAblogsImages(aBlogData.urlsOfBlogImages)}
                                 showPlayButton={false}
                                 showNav={false}/>
                         </div>
 
                         {/*hidden if user signed in is not admin!*/}
-                        <div hidden={userNotAdmin} className={"blogFooter"}>
+                        <div hidden={!isAdmin} className={"blogFooter"}>
                             <IconContext.Provider value={{size: "2em"}}>
-                                <MdCheck onClick={() => {
-                                    approveBlog(aBlogData.blogKey);
+                                <MdCheck onClick={(e) => {
+                                    approveBlog(e, aBlogData.blogKey);
                                 }} hidden={aBlogData.isBlogApproved} className={"blogFooterButtonsApprove"}/>
                             </IconContext.Provider>
 
                             <IconContext.Provider value={{size: "2em"}}>
-                                <RiCloseFill onClick={() => {
-                                    deleteBlog(aBlogData.blogKey);
+                                <RiCloseFill onClick={(e,) => {
+                                    deleteBlog(e, aBlogData.blogKey);
                                 }} className={"blogFooterButtonsDelete"}/>
                             </IconContext.Provider>
                         </div>
