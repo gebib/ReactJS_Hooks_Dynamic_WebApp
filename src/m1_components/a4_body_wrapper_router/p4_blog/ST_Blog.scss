@@ -121,12 +121,6 @@ $slColor: #248c9d;
 
   }
 
-  .blogReadMoreText {
-    &:hover {
-      cursor: pointer;
-    }
-
-  }
 
   .public-DraftStyleDefault-block {
     font-size: 16px;
@@ -175,8 +169,18 @@ $slColor: #248c9d;
 
   //actual stars
   .stars div div span svg {
+    //border: $lineT solid #9c6e82;
+    display: flex;
+  }
+
+  .starsIfisReview div div span svg {
     //border: $lineT solid #139c00;
     display: flex;
+  }
+
+  .starsIfisReview {
+    display: flex;
+    flex-grow: 1;
   }
 
   .badgeTitleWraper {
@@ -194,7 +198,7 @@ $slColor: #248c9d;
   }
 
   .articleArraysWrapper {
-    //border: $lineT solid #9c5400;
+    //border: $lineT solid #ff1100;
     max-height: 150px;
     overflow: hidden;
     word-wrap: break-word;
@@ -223,7 +227,7 @@ $slColor: #248c9d;
     background-color: #151515;
   }
 
-  .vertical-timeline-element-date{
+  .vertical-timeline-element-date {
     color: #a9c0bf;
   }
 
@@ -235,11 +239,12 @@ $slColor: #248c9d;
     margin-top: 20px;
   }
 
-  .image-gallery-thumbnail-inner{
+  .image-gallery-thumbnail-inner {
     overflow: hidden;
-    .image-gallery-thumbnail-image{
+
+    .image-gallery-thumbnail-image {
       max-height: 70px;
-      width: auto!important;
+      width: auto !important;
     }
   }
 
@@ -247,7 +252,7 @@ $slColor: #248c9d;
   .blogFooterButtonsDelete {
     border-radius: 6px;
     border: 1px solid black;
-    color: #ff7100;
+    color: #00ff10;
     margin-left: 10px;
     margin-right: 10px;
 
@@ -270,5 +275,26 @@ $slColor: #248c9d;
     }
   }
 
+  .blogReadMoreText{
+    &:hover{
+      cursor: pointer;
+      color: #0D6EFD;
+    }
+  }
+
+  .image-gallery-slide div img{
+    &:hover{
+      cursor: default;
+    }
+  }
+
+.spanRead{
+  color: #994029;
+ font-size: 1em;
+  transition: .5s;
+  &:hover{
+    color: #0D6EFD;
+  }
+}
 
 }

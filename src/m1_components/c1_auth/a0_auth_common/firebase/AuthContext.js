@@ -193,8 +193,8 @@ export function AuthProvider({children}) {
                 }).catch((e) => {
                     // console.log("////:e ", e);
                 });
-            } else {
-                setCurrentUserInfo(null);
+            // } else {
+            //     setCurrentUserInfo(null);
             }
             setLoading(false);
         });

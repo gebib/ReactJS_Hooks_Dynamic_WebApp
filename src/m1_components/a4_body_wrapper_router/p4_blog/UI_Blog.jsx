@@ -16,7 +16,7 @@ import draftToHtml from "draftjs-to-html";
 import {useTranslation} from "react-i18next";
 import {Editor} from "react-draft-wysiwyg";
 import htmlToDraft from "html-to-draftjs";
-import {Prompt} from "react-router-dom";
+import {Prompt, useHistory} from "react-router-dom";
 import {showToast} from "../../../UI_Main_pages_wrapper";
 import {useAuth} from "../../c1_auth/a0_auth_common/firebase/AuthContext";
 import {getLocalDate} from "../p2_jobs/job_form/Jobs_form";
@@ -74,6 +74,8 @@ export const UI_Blog = () => {
     const imgRef = useRef();
     const starsRef = useRef();
 
+    const history = useHistory();
+
     const {
         create_blog,
         blogPostLoading,
@@ -112,9 +114,10 @@ export const UI_Blog = () => {
         setStagedFiles([]);
     };
 
-    const handleTimeelementClick = (e, aBlogKey) => {
-        e.stopPropagation();
+    const handleTimeelementClick = (aBlogKey) => {
         console.log("////:handleTimeelementClick ", aBlogKey);
+        // console.log("////: ",e.target);
+        // history.push("blog/blogview/" + aBlogKey);
     };
 
 
@@ -215,20 +218,18 @@ export const UI_Blog = () => {
     };
 
 
-    //todo: set authour name on footer of article
     //todo: on click article should show, without fetching again.. use ls?
-    //todo: user can delete their blog: with r u sure?
-    //todo: blog godkjennelse of adm... blog is visible to the user.. so lenge
     //todo: fix page bg if no blog etc.
-    //todo: check form is dirty if switching language?
-    //todo: language change is temporal!! save to ls?
     //todo:
+
+
 
     //monitor current user change in auth! if signed out etc..
     useEffect(() => {
         if (currentUserInfo !== null) {
             setIsAdmin(currentUserInfo[2]);
             setCuInfo(currentUserInfo);
+            console.log("////: Yes user");
         } else {
             setIsAdmin(false);
             setCuInfo(null);
@@ -237,7 +238,8 @@ export const UI_Blog = () => {
         fetchBlog();
     }, [currentUserInfo]);
 
-    const fetchBlog = () =>{
+
+    const fetchBlog = () => {
         fetchListOfBlogs().then(() => {
             console.log("////:Fetch once: SET state:!");
         }).catch((e) => {
@@ -408,7 +410,7 @@ export const UI_Blog = () => {
                         stripPastedStyles={true}
                         spellCheck={spellCheck}
                         toolbar={{
-                            options: ["inline", "textAlign", "fontSize", "fontFamily", "list", "link", "colorPicker", "history", "emoji"],
+                            options: ["inline", "textAlign", "fontSize", "fontFamily", "list", "link", "history", "colorPicker", "emoji"],
                             inline: {
                                 inDropdown: false,
                                 options: ['bold', 'italic', 'underline', 'strikethrough']
@@ -612,9 +614,9 @@ export const UI_Blog = () => {
                 {listOfBlogs.map((aBlogData, index) => (
                     <VerticalTimelineElement
                         key={aBlogData.blogKey}
-                        onTimelineElementClick={(e) => {
-                            handleTimeelementClick(e, aBlogData.blogKey);
-                        }}
+                        // onTimelineElementClick={(e) => {
+                        //     handleTimeelementClick(e, aBlogData.blogKey);
+                        // }}
                         className="vertical-timeline-element--work"
                         iconStyle={{
                             background: "rgb(33, 150, 143)",
@@ -632,7 +634,7 @@ export const UI_Blog = () => {
                             className={"blogProfileImg"}
                             alt={"profile image"}
                             src={aBlogData.authorProfileImgUrl}/>}>
-                        <div className={"blogReadMoreText"}>
+                        <div onClick={()=>{handleTimeelementClick(aBlogData.blogKey)}} className={"blogReadMoreText"}>
                             <div className={"badgeTitleWraper"}>
                                 <div className={"typeOfBlog"}>
                                     <div style={{color: "#a9c0bf"}} hidden={!(aBlogData.blogType === "blog")}>
@@ -656,11 +658,15 @@ export const UI_Blog = () => {
                                         </IconContext.Provider>
                                     </div>
                                 </div>
+
                                 <h3 style={{color: "#e2fffe"}}
                                     className="vertical-timeline-element-title mx-5">{aBlogData.title}
                                     <IconContext.Provider value={{size: "1em"}}>
-                                        <BsBoxArrowUpRight style={{color: "#a9c0bf", marginLeft: "10px"}}/>
-                                    </IconContext.Provider></h3>
+                                        <BsBoxArrowUpRight style={{color: "#994029", marginLeft: "10px",marginRight: "10px"}}/>
+                                    </IconContext.Provider>
+                                    <span className={"spanRead"}>{t("blog.readMoreTitle")}</span>
+                                </h3>
+
                             </div>
                             {/*<h4 className="vertical-timeline-element-subtitle">Miami, FL</h4>*/}
 
@@ -678,22 +684,41 @@ export const UI_Blog = () => {
                             <ImageGallery
                                 items={getAblogsImages(aBlogData.urlsOfBlogImages)}
                                 showPlayButton={false}
+                                showFullscreenButton={true}
                                 showNav={false}/>
                         </div>
 
                         {/*hidden if user signed in is not admin!*/}
-                        <div hidden={!isAdmin} className={"blogFooter"}>
-                            <IconContext.Provider value={{size: "2em"}}>
-                                <MdCheck onClick={(e) => {
-                                    approveBlog(e, aBlogData.blogKey);
-                                }} hidden={aBlogData.isBlogApproved} className={"blogFooterButtonsApprove"}/>
-                            </IconContext.Provider>
+                        <div hidden={(aBlogData.blogType !== "review")} className={"blogFooter"}>
+                            <div className={"starsIfisReview"}>
+                                <ReactStars
+                                    edit={false}
+                                    size={23}
+                                    count={5}
+                                    color={"#c6c6c6"}
+                                    activeColor={"#248C9D"}
+                                    value={aBlogData.ratingStars}
+                                    a11y={true}
+                                    emptyIcon={<IconContext.Provider value={{size: "1.2em"}}><AiOutlineStar/></IconContext.Provider>}
+                                    filledIcon={<IconContext.Provider value={{size: "1.2em"}}><AiFillStar/></IconContext.Provider>}
+                                    onChange={(newValue) => {
+                                        setRating(newValue);
+                                    }}
+                                />
+                            </div>
+                            <div hidden={!isAdmin}>
+                                <IconContext.Provider value={{size: "2em"}}>
+                                    <MdCheck onClick={(e) => {
+                                        approveBlog(e, aBlogData.blogKey);
+                                    }} hidden={aBlogData.isBlogApproved} className={"blogFooterButtonsApprove"}/>
+                                </IconContext.Provider>
 
-                            <IconContext.Provider value={{size: "2em"}}>
-                                <RiCloseFill onClick={(e,) => {
-                                    deleteBlog(e, aBlogData.blogKey);
-                                }} className={"blogFooterButtonsDelete"}/>
-                            </IconContext.Provider>
+                                <IconContext.Provider value={{size: "2em"}}>
+                                    <RiCloseFill onClick={(e,) => {
+                                        deleteBlog(e, aBlogData.blogKey);
+                                    }} className={"blogFooterButtonsDelete"}/>
+                                </IconContext.Provider>
+                            </div>
                         </div>
                     </VerticalTimelineElement>
                 ))}

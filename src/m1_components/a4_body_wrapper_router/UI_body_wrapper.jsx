@@ -14,6 +14,7 @@ import {UI_forgot_password} from "../c1_auth/forgot_password/UI_forgot_password"
 import {UI_PrivacyPolicy} from "../z_privacy_policy/UI_PrivacyPolicy";
 import {UI_Job_Viewer} from "./p2_jobs/job_Viewer/UI_Job_Viewer";
 import {Jobs_form} from "./p2_jobs/job_form/Jobs_form";
+import {UI_blog_view} from "./p4_blog/blog_View/UI_blog_view";
 
 
 export const UI_body_wrapper = (props) => {
@@ -32,6 +33,10 @@ export const UI_body_wrapper = (props) => {
                     <Route exact path={"/jobs/jobeditor"}><Jobs_form/></Route>
                     <Route exact path={"/jobs/jobeditor/:id"}><UI_Job_Viewer/></Route>
                     {/*//////jobs page//////////*/}
+
+                    {/*//////blog page//////////*/}
+                    <Route exact path={"/blog/blogview/:id"}><UI_blog_view/></Route>
+                    {/*//////blog page//////////*/}
 
                     <Route exact path={"/services"}><ServiceContent/></Route>
                     <Route exact path={"/blog"}><UI_Blog/></Route>
