@@ -212,6 +212,11 @@ $slColor: #248c9d;
     }
   }
 
+  .tlFooterButtons{
+    //border: $lineT solid #b1ff00;
+
+  }
+
   .readMoreDiv {
     //border: $lineT solid #00ff49;
     height: 50px;
@@ -252,13 +257,14 @@ $slColor: #248c9d;
   .blogFooterButtonsDelete {
     border-radius: 6px;
     border: 1px solid black;
-    color: #00ff10;
+    color: #994029;
     margin-left: 10px;
     margin-right: 10px;
 
     &:hover {
-      background-color: #ff1000;
+      background-color: #000000;
       cursor: pointer;
+      color: #ff1500;
     }
   }
 
@@ -270,8 +276,9 @@ $slColor: #248c9d;
     margin-right: 10px;
 
     &:hover {
-      background-color: #00b418;
+      background-color: #000000;
       cursor: pointer;
+      color: #00ff10;
     }
   }
 

@@ -115,9 +115,7 @@ export const UI_Blog = () => {
     };
 
     const handleTimeelementClick = (aBlogKey) => {
-        console.log("////:handleTimeelementClick ", aBlogKey);
-        // console.log("////: ",e.target);
-        // history.push("blog/blogview/" + aBlogKey);
+        history.push("blog/blogview/" + aBlogKey);
     };
 
 
@@ -685,12 +683,13 @@ export const UI_Blog = () => {
                                 items={getAblogsImages(aBlogData.urlsOfBlogImages)}
                                 showPlayButton={false}
                                 showFullscreenButton={true}
+                                showThumbnails={getAblogsImages(aBlogData.urlsOfBlogImages).length > 1}
                                 showNav={false}/>
                         </div>
 
                         {/*hidden if user signed in is not admin!*/}
-                        <div hidden={(aBlogData.blogType !== "review")} className={"blogFooter"}>
-                            <div className={"starsIfisReview"}>
+                        <div className={"blogFooter"}>
+                            <div hidden={(aBlogData.blogType !== "review")} className={"starsIfisReview"}>
                                 <ReactStars
                                     edit={false}
                                     size={23}
@@ -701,12 +700,12 @@ export const UI_Blog = () => {
                                     a11y={true}
                                     emptyIcon={<IconContext.Provider value={{size: "1.2em"}}><AiOutlineStar/></IconContext.Provider>}
                                     filledIcon={<IconContext.Provider value={{size: "1.2em"}}><AiFillStar/></IconContext.Provider>}
-                                    onChange={(newValue) => {
-                                        setRating(newValue);
-                                    }}
+                                    // onChange={(newValue) => {
+                                    //     setRating(newValue);
+                                    // }}
                                 />
                             </div>
-                            <div hidden={!isAdmin}>
+                            <div className={"tlFooterButtons"} hidden={!isAdmin}>
                                 <IconContext.Provider value={{size: "2em"}}>
                                     <MdCheck onClick={(e) => {
                                         approveBlog(e, aBlogData.blogKey);
@@ -719,6 +718,7 @@ export const UI_Blog = () => {
                                     }} className={"blogFooterButtonsDelete"}/>
                                 </IconContext.Provider>
                             </div>
+
                         </div>
                     </VerticalTimelineElement>
                 ))}

@@ -1,0 +1,24 @@
+//$lineT: 3px;
+
+$light_gray: #9da9bb;
+$lightest_gray: #B6C1D2;
+$dark_gray: #5E6E82;
+$darkest_gray: #344050;
+
+$neu-shadow: 9px 9px 16px rgba(163, 177, 198, 0.6), -9px -9px 16px rgba(255, 255, 255, 0.5);
+$new-shadow-active: 0px 0px 10px 6px rgba(0, 0, 0, 0.1);
+
+.card {
+  box-shadow: 0 0 10px 6px rgba(0, 0, 0, 0.1);
+}
+
+
+.readMoreCardBtn {
+
+}
+
+.dangerDiv{
+  max-height: 150px;
+  height: 100%;
+  overflow: hidden;
+}

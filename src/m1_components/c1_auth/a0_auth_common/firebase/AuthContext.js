@@ -147,6 +147,12 @@ export function AuthProvider({children}) {
         setBlogPostLoading(true);
         return database.ref("/blogs").once("value");
     };
+
+    //read single blog
+    const read_blog_single = (blogKey) => {
+        return database.ref("blogs/" + blogKey).once("value");
+    };
+
     //used to delete by adm, or if over limit.
     const delete_blog = (blogId) => {
         database.ref("blogs/" + blogId).remove().then((r) => {
@@ -226,6 +232,7 @@ export function AuthProvider({children}) {
         blogPostLoading,
         setBlogPostLoading,
         read_blog,
+        read_blog_single,
         delete_blog,
         approve_blog
 

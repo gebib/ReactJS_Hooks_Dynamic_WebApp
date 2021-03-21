@@ -1,3 +1,108 @@
-//$lineT: 3px;
+//$lineT: 1px;
 $uiBg: #181818;
 $slColor: #248c9d;
+
+
+.mainWrapper{
+  //border: $lineT solid #00ff49;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  margin: 5px 20px;
+
+  .middleDivsCommon{
+    //border: $lineT solid #85b176;
+    max-width: 700px;
+    width: 100%;
+    //temp?
+  }
+
+  .topPosterInfoDiv{
+    //border: $lineT solid #584d00;
+    margin-top: 50px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    font-size: 13px;
+    color: #7F8A88;
+    border-radius: 50px 50px 50px  50px;
+    box-shadow: 0 0.0625rem 0.125rem rgba(0, 0, 0, 0.15);
+    font-weight: 600;
+    .userImage{
+      //border: $lineT solid #00b19e;
+      height: 60px;
+      width: 60px;
+      border-radius: 50%;
+      overflow: hidden;
+      .posterProfileImg{
+        //border: $lineT solid #584d00;
+        height: 100%;
+      }
+
+    }
+    max-width: 1200px;
+    width: 100%;
+  }
+
+  .ratingStrs{
+    //border: $lineT solid #00af24;
+    padding: 5px;
+
+  }
+
+  //center stars!
+  .ratingStrs div div span svg {
+    ////border: $lineT solid #139c00;
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+
+  .imageDiv{
+    //border: $lineT solid #ff7100;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+    .image-gallery {
+      width: 100%;
+      height: auto;
+    }
+  }
+
+  .textContentDiv2{
+    //border: $lineT solid #00b134;
+    flex-grow: 1;
+  }
+
+  .textContentDiv{
+    //border: $lineT solid #00ff10;
+
+  }
+
+  .smdDiv{
+    //border: $lineT solid #212b00;
+
+  }
+
+  hr{
+    background-color: #000000;
+    width: 100%;
+  }
+
+  .oldBlogCardsDiv{
+    //border: $lineT solid #994029;
+
+  }
+
+  //////////////
+  .image-gallery-slide div img{
+    &:hover{
+      cursor: default;
+    }
+  }
+  .oldBlogCardsDivsBlogView{
+    max-width: 1200px;
+  }
+}
