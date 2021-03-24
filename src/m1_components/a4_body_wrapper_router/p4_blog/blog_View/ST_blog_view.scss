@@ -8,8 +8,10 @@ $slColor: #248c9d;
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-height: 100vh;
-  margin: 5px 20px;
+  //min-height: 100vh;
+  //margin: 5px 20px;
+  background-color: white;
+
 
   .middleDivsCommon{
     //border: $lineT solid #85b176;
@@ -73,7 +75,7 @@ $slColor: #248c9d;
 
   .textContentDiv2{
     //border: $lineT solid #00b134;
-    flex-grow: 1;
+    //flex-grow: 1;
   }
 
   .textContentDiv{
@@ -104,5 +106,6 @@ $slColor: #248c9d;
   }
   .oldBlogCardsDivsBlogView{
     max-width: 1200px;
+    width: 100%;
   }
 }

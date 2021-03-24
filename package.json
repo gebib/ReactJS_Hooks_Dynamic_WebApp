@@ -28,6 +28,7 @@
     "i18next": "^19.8.4",
     "moment": "^2.29.1",
     "node-sass": "^4.14.1",
+    "nuka-carousel": "^4.7.7",
     "prop-types": "latest",
     "react": "^17.0.1",
     "react-bootstrap": "^1.4.0",

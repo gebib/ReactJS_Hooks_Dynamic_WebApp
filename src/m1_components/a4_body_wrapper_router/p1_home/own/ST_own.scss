@@ -1,0 +1,34 @@
+//$lineT: 3px;
+
+.vbs_mainContainerHome {
+  display: flex;
+  justify-content: center;
+}
+
+.vbs_innerContainer {
+  //border: $lineT solid #00ff45;
+  .karianneImgWrap {
+    display: flex;
+    justify-content: center;
+
+    img {
+      //border: $lineT solid #00baff;
+      max-width: 800px;
+      justify-self: center;
+    }
+  }
+}
+
+.vbs_wecome_header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.ownWraper {
+  max-width: 700px;
+  .vbTextDiv {
+    //border: $lineT solid #ba00ff;
+
+  }
+}

@@ -34,13 +34,13 @@ import DOMPurify from "dompurify";
 
 
 let blogDefaultTextE = `
-<p>Share your inspirational article or blog with us!</p>
+<p>Share your inspirational article, blog or feedback with us!</p>
 <p></p>
 <p></p>
 `;
 
 let blogDefaultTextN = `
-<p>Del din inspirerende artikkel eller blogg med oss!</p>
+<p>Del din inspirerende artikkel, blogg eller tilbakemelding med oss!</p>
 <p></p>
 <p></p>
 `;
@@ -329,8 +329,8 @@ export const UI_Blog = () => {
     const isEditorChanged = () => {
         let raw = convertToRaw(editorState.getCurrentContent());
 
-        let isDefaultText = ((raw.blocks[0].text === "Share your inspirational article or blog with us!") ||
-            (raw.blocks[0].text === "Del din inspirerende artikkel eller blogg med oss!"));
+        let isDefaultText = ((raw.blocks[0].text === "Share your inspirational article, blog or feedback with us!") ||
+            (raw.blocks[0].text === "Del din inspirerende artikkel, blogg eller tilbakemelding med oss!"));
         let areThereTexts = false;
 
         for (let i = 1; i < raw.blocks.length; i++) {

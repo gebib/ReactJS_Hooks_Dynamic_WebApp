@@ -150,7 +150,7 @@ export const UI_nav_bar = (props) => {
                     <div className={"top_bar_elems"}>
                         <div className={"tlf_ico top_elems"}><MdPhone/></div>
                         <div className={"tlf_nr top_elems"}>
-                            <div>+47 98 255 131</div>
+                            <div style={{color:"#24818D"}}>+47 98 255 131</div>
                         </div>
                         <div className={"fb_ico top_elems"}><FaFacebookF/></div>
                         <div className={"in_ico top_elems"}><ImLinkedin2/></div>
@@ -158,7 +158,7 @@ export const UI_nav_bar = (props) => {
                         <div className={"sign_in"}>
                             <IconContext.Provider value={{size: "1em"}}>
                                 <div className={"sign_in_lbl"} onClick={() => handleLoginLogout()}
-                                     style={currentUserInfo !== null ? {color: "#24818D"} : {color: "#24818D"}
+                                     style={currentUserInfo !== null ? {color: "#24818D", minWidth:"85px"} : {color: "#24818D",minWidth:"85px"}
                                      }>{currentUserInfo !== null ? t("sign_in.logout") : t("sign_in.login")}<ImArrowUp/>
                                 </div>
                             </IconContext.Provider>

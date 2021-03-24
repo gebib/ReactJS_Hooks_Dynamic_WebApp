@@ -97,8 +97,8 @@ export const UI_PullCards = (props) => {
 
     return (
         <section>
-            {console.log("////:cardsRENDERED::")}
-            <div className="row row-cols-1 row-cols-md-2 row-cols-sm-1 row-cols-lg-3 g-4">
+
+           { randomArticle && <div className="row row-cols-1 row-cols-md-2 row-cols-sm-1 row-cols-lg-3 g-4 mb-5">
                 <div className="col">
                     <div className="card h-100">
                         <img hidden={hasPhoto && !hasPhoto[0]}
@@ -186,7 +186,7 @@ export const UI_PullCards = (props) => {
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>}
         </section>
     );
 };

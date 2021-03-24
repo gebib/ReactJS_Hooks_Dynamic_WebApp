@@ -52,8 +52,18 @@ export const HomeContent = () => {
                                 </div>
                                 <p className={"px-3"}>{t("home.p6")}</p>
                                 <p className={"px-3"}>{t("home.p7")}</p>
-                                <p className={"px-3"}><Link style={{textDecoration: 'none'}}
-                                                            to={"/register"}>{t("home.p8")}</Link></p>
+                                <p className={"px-3"}><Link
+                                    className={"homeLinks"}
+                                    style={{
+                                        textDecoration: 'none',
+                                        // border: "1px solid #248C9D",
+                                        paddingRight: "10px",
+                                        paddingLeft: "10px",
+                                        borderRadius: "6px",
+                                        fontWeight: "600",
+                                        color: "#248C9D"
+                                    }}
+                                    to={"/home/wecare"}>{t("home.p8")}</Link></p>
                             </div>
                         </div>
 
@@ -75,8 +85,18 @@ export const HomeContent = () => {
                                     </div>
                                 </div>
                                 <p className={"px-3"}>{t("home.p10")}</p>
-                                <p className={"px-3"}><Link style={{textDecoration: 'none'}}
-                                                            to={"/register"}>{t("home.p8")}</Link></p>
+                                <p className={" px-3"}><Link
+                                    className={"homeLinks"}
+                                    style={{
+                                        textDecoration: 'none',
+                                        // border: "1px solid #248C9D",
+                                        paddingRight: "10px",
+                                        paddingLeft: "10px",
+                                        borderRadius: "6px",
+                                        fontWeight: "600",
+                                        color: "#248C9D"
+                                    }}
+                                    to={"/home/own"}>{t("home.p8")}</Link></p>
                             </div>
                         </div>
                         <div className={"col-lg-6 img_with_text px-0"}>
@@ -94,8 +114,19 @@ export const HomeContent = () => {
                             </figure>
                         </div>
                         <p>{t("home.p11")}</p>
-                        <p className={"px-3"}><Link style={{textDecoration: 'none'}}
-                                                    to={"/register"}>{t("home.p8")}</Link></p>
+                        <p className={" px-3"}><Link
+                            className={"homeLinks"}
+                            style={{
+                                textDecoration: 'none',
+                                // border: "1px solid #248C9D",
+                                paddingRight: "10px",
+                                paddingLeft: "10px",
+                                borderRadius: "6px",
+                                fontWeight: "600",
+                                color: "#248C9D"
+                            }}
+                            to={"/home/rent"}>{t("home.p8")}</Link></p>
+
                     </section>
                 </article>
                 <UI_PullCards getNewblog={null}/>
@@ -106,9 +137,9 @@ export const HomeContent = () => {
                         aria-hidden="false"
                         tabIndex="0"/>
                 </footer>
-                <section className={"can_w_h_you py-2 my-2"}>
-                    <p style={{color: "#248C9D", fontWeight: "700"}}>{t("home.p12")}</p>
-                    <p style={{color: "#248C9D", fontWeight: "700"}}>{t("home.p13")}</p>
+                <section className={"can_w_h_you"}>
+                    <>{t("home.p12")}</>
+                    <br/> <>{t("home.p13")}</>
                 </section>
             </div>
         </main>

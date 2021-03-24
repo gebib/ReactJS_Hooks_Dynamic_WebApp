@@ -1,0 +1,23 @@
+//$lineT: 3px;
+
+.vbs_mainContainerHome{
+  display: flex;
+  justify-content: center;
+}
+
+.vbs_innerContainer{
+  //border: $lineT solid #ba00ff;
+  img{
+    width: 100%;
+  }
+}
+
+.vbs_wecome_header{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.vbTextDiv{
+  //border: $lineT solid #ba00ff;
+
+}

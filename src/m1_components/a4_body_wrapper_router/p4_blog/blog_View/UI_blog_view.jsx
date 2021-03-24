@@ -130,7 +130,7 @@ export const UI_blog_view = () => {
             <div className={"imageDiv middleDivsCommon"}>
                 {aBlogData && <ImageGallery
                     items={getAblogsImages()}
-                    showPlayButton={getAblogsImages().length > 1}
+                    showPlayButton={false}
                     showFullscreenButton={getAblogsImages().length > 0}
                     showThumbnails={getAblogsImages().length > 1}
                     showNav={getAblogsImages().length > 1}/>}
