@@ -161,6 +161,7 @@
       .small_logo_wrapper {
         //border: $lineT solid #ff00aa;
         justify-self: start;
+        min-height: 40px;
       }
 
       .img_self {
@@ -279,7 +280,7 @@
         align-items: center;
         justify-content: flex-end;
         max-width: 310px;
-        @media (max-width: 228px) {
+        @media (max-width: 313px) {
           display: none;
         }
 
@@ -346,8 +347,10 @@
     width: 100%;
     cursor: pointer;
     border-radius: 0;
-    margin: 0;
     padding: 0;
+    margin-top: 20px;
+    text-align: center;
+    //transition: 2s;
     @media (min-width: 645px) {
       display: none;
     }
@@ -357,15 +360,16 @@
       list-style: none;
       margin-left: 10px;
       padding: 5px;
-      background: linear-gradient(-90deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0) 100%), rgba(29, 29, 29, 0.8);
-      margin-top: 2px;
+      background: linear-gradient(-90deg, rgba(52, 140, 157, 0.8) 0%, rgba(0, 0, 0, 0) 100%), rgba(0, 0, 0, 0.8);
+      margin-top: 10px;
+      border-radius: 6px;
       @media (max-width: 228px) {
         width: 90%;
       }
 
       &:hover {
-        background-color: #202020;
-        border-radius: 2px;
+        background: linear-gradient(-90deg, rgba(52, 140, 157, 0.8) 0%, rgba(0, 0, 0, 0) 40%), rgba(0, 0, 0, 0.8);
+        border-radius: 6px;
         cursor: pointer;
 
         .lnk_b {
@@ -389,14 +393,16 @@
       display: none;
       grid-template-columns: auto auto;
       align-items: center;
-      @media (max-width: 228px) {
+      border-radius: 6px;
+      @media (max-width: 313px) {
         display: flex;
+        flex-direction: column;
         background: linear-gradient(-90deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0) 100%), rgba(29, 29, 29, 0.8);
         padding: 5px;
-        margin-top: 2px;
-        width: 90%;
+        margin-top: 15px;
+        width: 95%;
         margin-left: 10px;
-        height: 40px;
+        //height: 40px;
       }
 
       color: white;
@@ -443,6 +449,25 @@
           justify-content: flex-start;
           align-items: center;
         }
+      }
+    }
+    .activeStyleSm{
+      width: 95%;
+      list-style: none;
+      margin-left: 10px;
+      padding: 5px;
+      background: linear-gradient(-90deg, rgba(52, 140, 157, 0.8) 0%, rgba(0, 0, 0, 0) 0%), rgba(0, 0, 0, 0.8);
+      margin-top: 10px;
+      border-radius: 6px;
+      opacity: 1;
+
+      .lnk_b {
+        text-decoration: none;
+        //height: inherit;
+        color: #ff1500;
+        text-transform: uppercase;
+        font-family: 'Roboto', sans-serif;
+        letter-spacing: 1px;
       }
     }
   }

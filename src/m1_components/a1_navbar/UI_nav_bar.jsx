@@ -150,7 +150,7 @@ export const UI_nav_bar = (props) => {
                     <div className={"top_bar_elems"}>
                         <div className={"tlf_ico top_elems"}><MdPhone/></div>
                         <div className={"tlf_nr top_elems"}>
-                            <div style={{color:"#24818D"}}>+47 98 255 131</div>
+                            <div style={{color: "#24818D"}}>+47 98 255 131</div>
                         </div>
                         <div className={"fb_ico top_elems"}><FaFacebookF/></div>
                         <div className={"in_ico top_elems"}><ImLinkedin2/></div>
@@ -158,7 +158,10 @@ export const UI_nav_bar = (props) => {
                         <div className={"sign_in"}>
                             <IconContext.Provider value={{size: "1em"}}>
                                 <div className={"sign_in_lbl"} onClick={() => handleLoginLogout()}
-                                     style={currentUserInfo !== null ? {color: "#24818D", minWidth:"85px"} : {color: "#24818D",minWidth:"85px"}
+                                     style={currentUserInfo !== null ? {
+                                         color: "#24818D",
+                                         minWidth: "85px"
+                                     } : {color: "#24818D", minWidth: "85px"}
                                      }>{currentUserInfo !== null ? t("sign_in.logout") : t("sign_in.login")}<ImArrowUp/>
                                 </div>
                             </IconContext.Provider>
@@ -180,17 +183,23 @@ export const UI_nav_bar = (props) => {
                             <li className={"burger_menu_li"} onClick={handleBtnClick}><GiHamburgerMenu/></li>
                         </IconContext.Provider>
 
-                        <li className={onHome ? "activeStyle" : "li_s"}><Link className={"lnk"}
-                                                                              to={"/"}>{t("nav.home")}</Link></li>
-                        <li className={onJobs ? "activeStyle" : "li_s"}><Link className={"lnk"}
-                                                                              to={"/jobs"}>{t("nav.jobs")}</Link></li>
-                        <li className={onService ? "activeStyle" : "li_s"}><Link className={"lnk"}
-                                                                                 to={"/services"}>{t("nav.services")}</Link>
+                        <li className={onHome ? "activeStyle" : "li_s"}>
+                            <Link className={"lnk"} to={"/"}>{t("nav.home")}</Link></li>
+                        <li className={onJobs ? "activeStyle" : "li_s"}>
+                            <Link className={"lnk"} to={"/jobs"}>{t("nav.jobs")}</Link></li>
+                        <li className={onService ? "activeStyle" : "li_s"}>
+                            <Link onMouseEnter={() => {
+                                console.log("//////////////////////////////////////////: Enter");
+                            }}
+                                  onMouseLeave={() => {
+                                      console.log("//////////////////////////////////////////: Leave");
+                                  }}
+                                  className={"lnk"} to={"/services"}>{t("nav.services")}</Link>
                         </li>
-                        <li className={onBlog ? "activeStyle" : "li_s"}><Link className={"lnk"}
-                                                                              to={"/blog"}>{t("nav.blog")}</Link></li>
-                        <li className={onAbout ? "activeStyle" : "li_s"}><Link className={"lnk"}
-                                                                               to={"/about"}>{t("nav.about")}</Link>
+                        <li className={onBlog ? "activeStyle" : "li_s"}>
+                            <Link className={"lnk"} to={"/blog"}>{t("nav.blog")}</Link></li>
+                        <li className={onAbout ? "activeStyle" : "li_s"}>
+                            <Link className={"lnk"} to={"/about"}>{t("nav.about")}</Link>
                         </li>
                     </ul>
 
@@ -213,32 +222,81 @@ export const UI_nav_bar = (props) => {
                 {openMenu && (
                     <div className="drop_down_wrapper" onClick={closeMenu}>
                         <ul style={{padding: 0}}>
-                            <li className={onHome ? "activeStyle" : "li_d"}><Link className={"lnk_b"}
-                                                                                  to={"/"}>{t("nav.home")}</Link>
+                            <li onClick={()=>{
+                                history.push("/");
+                            }} className={onHome ? "activeStyleSm" : "li_d"}>
+                                <Link className={"lnk_b"} to={"/"}>{t("nav.home")}</Link>
                             </li>
-                            <li className={onJobs ? "activeStyle" : "li_d"}><Link className={"lnk_b"}
-                                                                                  to={"/jobs"}>{t("nav.av_positions")}</Link>
+                            <li onClick={()=>{
+                                history.push("/jobs");
+                            }} className={onJobs ? "activeStyleSm" : "li_d"}>
+                                <Link className={"lnk_b"} to={"/jobs"}>{t("nav.av_positions")}</Link>
                             </li>
-                            <li className={onService ? "activeStyle" : "li_d"}><Link className={"lnk_b"}
-                                                                                     to={"/services"}>{t("nav.services")}</Link>
+                            <li onClick={()=>{
+                                history.push("/services");
+                            }} className={onService ? "activeStyleSm" : "li_d"}>
+                                <Link className={"lnk_b"} to={"/services"}>{t("nav.services")}</Link>
                             </li>
-                            <li className={onBlog ? "activeStyle" : "li_d"}><Link className={"lnk_b"}
-                                                                                  to={"/blog"}>{t("nav.blog")}</Link>
+                            <li onClick={()=>{
+                                history.push("/blog");
+                            }} className={onBlog ? "activeStyleSm" : "li_d"}>
+                                <Link className={"lnk_b"} to={"/blog"}>{t("nav.blog")}</Link>
                             </li>
-                            <li className={onAbout ? "activeStyle" : "li_d"}><Link className={"lnk_b"}
-                                                                                   to={"/about"}>{t("nav.about")}</Link>
+                            <li onClick={()=>{
+                                history.push("/about");
+                            }} className={onAbout ? "activeStyleSm" : "li_d"}>
+                                <Link className={"lnk_b"} to={"/about"}>{t("nav.about")}</Link>
                             </li>
 
                             <div className={"language2"}>
-                                <div className={"flag_div2"}>
-                                    <img className={"flag_img_self2"}
-                                         src={(i18n.language === "en") ? englishFlag : norskFlag}
-                                         alt={"language flag"}/>
+                                <div style={{
+                                    display: "flex",
+                                    justifyContent: "center",
+                                    alignItems: "center",
+                                    border: "1px solid #24818D",
+                                    borderRadius: "6px",
+                                    minWidth: "100%",
+                                    marginBottom: "5px"
+                                }}>
+                                    <div className={"flag_div2"}>
+                                        <img className={"flag_img_self2"}
+                                             src={(i18n.language === "en") ? englishFlag : norskFlag}
+                                             alt={"language flag"}/>
+                                    </div>
+                                    <div className={"text_div2"} onClick={handleLanguageChange}>
+                                        <p style={{color: "#24818D"}} className={"text_self2"}>{t("nav.lang")}</p>
+                                    </div>
                                 </div>
-                                <div className={"text_div2"} onClick={handleLanguageChange}>
-                                    <p style={{color: "#24818D"}} className={"text_self2"}>{t("nav.lang")}</p>
+                                <div style={{
+                                    minWidth: "100%",
+                                }} className={"sign_in"}>
+                                    <IconContext.Provider value={{size: "1em"}}>
+                                        <div className={"sign_in_lbl"} onClick={() => handleLoginLogout()}
+                                             style={currentUserInfo !== null ? {
+                                                 color: "#24818D",
+                                                 minHeight: "33px",
+                                                 display: "flex",
+                                                 justifyContent: "center",
+                                                 alignItems: "center",
+                                                 border: "1px solid #24818D",
+                                                 borderRadius: "6px",
+                                                 marginTop: "5px",
+                                                 fontSize: "17px"
+                                             } : {color: "#24818D",
+                                                 minHeight: "33px",
+                                                 display: "flex",
+                                                 justifyContent: "center",
+                                                 alignItems: "center",
+                                                 border: "1px solid #24818D",
+                                                 borderRadius: "6px",
+                                                 marginTop: "5px",
+                                                 fontSize: "17px"}
+                                             }>{currentUserInfo !== null ? t("sign_in.logout") : t("sign_in.login")}<ImArrowUp/>
+                                        </div>
+                                    </IconContext.Provider>
                                 </div>
                             </div>
+
                         </ul>
 
                     </div>

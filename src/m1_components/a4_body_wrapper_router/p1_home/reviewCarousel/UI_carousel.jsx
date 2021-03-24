@@ -8,6 +8,7 @@ import DOMPurify from "dompurify";
 import ReactStars from "react-rating-stars-component";
 import {AiFillStar, AiOutlineStar} from "react-icons/ai";
 import {IconContext} from "react-icons";
+import {VerticalTimelineElement} from "react-vertical-timeline-component";
 
 export const UI_carousel = () => {
     // const [reviews, setReviews] = useState([
@@ -43,7 +44,7 @@ export const UI_carousel = () => {
                         authorNameAndId: snData.val().authorNameAndId,
                         htmlTxt: snData.val().htmlTxt,
                         ratingStars: snData.val().ratingStars,
-
+                        authorProfileImgUrl: snData.val().authorProfileImgUrl,
                         isBlogApproved: JSON.parse(snData.val().isBlogApproved),
                         blogType: snData.val().blogType
                     };
@@ -75,18 +76,6 @@ export const UI_carousel = () => {
     return (
         <div className={"carouselWraper"}>
             <h4>{t("home.carHeader")}</h4>
-            {/*<Carousel*/}
-            {/*    enableAutoPlay={true}*/}
-            {/*    autoPlaySpeed={2000}*/}
-            {/*    isRTL={false}*/}
-            {/*    easing="cubic-bezier(1,.15,.55,1.54)"*/}
-            {/*    tiltEasing="cubic-bezier(0.110, 1, 1.000, 0.210)"*/}
-            {/*    transitionMs={700}*/}
-            {/*    enableSwipe={true}*/}
-            {/*    enableMouseSwipe={true}*/}
-            {/*>*/}
-            {/*</Carousel>*/}
-
             <Carousel
                 className={"carouselSelf"}
                 autoplay={true}
@@ -99,6 +88,12 @@ export const UI_carousel = () => {
             >
                 {reviews && reviews.map(item =>
                     <div key={item.id}>
+                        <div className={"commenterPrfImgCrsl"}>
+                            <img onClick={()=>{history.replace("/blog/blogview/" + item.blogKey);}}
+                                className={"crsImageSelf"}
+                                alt={"profile image"}
+                                src={item.authorProfileImgUrl}/>
+                        </div>
                         <div className={"nameAndStars"}><h5>{item.authorNameAndId[0]}</h5>
                             <ReactStars
                                 edit={false}

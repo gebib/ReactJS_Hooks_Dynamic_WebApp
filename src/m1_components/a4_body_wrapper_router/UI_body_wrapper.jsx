@@ -48,10 +48,14 @@ export const UI_body_wrapper = (props) => {
 
                     {/*normail pages*/}
                     <Route exact path={"/privacypolicy"}><UI_PrivacyPolicy/></Route>
-                    <Route path={"/home/wecare"}><UI_vibryross/></Route>
-                    <Route path={"/home/own"}><UI_recruitment/></Route>
-                    <Route path={"/home/rent"}><UI_leie/></Route>
+                    <Route exact path={"/home/wecare"}><UI_vibryross/></Route>
+                    <Route exact path={"/home/own"}><UI_recruitment/></Route>
+                    <Route exact path={"/home/rent"}><UI_leie/></Route>
 
+                    <Route exact path={"/service/wecare"}><UI_vibryross/></Route>
+                    <Route exact path={"/service/own"}><UI_recruitment/></Route>
+                    <Route exact path={"/service/rent"}><UI_leie/></Route>
+                    <Route exact path={"/service/advice"}><UI_leie/></Route>
 
                     <Route path={"/badurl404"}><ErrorPage/></Route>
 
@@ -60,7 +64,7 @@ export const UI_body_wrapper = (props) => {
                         <Route exact path={"/login"}><UI_login/></Route>
                         <Route exact path={"/register"}><UI_register/></Route>
                         <Route exact path={"/forgot_password"}><UI_forgot_password/></Route>
-                        {/*<Route path={"*"}><ErrorPage/></Route>*/}
+                        <Route path={"*"}><ErrorPage/></Route>
                     </Suspense>
                     <Route path={"*"}><ErrorPage/></Route>
                 </Switch>

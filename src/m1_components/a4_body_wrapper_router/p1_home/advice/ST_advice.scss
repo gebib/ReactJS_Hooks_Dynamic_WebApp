@@ -1,34 +1,36 @@
 //$lineT: 3px;
 
-.vbs_mainContainerHome {
+.adv_mainContainerHome {
   display: flex;
   justify-content: center;
 }
 
-.vbs_innerContainer {
+.adv_innerContainer {
   //border: $lineT solid #00ff45;
   .karianneImgWrap {
     display: flex;
     justify-content: center;
-
-    .topOwnImg {
+    img {
       //border: $lineT solid #00baff;
-      max-width: 800px;
+      max-width: 100%;
       justify-self: center;
     }
   }
 }
 
-.vbs_wecome_header {
+.adv_wecome_header {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.ownWraper {
-  max-width: 700px;
+.textDivMainWraper{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   .vbTextDiv {
     //border: $lineT solid #ba00ff;
+    max-width: 700px;
 
   }
 }

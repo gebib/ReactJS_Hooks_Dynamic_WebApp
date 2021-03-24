@@ -8,8 +8,7 @@
   flex-direction: column;
 
   .carouselSelf {
-    //border: $lineT solid #00ff3e;
-
+    //border: $lineT solid #00cdff;
     padding-bottom: 50px;
     display: flex;
     justify-content: center;
@@ -23,9 +22,29 @@
 }
 
 .nameAndStars {
-  //border: $lineT solid #ff9900;
+  //border: $lineT solid #ffdb00;
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-bottom: 15px;
+}
+
+.commenterPrfImg{
+  //border: $lineT solid #2aff70;
+  height: 100px;
+  width: 100px;
+
+}
+.crsImageSelf{
+  //border: $lineT solid #ff7f62;
+  max-height: 150px !important;
+  max-width: 150px !important;
+  border-radius: 50%;
+}
+
+.slider-control-centerright{
+  display: none;
+}
+.slider-control-centerleft{
+  display: none;
 }

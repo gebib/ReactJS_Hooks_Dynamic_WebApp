@@ -14,7 +14,7 @@ export const UI_recruitment = () => {
                 <article>
                     <section className={"row vbs_section_with_images "}>
                         <figure className={"karianneImgWrap"}>
-                            <img style={{borderRight: "1px solid #151515", borderTop: "2px solid #151515"}}
+                            <img className={"topOwnImg"} style={{borderRight: "1px solid #151515", borderTop: "2px solid #151515"}}
                                  src={cv}
                                  alt={"article image"}/>
                         </figure>
@@ -47,7 +47,7 @@ export const UI_recruitment = () => {
                                               borderRadius: "6px",
                                               color: "#248C9D"
                                           }}
-                                          to={"/home/rent"}>{t("le.leie")}</Link>{t("recruitment.rcp9")}
+                                          to={"/service/rent"}>{t("le.leie")}</Link>{t("recruitment.rcp9")}
                                 </p>
                             </div>
                         </div>

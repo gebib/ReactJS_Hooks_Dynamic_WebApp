@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import "./ST_ServiceContent.scss";
 import apply from "../../../resources/images/apply.png";
-import {Link} from "react-router-dom";
+import {Link, useHistory} from "react-router-dom";
 import sl3 from "../../../resources/images/sl3.png";
 import sl4 from "../../../resources/images/sl4.webp";
 import sl5 from "../../../resources/images/sl5.webp";
@@ -14,6 +14,8 @@ import {UI_carousel} from "../p1_home/reviewCarousel/UI_carousel";
 
 export const UI_ServiceContent = () => {
     const {t, i18n} = useTranslation("SL_languages");
+    const history = useHistory();
+
 
     return (
         <main className="mainContainerHome container-12 px-5 srv_mc1">
@@ -50,8 +52,8 @@ export const UI_ServiceContent = () => {
                                             textAlign: "center"
                                         }}>{t("srv.rp1")}</p>
                                         <button onClick={() => {
-                                            //TODO/////////////////////////////////////////////////////////////////////////////////
-                                        }} className={" btn btn-dark readMoreCardBtn"} style={{minWidth:"100%"}}>
+                                            history.push("/service/rent");
+                                        }} className={" btn btn-dark readMoreCardBtn"} style={{minWidth: "100%"}}>
                                             <IconContext.Provider value={{size: "1em"}}>
                                                 <div className={"cards_btn"} onClick={() => {
                                                 }}>{t("home.read_btn")}< FaArrowRight
@@ -75,8 +77,8 @@ export const UI_ServiceContent = () => {
                                         textAlign: "center"
                                     }}>{t("srv.rp1")}</p>
                                     <button onClick={() => {
-                                            //TODO/////////////////////////////////////////////////////////////////////////////////
-                                    }} className={" btn btn-dark readMoreCardBtn"} style={{minWidth:"100%"}}>
+                                        history.push("/service/own");
+                                    }} className={" btn btn-dark readMoreCardBtn"} style={{minWidth: "100%"}}>
                                         <IconContext.Provider value={{size: "1em"}}>
                                             <div className={"cards_btn"} onClick={() => {
                                             }}>{t("home.read_btn")}< FaArrowRight
@@ -94,6 +96,32 @@ export const UI_ServiceContent = () => {
                         </div>
                     </section>
                 </article>
+                <div style={{
+                    display: "flex",
+                    marginTop: "20px"
+                }}><p className={"px-3"}><Link
+                    className={"homeLinks"}
+                    style={{
+                        textDecoration: 'none',
+                        borderRadius: "6px",
+                        fontWeight: "600",
+                        color: "#248C9D",
+                        paddingRight: "10px",
+
+                    }}
+                    to={"/service/wecare"}>{t("srv.sp9")}</Link></p>
+                    <p className={"px-3"}><Link
+                        className={"homeLinks"}
+                        style={{
+                            textDecoration: 'none',
+                            // border: "1px solid #248C9D",
+                            paddingRight: "10px",
+                            borderRadius: "6px",
+                            fontWeight: "600",
+                            color: "#248C9D",
+                        }}
+                        to={"/service/advice"}>{t("srv.sp8")}</Link></p>
+                </div>
                 <hr/>
                 <UI_carousel/>
             </div>

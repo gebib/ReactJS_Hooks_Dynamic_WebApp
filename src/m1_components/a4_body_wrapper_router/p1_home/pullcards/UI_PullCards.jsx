@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from "react";
 import "./ST_PullCards.scss";
-import dw from "../../../../resources/images/dont_worry.jpg";
 import {IconContext} from "react-icons";
 import {FaArrowRight} from "react-icons/fa";
 

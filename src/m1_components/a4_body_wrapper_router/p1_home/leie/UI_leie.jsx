@@ -9,7 +9,7 @@ export const UI_leie = () => {
     const {t, i18n} = useTranslation("SL_languages");
 
     return (
-        <main className="leie_mainContainerHome container-12 px-5 leie_mc1">
+        <main className="leie_mainContainerHome container-12 leie_mc1">
             <div className={"leie_innerContainer"}>
                 <figure className={"karianneImgWrap"}>
                     <img style={{borderRight: "1px solid #151515", borderTop: "2px solid #151515"}}
@@ -44,7 +44,7 @@ export const UI_leie = () => {
                                         borderRadius: "6px",
                                         color: "#248C9D"
                                     }}
-                                      to={"/home/own"}>{t("le.eie")}</Link>{t("le.lep5b")}</p>
+                                      to={"/service/own"}>{t("le.eie")}</Link>{t("le.lep5b")}</p>
                             </div>
                         </div>
                         <hr/>

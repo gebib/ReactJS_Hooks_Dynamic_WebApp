@@ -54,7 +54,7 @@
     "jobs": "Jobs",
     "services": "Services",
     "blog": "Blog",
-    "about": "About us",
+    "about": "About",
     "lang": "English"
   },
   "footer": {
@@ -125,7 +125,6 @@
     "sort": "Sort by",
     "filter": "Filter by",
     "noRes": "Sorry no results found!"
-
   },
   "jform": {
     "dld": "Deadline date",
@@ -203,8 +202,8 @@
     "rp1": "Do you need IT expertise solution fast? We have extensive experience in finding the right candidate for the right job in information technology.",
     "lh3l1": "RENT",
     "lh3l2": "CONSULTANCY",
-    "": "",
-    "": "",
+    "sp8": "Silver Lining IT AS advice",
+    "sp9": "Candidates #We-Care",
     "": "",
     "": "",
     "": "",
@@ -252,5 +251,28 @@
     "leie": "RENT",
     "eie": "OWN",
     "": ""
+  },
+  "adv": {
+    "advh1h1": "Silver Lining IT AS",
+    "advh1h2": "Advice",
+    "adp1": "We carry out structured recruitment processes through systematic mapping of needs and personal presence. Silver Lining IT uses personality and ability tests if you need extra confirmation that the candidate is right for the job. With our long experience in the industry, we have great accuracy and good quality throughout the process.",
+    "adp2": "\"We Care\" is one of our values. It is important that everyone who is in contact with Silver Lining IT is well taken care of and feels safe.",
+    "advh5h2": "ONBOARDING",
+    "adp3": "What should you as an employer do to get the best out of a new colleague? A good onboarding ensures that the new employee feels included and welcomed by the company. Research shows that the employee stays longer in the position if the person thrives from the first moment.",
+    "adp4": "A good onboarding process should include:",
+    "adp5": "- A great welcome.",
+    "adp6": "- Information about the employee to colleagues in the company. before start-up.",
+    "adp7": "- A good welcome; Desk, PC, telephone, email, keys, greetings, etc.",
+    "adp8": "- Progress plan for training.",
+    "adp9": "- Employee interviews during the probationary period.",
+    "adp10": "Do you need advice or want help in connection with onboarding. Contact Marianne\ntel 982 55 131.",
+    "": "",
+    "": "",
+    "": "",
+    "": ""
+  },
+  "fof": {
+    "ff": "404",
+    "pnf": "Page not found!"
   }
 }

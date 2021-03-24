@@ -5,7 +5,6 @@ import apply from "../../../resources/images/apply.png";
 import sl3 from "../../../resources/images/sl3.png";
 import sl4 from "../../../resources/images/sl4.webp";
 import sl5 from "../../../resources/images/sl5.webp";
-import dw from "../../../resources/images/dont_worry.jpg";
 import {Link} from "react-router-dom";
 import {IconContext} from "react-icons";
 import {FaArrowRight} from "react-icons/fa";
