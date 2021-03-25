@@ -89,7 +89,7 @@ export const UI_carousel = () => {
                 {reviews && reviews.map(item =>
                     <div key={item.id}>
                         <div className={"commenterPrfImgCrsl"}>
-                            <img onClick={()=>{history.replace("/blog/blogview/" + item.blogKey);}}
+                            <img onClick={()=>{history.push("/blog/blogview/" + item.blogKey);}}
                                 className={"crsImageSelf"}
                                 alt={"profile image"}
                                 src={item.authorProfileImgUrl}/>
@@ -109,7 +109,7 @@ export const UI_carousel = () => {
                                     value={{size: "1.2em"}}><AiFillStar/></IconContext.Provider>}
                             /></div>
                         < div style={{fontStyle:"italic", textAlign:"center"}} onClick={() => {
-                            history.replace("/blog/blogview/" + item.blogKey);
+                            history.push("/blog/blogview/" + item.blogKey);
                         }} className={"dangerDiv px-2"}
                               dangerouslySetInnerHTML={reviews && {__html: DOMPurify.sanitize(item.htmlTxt)}}/>
                     </div>

@@ -25,7 +25,7 @@
       //border: $lineT solid #22ff00;
       figure {
         //border: $lineT solid #ff0063;
-        height: 390px;
+        height: auto;
         width: 100%;
         margin: 0;
 
@@ -35,6 +35,19 @@
         }
       }
     }
+  }
+
+  .sl4Img {
+    border-radius: 0 0 60px 0;
+  }
+
+  .sl5Img {
+    border-radius: 60px 0 0 0;
+    margin-top: 3px;
+  }
+
+  figure{
+    background-color: #2f2f35;
   }
 
   .srv_img_txt_header {
@@ -64,7 +77,5 @@
     flex-direction: column;
     align-items: center;
   }
-
-
 }
 

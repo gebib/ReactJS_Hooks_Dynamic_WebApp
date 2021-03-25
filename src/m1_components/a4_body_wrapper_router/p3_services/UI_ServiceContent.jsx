@@ -36,7 +36,7 @@ export const UI_ServiceContent = () => {
                     <section className={"row srv_section_with_images "}>
                         <div className={"col-lg-6 srv_img_with_text px-0"}>
                             <figure>
-                                <img style={{borderRight: "1px solid #151515", borderTop: "2px solid #151515"}}
+                                <img className={"sl4Img"} style={{borderRight: "1px solid #151515", borderTop: "2px solid #151515"}}
                                      src={sl4}
                                      alt={"article image"}/>
                             </figure>
@@ -89,7 +89,7 @@ export const UI_ServiceContent = () => {
                                 </div>
                             </div>
                             <figure>
-                                <img style={{borderRight: "1px solid #151515", borderTop: "2px solid #151515"}}
+                                <img className={"sl5Img"} style={{borderRight: "1px solid #151515", borderTop: "2px solid #151515"}}
                                      src={sl5}
                                      alt={"article image"}/>
                             </figure>

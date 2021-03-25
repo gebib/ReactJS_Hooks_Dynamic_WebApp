@@ -1,12 +1,12 @@
 //$lineT: 0px;
 .logo_with_divider_wrapper {
   width: 100%;
-  height: 810px;
+  height: 800px;
   //border: $lineT solid #ff0080;
 
   margin-top: -95px;
   //background-size: 100%;
-  background: url("./sl_pt.PNG") no-repeat;
+  //background: url("./sl_pt.PNG") no-repeat;
   background-size: cover;
   z-index: -1;
 
@@ -20,12 +20,18 @@
     width: 100%;
 
 
-    #large_logo_image{
+    #large_logo_image {
       //border: $lineT solid #62ff00;
       margin-bottom: 4%;
       max-width: 1440px;
       width: 100%;
     }
   }
+}
+
+#videoBG {
+  position: fixed;
+  top: 0;
+  z-index: -1;
 }
 

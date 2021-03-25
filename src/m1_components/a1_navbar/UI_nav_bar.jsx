@@ -189,10 +189,10 @@ export const UI_nav_bar = (props) => {
                             <Link className={"lnk"} to={"/jobs"}>{t("nav.jobs")}</Link></li>
                         <li className={onService ? "activeStyle" : "li_s"}>
                             <Link onMouseEnter={() => {
-                                console.log("//////////////////////////////////////////: Enter");
+                                // console.log("//////////////////////////////////////////: Enter");
                             }}
                                   onMouseLeave={() => {
-                                      console.log("//////////////////////////////////////////: Leave");
+                                      // console.log("//////////////////////////////////////////: Leave");
                                   }}
                                   className={"lnk"} to={"/services"}>{t("nav.services")}</Link>
                         </li>
