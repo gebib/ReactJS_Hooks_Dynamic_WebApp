@@ -62,6 +62,7 @@
   .blackBottomLeft {
     background-color: #181818;
     height: 500px;
+    margin-left: -50px;
 
     display: flex;
     flex-direction: column;
@@ -100,7 +101,7 @@
 
     .smPartLogosListDiv {
       //border: $lineT solid #ff0063;
-      max-width: 1000px;
+      //max-width: 1000px;
       width: 100%;
 
       display: flex;

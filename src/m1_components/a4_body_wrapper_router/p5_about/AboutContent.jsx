@@ -20,10 +20,7 @@ import {useAuth} from "../../c1_auth/a0_auth_common/firebase/AuthContext";
 export const AboutContent = () => {
     const {t, i18n} = useTranslation("SL_languages");
     const history = useHistory();
-    const [listOfPartners, setListOfPartners] = useState();
-
-    const [listOfLogos, setListOfLogos] = useState([]);
-
+    const [listOfLogos, setListOfLogos] = useState();
     const [cu, setCu] = useState(false);
 
 
@@ -31,15 +28,12 @@ export const AboutContent = () => {
     const imgRef = useRef();
 
     const {
-        create_blog,
         blogPostLoading,
-        setBlogPostLoading,
-        read_blog,
-        resetFormFromAuth,
-        setResetFormFromAuth,
         currentUserInfo,
-        delete_blog,
-        approve_blog
+        addNewPartnerLogo,
+        getAllPartnersLogo,
+        removeApartnersLogo,
+        isLogoUploading
     } = useAuth();
 
     const handleDeleteLogo = (clickedId) => {
@@ -47,7 +41,7 @@ export const AboutContent = () => {
         for (let i = 0; i < listOfLogos.length; i++) {
             if (!(listOfLogos[i].id === clickedId)) {
                 // updatedArray.push(listOfLogos[i]);
-                console.log("////: ", clickedId );
+                console.log("////: ", clickedId);
             }
         }
         // setListOfLogos(updatedArray);
@@ -59,15 +53,51 @@ export const AboutContent = () => {
         }
     }, [currentUserInfo]);
 
-    const uploadNewLogo = () =>{
+    useEffect(() => {
+        if (!isLogoUploading) {
+            fetchListOfLogos().then((r) => {
+            }).catch((e) => {
+                console.log("////:e ", e);
+            });
+        }
+    }, [isLogoUploading]);
+
+    useEffect(() => {
+        console.log("////:|||||||||in state, ", listOfLogos);
+    }, [listOfLogos]);
+
+
+    const fetchListOfLogos = async () => {
+        let listOfFetchedImgInfoes = [];
+        await getAllPartnersLogo().then((snapShopt) => {
+            if (snapShopt.val() !== null) {
+                snapShopt.forEach((aLogoInfo) => {
+                    let imgMetDat = {
+                        imgUrl: aLogoInfo.val().dUrl,
+                        imgNameId: aLogoInfo.val().imgNameId
+                    };
+                    listOfFetchedImgInfoes.push(imgMetDat);
+                });
+                setListOfLogos(listOfFetchedImgInfoes);
+            }
+        }).catch((e) => {
+        });
+    };
+
+
+    const uploadNewLogo = (aFile) => {
+        addNewPartnerLogo(aFile);
+    };
+
+    const removeThisLogo = () => {
 
     };
 
     return (
-        <main className="mainContainerHome container-12 px-5 about_mc1">
+        <main className="mainContainerHome container-12 about_mc1">
             <div className={"about_innerContainer"}>
                 <article>
-                    <section className={"row-12"}>
+                    <section className={"row-12 mx-5"}>
                         <header className={"about_wecome_header py-3 mt-5"}>
                             <h3>{t("about.abh3h1")}</h3>
                         </header>
@@ -132,51 +162,31 @@ export const AboutContent = () => {
                             ref={imgInputRef}
                             type={"file"}
                             className={"d-none"}
-                            multiple={true}
+                            // multiple={true}
                             accept={"image/*"}
                             onChange={(e) => {
-                                const aFile = e.target.files;
-                                console.log("////:THE_FILE ", aFile);
-                                // let convertedFiles = [];
-                                // Object.keys(files).forEach(i => {
-                                //     let newFileName = files[i].name;
-                                //     let existsInState = false;
-                                //     for (let j = 0; j < listOfLogos.length; j++) {
-                                //         if (newFileName === listOfLogos[j].file.name) {
-                                //             existsInState = true;
-                                //             break;
-                                //         }
-                                //     }
-                                //     if (!existsInState) {
-                                //         convertedFiles = [...convertedFiles, {
-                                //             id: URL.createObjectURL(files[i]),
-                                //             file: files[i]
-                                //         }];
-                                //     }
-                                //
-                                // });
-                                // let filesToBeStaged = [...listOfLogos, ...convertedFiles];
-                                // if (filesToBeStaged.length > 0) {
-                                //     setListOfLogos(filesToBeStaged);
-                                // }
+                                e.preventDefault();
+                                const aFile = e.target.files[0];
+                                uploadNewLogo(aFile);
                             }}/>
                         <div className={"smPartLogosListDiv"}>
-                            {listOfLogos && listOfLogos.map((file) => {
+                            {listOfLogos && listOfLogos.map((anImageInfo) => {
                                 return (
-                                    <div className={"ab_overlay-fade"} key={file.id}>
+                                    <div className={"ab_overlay-fade"} key={anImageInfo.imgNameId}>
+                                        {/*{console.log("////:THF___???: ", anImageInfo)}*/}
                                         <img
                                             ref={imgRef}
                                             style={{
                                                 margin: "20px",
                                             }}
                                             alt={"what"}
-                                            src={`${file.id}`}
+                                            src={anImageInfo.imgUrl}
                                             height={"100px"}/>
-                                        <div id={`${file.id}`} className={"overlayIcon"}
+                                        <div id={anImageInfo.imgNameId} className={"overlayIcon"}
                                              onClick={(e) => {
                                                  handleDeleteLogo(e.target.getAttribute('id'));
                                              }}>
-                                            <h1 id={`${file.id}`} style={{color: "#ff4500"}}>X</h1>
+                                            <h1 id={anImageInfo.imgNameId} style={{color: "#ff4500"}}>X</h1>
                                         </div>
                                     </div>
                                 );
@@ -184,7 +194,7 @@ export const AboutContent = () => {
                         </div>
                     </div>
                 </div>
-                <hr/>
+                {/*<hr/>*/}
                 <UI_carousel/>
             </div>
         </main>

@@ -3,6 +3,7 @@ import {auth, storage, database} from "./firebase";
 import {showToast} from "../../../../UI_Main_pages_wrapper";
 import {v4 as uuid} from "uuid";
 import {useTranslation} from "react-i18next";
+import {fetchListOfLogos} from "../../../a4_body_wrapper_router/p5_about/AboutContent";
 
 
 const AuthContext = React.createContext();
@@ -18,6 +19,7 @@ export function AuthProvider({children}) {
     const [loading, setLoading] = useState(true);
     const [blogPostLoading, setBlogPostLoading] = useState(false);
     const [resetFormFromAuth, setResetFormFromAuth] = useState(false);
+    const [isLogoUploading, setIsLogoUploading] = useState(false);
 
 
     /////////////Auth | sign up | login | forgot /////////////////////
@@ -102,7 +104,7 @@ export function AuthProvider({children}) {
             blogType: blogType,
             listOfBlogImgUrls: listOfThisBlogImagesURL,
             postDate: postDate,
-            authorNameAndId: [currentUserInfo[1],currentUserInfo[0]],
+            authorNameAndId: [currentUserInfo[1], currentUserInfo[0]],
             authorProfileImgUrl: currentUserInfo[3],
             ratingStars: rating,
             isBlogApproved: isBlogApproved
@@ -127,7 +129,7 @@ export function AuthProvider({children}) {
             addBlogRTdbPost(blogId, dataToStore);
         }
     };
-    ////////post rtDb data.
+    ////////post realTimeDb data.
     const addBlogRTdbPost = (blogId, dataToStore) => {
         setBlogPostLoading(false);
         database.ref("/blogs").push(dataToStore).then(() => {
@@ -141,6 +143,38 @@ export function AuthProvider({children}) {
         });
 
     };
+
+    //////////partners logo/////////////////
+    const addNewPartnerLogo = async (aFile) => {
+        setIsLogoUploading(true);
+        let logoId = uuid();
+        await storage.ref("partnerLogos").child(logoId).put(aFile).then(() => {
+            storage.ref("partnerLogos").child(logoId).getDownloadURL().then((url) => {
+                database.ref("/partners/" + logoId).set({imgNameId: logoId, dUrl: url}).then(() => {
+                    showToast(t("about.logoOk"));
+                    setIsLogoUploading(false);
+                }).catch((e) => {
+                    console.log("////:e ", e);
+                });
+            }).catch((e) => {
+                console.log("////:e ", e);
+            });
+        }).catch((e) => {
+            setBlogPostLoading(false);
+            console.log("////:e ", e);
+        });
+    };
+
+    const getAllPartnersLogo = () => {
+        return database.ref("/partners").once("value");
+    };
+
+    const removeApartnersLogo = () => {
+        // return await  storage.ref("partnerLogos").child("chId").getDownloadURL().then((url) => {
+        //     console.log("////:URL::: ", url);
+        // });
+    };
+    //////////partners logo/////////////////
 
 
     const read_blog = () => {
@@ -199,8 +233,8 @@ export function AuthProvider({children}) {
                 }).catch((e) => {
                     // console.log("////:e ", e);
                 });
-            // } else {
-            //     setCurrentUserInfo(null);
+                // } else {
+                //     setCurrentUserInfo(null);
             }
             setLoading(false);
         });
@@ -210,7 +244,6 @@ export function AuthProvider({children}) {
     const value = {
         currentUserInfo,
         // setCurrentUserInfo,
-
         resetFormFromAuth,
         setResetFormFromAuth,
         login,
@@ -234,7 +267,13 @@ export function AuthProvider({children}) {
         read_blog,
         read_blog_single,
         delete_blog,
-        approve_blog
+        approve_blog,
+        //partners logo
+        addNewPartnerLogo,
+        getAllPartnersLogo,
+        removeApartnersLogo,
+        isLogoUploading
+
 
     };
 

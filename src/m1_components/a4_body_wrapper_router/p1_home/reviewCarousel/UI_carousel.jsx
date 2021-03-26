@@ -36,8 +36,6 @@ export const UI_carousel = () => {
                 let i = 0;
                 snapshot.forEach((snData) => {
                     let blogId = Object.keys(snapshot.val())[i];
-
-
                     // console.log("////:URLLL??? ", imagesUrlList);
                     let aBlogDataes = {
                         blogKey: blogId,
@@ -61,9 +59,9 @@ export const UI_carousel = () => {
         });
     };
 
-    useEffect(() => {
-        console.log("////:afterSET ", reviews);
-    }, [reviews]);
+    // useEffect(() => {
+    //     console.log("////:afterSET ", reviews);
+    // }, [reviews]);
 
     useEffect(() => {
         fetchListOfBlogs().then((r) => {
@@ -87,31 +85,33 @@ export const UI_carousel = () => {
                 wrapAround={true}
             >
                 {reviews && reviews.map(item =>
-                    <div key={item.id}>
-                        <div className={"commenterPrfImgCrsl"}>
-                            <img onClick={()=>{history.push("/blog/blogview/" + item.blogKey);}}
-                                className={"crsImageSelf"}
-                                alt={"profile image"}
-                                src={item.authorProfileImgUrl}/>
+                    <div onClick={() => {
+                        history.push("/blog/blogview/" + item.blogKey);
+                    }} className={"carouselInnerWraper"}>
+                        <div key={item.id}>
+                            <div className={"commenterPrfImgCrsl"}>
+                                <img className={"crsImageSelf"}
+                                     alt={"profile image"}
+                                     src={item.authorProfileImgUrl}/>
+                            </div>
+                            <div className={"nameAndStars"}><h5>{item.authorNameAndId[0]}</h5>
+                                <ReactStars
+                                    edit={false}
+                                    size={23}
+                                    count={5}
+                                    color={"#c6c6c6"}
+                                    activeColor={"#248C9D"}
+                                    value={item.ratingStars}
+                                    a11y={true}
+                                    emptyIcon={<IconContext.Provider
+                                        value={{size: "1.2em"}}><AiOutlineStar/></IconContext.Provider>}
+                                    filledIcon={<IconContext.Provider
+                                        value={{size: "1.2em"}}><AiFillStar/></IconContext.Provider>}
+                                /></div>
+                            < div style={{fontStyle: "italic", textAlign: "center"}}
+                                  className={"dangerDiv px-2"}
+                                  dangerouslySetInnerHTML={reviews && {__html: DOMPurify.sanitize(item.htmlTxt)}}/>
                         </div>
-                        <div className={"nameAndStars"}><h5>{item.authorNameAndId[0]}</h5>
-                            <ReactStars
-                                edit={false}
-                                size={23}
-                                count={5}
-                                color={"#c6c6c6"}
-                                activeColor={"#248C9D"}
-                                value={item.ratingStars}
-                                a11y={true}
-                                emptyIcon={<IconContext.Provider
-                                    value={{size: "1.2em"}}><AiOutlineStar/></IconContext.Provider>}
-                                filledIcon={<IconContext.Provider
-                                    value={{size: "1.2em"}}><AiFillStar/></IconContext.Provider>}
-                            /></div>
-                        < div style={{fontStyle:"italic", textAlign:"center"}} onClick={() => {
-                            history.push("/blog/blogview/" + item.blogKey);
-                        }} className={"dangerDiv px-2"}
-                              dangerouslySetInnerHTML={reviews && {__html: DOMPurify.sanitize(item.htmlTxt)}}/>
                     </div>
                 )}
             </Carousel>
