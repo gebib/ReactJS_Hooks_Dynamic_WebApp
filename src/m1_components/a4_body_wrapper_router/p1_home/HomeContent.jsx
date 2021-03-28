@@ -129,7 +129,7 @@ export const HomeContent = () => {
                     </section>
                 </article>
                 <UI_PullCards getNewblog={null}/>
-                <footer className={"google_map my-3"}>
+                <footer className={"google_map"}>
                     <iframe
                         src="https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d2577.175644981354!2d5.340208183754848!3d60.37308703534332!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1sGREENHOUSE%20EDVARD%20GRIEGS%20VEI%203A%2C%205059!5e1!3m2!1sen!2sno!4v1612804445278!5m2!1sen!2sno"
                         width="100%" height="450" frameBorder="0" style={{border: "0"}} allowFullScreen=""

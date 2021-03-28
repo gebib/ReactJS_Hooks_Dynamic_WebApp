@@ -85,7 +85,8 @@ export const UI_Blog = () => {
         setResetFormFromAuth,
         currentUserInfo,
         delete_blog,
-        approve_blog
+        approve_blog,
+        isLogDbActivity
     } = useAuth();
 
     useEffect(() => {
@@ -93,6 +94,28 @@ export const UI_Blog = () => {
             setResetEditorState();
         }
     }, [t]);
+
+    //monitor current user change in auth! if signed out etc..
+    useEffect(() => {
+        if (currentUserInfo !== null) {
+            setIsAdmin(currentUserInfo[2]);
+            setCuInfo(currentUserInfo);
+            console.log("////: Yes user");
+        } else {
+            setIsAdmin(false);
+            setCuInfo(null);
+            console.log("////: No user!");
+        }
+        fetchBlog();
+    }, [currentUserInfo]);
+
+    useEffect(() => {
+        if (!blogPostLoading && resetFormFromAuth) {
+            setResetEditorState();
+            setResetFormFromAuth(false);
+            fetchBlog();
+        }
+    }, [blogPostLoading, resetFormFromAuth]);
 
 
     const setResetEditorState = () => {
@@ -157,7 +180,7 @@ export const UI_Blog = () => {
                 let i = 0;
                 snapshot.forEach((snData) => {
                     let raw = JSON.parse(snData.val().stringifiedRaw);
-                    let blogId = Object.keys(snapshot.val())[i];
+                    let rtDbblogId = Object.keys(snapshot.val())[i];
                     let title = "";
                     //get first line text as tittle.
                     for (let i = 0; i < raw.blocks.length; i++) {
@@ -186,7 +209,8 @@ export const UI_Blog = () => {
                         deStringifiedRaw: JSON.parse(snData.val().stringifiedRaw),
                         title: title,
                         isBlogApproved: JSON.parse(snData.val().isBlogApproved),
-                        blogKey: blogId
+                        blogKey: rtDbblogId,
+                        storageImgFolderId: snData.val().storageImgFolderId
                     };
 
                     // let cuIsAdmin = isAdmin;
@@ -216,25 +240,7 @@ export const UI_Blog = () => {
     };
 
 
-    //todo: on click article should show, without fetching again.. use ls?
-    //todo: fix page bg if no blog etc.
-    //todo:
 
-
-
-    //monitor current user change in auth! if signed out etc..
-    useEffect(() => {
-        if (currentUserInfo !== null) {
-            setIsAdmin(currentUserInfo[2]);
-            setCuInfo(currentUserInfo);
-            console.log("////: Yes user");
-        } else {
-            setIsAdmin(false);
-            setCuInfo(null);
-            console.log("////: No user!");
-        }
-        fetchBlog();
-    }, [currentUserInfo]);
 
 
     const fetchBlog = () => {
@@ -245,13 +251,7 @@ export const UI_Blog = () => {
         });
     };
 
-    useEffect(() => {
-        if (!blogPostLoading && resetFormFromAuth) {
-            setResetEditorState();
-            setResetFormFromAuth(false);
-            fetchBlog();
-        }
-    }, [blogPostLoading, resetFormFromAuth]);
+
 
     const handleStagedImgRemove = (clickedId) => {
         let updatedArray = [];
@@ -374,19 +374,24 @@ export const UI_Blog = () => {
         return arrayOfImages;
     };
 
-    const approveBlog = (e, blogId) => {
+    const approveBlog = (e, rtDbblogId) => {
         e.stopPropagation();
-        approve_blog(blogId);
+        approve_blog(rtDbblogId);
         fetchBlog();
     };
 
-    const deleteBlog = (e, blogId) => {
-        e.stopPropagation();
+    const deleteBlog = (aBlogData) => {
         if (window.confirm(t("blog.deleteSure"))) {
-            delete_blog(blogId);
-            fetchBlog();
+            delete_blog(aBlogData);
         }
     };
+
+    useEffect(() => {
+        if (!isLogDbActivity) {
+            fetchBlog();
+            console.log("////:||||||||||||| blog fetch on activity done!");
+        }
+    }, [isLogDbActivity]);
 
 
     return (
@@ -438,7 +443,8 @@ export const UI_Blog = () => {
                                             height={"70px"}/>
                                         <div id={`${file.id}`} className={"overlayIcon"}
                                              onClick={(e) => {
-                                                 handleStagedImgRemove(e.target.getAttribute('id'));
+                                                 // handleStagedImgRemove(e.target.getAttribute('id'));
+                                                 handleStagedImgRemove(file.id);
                                              }}>
                                             <h1 id={`${file.id}`} style={{color: "#ff4500"}}>x</h1>
                                         </div>
@@ -632,7 +638,9 @@ export const UI_Blog = () => {
                             className={"blogProfileImg"}
                             alt={"profile image"}
                             src={aBlogData.authorProfileImgUrl}/>}>
-                        <div onClick={()=>{handleTimeelementClick(aBlogData.blogKey)}} className={"blogReadMoreText"}>
+                        <div onClick={() => {
+                            handleTimeelementClick(aBlogData.blogKey)
+                        }} className={"blogReadMoreText"}>
                             <div className={"badgeTitleWraper"}>
                                 <div className={"typeOfBlog"}>
                                     <div style={{color: "#a9c0bf"}} hidden={!(aBlogData.blogType === "blog")}>
@@ -660,22 +668,15 @@ export const UI_Blog = () => {
                                 <h3 style={{color: "#e2fffe"}}
                                     className="vertical-timeline-element-title mx-5">{aBlogData.title}
                                     <IconContext.Provider value={{size: "1em"}}>
-                                        <BsBoxArrowUpRight style={{color: "#994029", marginLeft: "10px",marginRight: "10px"}}/>
+                                        <BsBoxArrowUpRight
+                                            style={{color: "#994029", marginLeft: "10px", marginRight: "10px"}}/>
                                     </IconContext.Provider>
                                     <span className={"spanRead"}>{t("blog.readMoreTitle")}</span>
                                 </h3>
-
                             </div>
-                            {/*<h4 className="vertical-timeline-element-subtitle">Miami, FL</h4>*/}
-
                             <div className={"articleArraysWrapper"}>
                                 <div dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(aBlogData.htmlTxt)}}/>
                             </div>
-                            {/*<div className={"readMoreDiv"}>*/}
-                            {/*    <IconContext.Provider value={{size: "2em"}}>*/}
-                            {/*        <BsBoxArrowUpRight style={{color: "#a9c0bf"}}/>*/}
-                            {/*    </IconContext.Provider>*/}
-                            {/*</div>*/}
                         </div>
 
                         <div hidden={!(aBlogData.urlsOfBlogImages)} className={"blogListFooterEmbedWrapper"}>
@@ -698,8 +699,10 @@ export const UI_Blog = () => {
                                     activeColor={"#248C9D"}
                                     value={aBlogData.ratingStars}
                                     a11y={true}
-                                    emptyIcon={<IconContext.Provider value={{size: "1.2em"}}><AiOutlineStar/></IconContext.Provider>}
-                                    filledIcon={<IconContext.Provider value={{size: "1.2em"}}><AiFillStar/></IconContext.Provider>}
+                                    emptyIcon={<IconContext.Provider
+                                        value={{size: "1.2em"}}><AiOutlineStar/></IconContext.Provider>}
+                                    filledIcon={<IconContext.Provider
+                                        value={{size: "1.2em"}}><AiFillStar/></IconContext.Provider>}
                                     // onChange={(newValue) => {
                                     //     setRating(newValue);
                                     // }}
@@ -714,7 +717,8 @@ export const UI_Blog = () => {
 
                                 <IconContext.Provider value={{size: "2em"}}>
                                     <RiCloseFill onClick={(e,) => {
-                                        deleteBlog(e, aBlogData.blogKey);
+                                        e.stopPropagation();
+                                        deleteBlog(aBlogData);
                                     }} className={"blogFooterButtonsDelete"}/>
                                 </IconContext.Provider>
                             </div>

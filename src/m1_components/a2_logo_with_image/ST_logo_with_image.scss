@@ -1,17 +1,18 @@
-//$lineT: 0px;
+$lineT: 0px;
 .logo_with_divider_wrapper {
   width: 100%;
-  height: 600px;
-  //border: $lineT solid #ff0080;
+  //height: 600px;
 
-  margin-top: -95px;
+  border: $lineT solid #ff0080;
+
+  margin-top: 13vw;
   //background-size: 100%;
   //background: url("./sl_pt.PNG") no-repeat;
   background-size: cover;
   z-index: -1;
 
   .large_sl_logo_container {
-    //border: $lineT solid #00c3ff;
+    border: $lineT solid #00c3ff;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
@@ -21,7 +22,7 @@
 
 
     #large_logo_image {
-      //border: $lineT solid #62ff00;
+      border: $lineT solid #62ff00;
       margin-bottom: 4%;
       max-width: 1440px;
       width: 100%;
@@ -34,5 +35,6 @@
   top: 0;
   z-index: -1;
   max-width: 100vw;
+  min-width: 250px;
 }
 

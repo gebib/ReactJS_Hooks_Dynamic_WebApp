@@ -15,6 +15,7 @@ import {AiFillPicture} from "react-icons/ai";
 import {FaArrowRight} from "react-icons/fa";
 import {UI_carousel} from "../p1_home/reviewCarousel/UI_carousel";
 import {useAuth} from "../../c1_auth/a0_auth_common/firebase/AuthContext";
+import {v4 as uuid} from "uuid";
 
 
 export const AboutContent = () => {
@@ -33,19 +34,8 @@ export const AboutContent = () => {
         addNewPartnerLogo,
         getAllPartnersLogo,
         removeApartnersLogo,
-        isLogoUploading
+        isLogDbActivity
     } = useAuth();
-
-    const handleDeleteLogo = (clickedId) => {
-        // let updatedArray = [];
-        for (let i = 0; i < listOfLogos.length; i++) {
-            if (!(listOfLogos[i].id === clickedId)) {
-                // updatedArray.push(listOfLogos[i]);
-                console.log("////: ", clickedId);
-            }
-        }
-        // setListOfLogos(updatedArray);
-    };
 
     useEffect(() => {
         if (currentUserInfo) {
@@ -54,18 +44,17 @@ export const AboutContent = () => {
     }, [currentUserInfo]);
 
     useEffect(() => {
-        if (!isLogoUploading) {
+        if (!isLogDbActivity) {
             fetchListOfLogos().then((r) => {
             }).catch((e) => {
                 console.log("////:e ", e);
             });
         }
-    }, [isLogoUploading]);
+    }, [isLogDbActivity]);
 
     useEffect(() => {
         console.log("////:|||||||||in state, ", listOfLogos);
     }, [listOfLogos]);
-
 
     const fetchListOfLogos = async () => {
         let listOfFetchedImgInfoes = [];
@@ -84,14 +73,14 @@ export const AboutContent = () => {
         });
     };
 
-
     const uploadNewLogo = (aFile) => {
         addNewPartnerLogo(aFile);
     };
 
-    const removeThisLogo = () => {
-
+    const handleDeleteLogo = (clickedId) => {
+        removeApartnersLogo(clickedId);
     };
+
 
     return (
         <main className="mainContainerHome container-12 about_mc1">
@@ -146,7 +135,6 @@ export const AboutContent = () => {
                 <div className={"smPartnersMainWraper"}>
                     <div className={"smL2Wrapper"}><h3
                         style={{marginTop: "50px", marginBottom: "20px"}}>{t("about.abh3h5")}</h3>
-
                         <button hidden={!blogPostLoading || !cu} style={{color: "#a9c0bf"}} onClick={(event) => {
                             event.preventDefault();
                             imgInputRef.current.click();
@@ -172,8 +160,7 @@ export const AboutContent = () => {
                         <div className={"smPartLogosListDiv"}>
                             {listOfLogos && listOfLogos.map((anImageInfo) => {
                                 return (
-                                    <div className={"ab_overlay-fade"} key={anImageInfo.imgNameId}>
-                                        {/*{console.log("////:THF___???: ", anImageInfo)}*/}
+                                    <div key={uuid()} className={"ab_overlay-fade"}>
                                         <img
                                             ref={imgRef}
                                             style={{
@@ -184,7 +171,8 @@ export const AboutContent = () => {
                                             height={"100px"}/>
                                         <div id={anImageInfo.imgNameId} className={"overlayIcon"}
                                              onClick={(e) => {
-                                                 handleDeleteLogo(e.target.getAttribute('id'));
+                                                 e.stopPropagation();
+                                                 handleDeleteLogo(anImageInfo.imgNameId);
                                              }}>
                                             <h1 id={anImageInfo.imgNameId} style={{color: "#ff4500"}}>X</h1>
                                         </div>
@@ -199,4 +187,6 @@ export const AboutContent = () => {
             </div>
         </main>
     );
+
+
 };

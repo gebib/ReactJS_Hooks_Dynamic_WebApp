@@ -9,6 +9,7 @@ import ReactStars from "react-rating-stars-component";
 import {AiFillStar, AiOutlineStar} from "react-icons/ai";
 import {IconContext} from "react-icons";
 import {VerticalTimelineElement} from "react-vertical-timeline-component";
+import {v4 as uuid} from "uuid";
 
 export const UI_carousel = () => {
     // const [reviews, setReviews] = useState([
@@ -85,7 +86,7 @@ export const UI_carousel = () => {
                 wrapAround={true}
             >
                 {reviews && reviews.map(item =>
-                    <div onClick={() => {
+                    <div key={uuid()} onClick={() => {
                         history.push("/blog/blogview/" + item.blogKey);
                     }} className={"carouselInnerWraper"}>
                         <div key={item.id}>

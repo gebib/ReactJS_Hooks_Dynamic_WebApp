@@ -106,7 +106,7 @@ export const UI_register = () => {
                         }
                     );
                 } else {
-                    // console.log("////: no image selected");
+                    console.log("////: no image selected");
                     clearRegisteringProcess();
                 }
             });
@@ -123,9 +123,7 @@ export const UI_register = () => {
 
     const clearRegisteringProcess = () => {
         setLoading(false);
-        // setTimeout(() => {
-        //     history.push("/");
-        // }, 1000);
+        history.push("/");
     };
 
     function getCroppedImage(canvas, crop) {
