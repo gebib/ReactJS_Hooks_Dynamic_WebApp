@@ -55,25 +55,23 @@ export const UI_carousel = () => {
                     }
                     i++;
                 });
+                setReviews(chosenReviews);
+            } else {
+                setReviews(null);
             }
-            setReviews(chosenReviews);
         });
     };
 
-    // useEffect(() => {
-    //     console.log("////:afterSET ", reviews);
-    // }, [reviews]);
-
     useEffect(() => {
         fetchListOfBlogs().then((r) => {
-            console.log("////:Fetched! REVIEWS: ");
+            // console.log("////:Fetched! REVIEWS: ");
         }).catch((e) => {
             console.log("////:e ", e);
         });
     }, [/*deps*/]);
 
     return (
-        <div className={"carouselWraper"}>
+        <div hidden={reviews && (reviews.length < 1) } className={"carouselWraper"}>
             <h4>{t("home.carHeader")}</h4>
             <Carousel
                 className={"carouselSelf"}

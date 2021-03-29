@@ -5,13 +5,6 @@ import sl_pt from "./sl_pt.PNG";
 import {useLocation} from 'react-router-dom';
 
 export const UI_logo_with_image = () => {
-    const urlLocation = useLocation();
-    if(urlLocation.pathname === "/about"){
-        console.log("////: useMP4 bg");
-    }else{
-        console.log("////: regular bg");
-    }
-
     return (
         <div  className={"logo_with_divider_wrapper"}>
             <div className={"large_sl_logo_container"}>

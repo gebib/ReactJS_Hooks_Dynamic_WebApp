@@ -230,7 +230,7 @@ export const UI_nav_bar = (props) => {
                             <li onClick={()=>{
                                 history.push("/jobs");
                             }} className={onJobs ? "activeStyleSm" : "li_d"}>
-                                <Link className={"lnk_b"} to={"/jobs"}>{t("nav.av_positions")}</Link>
+                                <Link className={"lnk_b"} to={"/jobs"}>{t("nav.jobs")}</Link>
                             </li>
                             <li onClick={()=>{
                                 history.push("/services");

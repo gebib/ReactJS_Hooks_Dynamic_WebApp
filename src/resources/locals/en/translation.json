@@ -42,7 +42,7 @@
   },
   "forgot": {
     "lbl_forgot": "Forgot your password?",
-    "info_txt": "Enter your email and we'll send you a reset link.",
+    "info_txt": "Enter your email and you'll receive a reset link.",
     "info_txt2": "I can't recover my account using this page \uD83E\uDC52",
     "send_reset_link": "Send reset link",
     "resendMeLink": "Failed to send reset link! \n Make sure email is correct and try again",
@@ -62,7 +62,7 @@
     "tlf2": "Telephone 2",
     "learn_more": "LEARN MORE",
     "recent_posts": "RECENT POSTS",
-    "terms_and_conditions": "Terms and Conditions",
+    "terms_and_conditions": "Terms and conditions",
     "legal": "Legal",
     "site_map": "Site Map"
   },
@@ -106,17 +106,6 @@
     "vbp11": "Everyone needs IT, and we need you! Next time you have to change jobs, we will start again \uD83D\uDE0A",
     "hhFooter": "Silver Lining IT - Recruitment - Consultant Hire - IT - IT Recruitment Specialists - Headhunting",
     "carHeader": "Reviews",
-    "": "",
-    "": "",
-    "": "",
-    "": "",
-    "": "",
-    "": "",
-    "": "",
-    "": "",
-    "": "",
-    "": "",
-    "": "",
     "": ""
   },
   "jobs": {
@@ -184,11 +173,6 @@
     "removed": "Deleted!",
     "deleteSure": "Sure you want to delete this?",
     "blogApproved": "Approved!",
-    "": "",
-    "": "",
-    "": "",
-    "": "",
-    "": "",
     "": ""
   },
   "srv": {
@@ -204,11 +188,6 @@
     "lh3l2": "CONSULTANCY",
     "sp8": "Silver Lining IT AS advice",
     "sp9": "Candidates #We-Care",
-    "": "",
-    "": "",
-    "": "",
-    "": "",
-    "": "",
     "": ""
   },
   "recruitment": {
@@ -224,17 +203,6 @@
     "rcp7": "Silver Lining helps you ensure the quality of the recruitment process from A to Z. So that your time is freed up and you can concentrate on your lucrative core business.",
     "rcp8": "If you need a consultant for a limited period, see ",
     "rcp9": "or contact Marianne on tel 982 55 131.",
-    "": "",
-    "": "",
-    "": "",
-    "": "",
-    "": "",
-    "": "",
-    "": "",
-    "": "",
-    "": "",
-    "": "",
-    "": "",
     "": ""
   },
   "le": {
@@ -266,9 +234,6 @@
     "adp8": "- Progress plan for training.",
     "adp9": "- Employee interviews during the probationary period.",
     "adp10": "Do you need advice or want help in connection with onboarding. Contact Marianne\ntel 982 55 131.",
-    "": "",
-    "": "",
-    "": "",
     "": ""
   },
   "fof": {
@@ -284,8 +249,8 @@
     "abp4": "There is a lot of exciting things happening in Silver Lining IT during the day, FOLLOW us also on our social channels,",
     "abh1h3": "Silver Lining IT",
     "abh6h4": "Call us today, we will be happy to take a coffee with you.\n#WeCare",
-    "krInfo": "Partner / Chairman of the Board",
-    "mrInfo": "Partner / Daily Manager",
+    "krInfo": "Partner/Chairman of the Board",
+    "mrInfo": "Partner/Daily Manager",
 
     "abh3h5": "Our partners",
     "abp5": "Silver Lining IT has many good partners and customers. We have extensive experience and a wide network of contacts. Silver Lining IT is ready to help you meet your needs.",
@@ -294,12 +259,6 @@
     "addNp": "Add new partner to the list",
     "logoOk": "New partner added!",
     "pRemoved": "Partner removed!",
-    "": "",
-    "": "",
-    "": "",
-    "": "",
-    "": "",
-    "": "",
     "": ""
   }
 }

@@ -52,10 +52,6 @@ export const AboutContent = () => {
         }
     }, [isLogDbActivity]);
 
-    useEffect(() => {
-        console.log("////:|||||||||in state, ", listOfLogos);
-    }, [listOfLogos]);
-
     const fetchListOfLogos = async () => {
         let listOfFetchedImgInfoes = [];
         await getAllPartnersLogo().then((snapShopt) => {
@@ -68,13 +64,18 @@ export const AboutContent = () => {
                     listOfFetchedImgInfoes.push(imgMetDat);
                 });
                 setListOfLogos(listOfFetchedImgInfoes);
+            } else {
+                setListOfLogos(null);
             }
         }).catch((e) => {
         });
     };
 
     const uploadNewLogo = (aFile) => {
-        addNewPartnerLogo(aFile);
+        console.log("////:aFile: ", aFile);
+        if (aFile) {
+            addNewPartnerLogo(aFile);
+        }
     };
 
     const handleDeleteLogo = (clickedId) => {
@@ -96,14 +97,14 @@ export const AboutContent = () => {
 
                             <h5>{t("about.abh5h2")}</h5>
                             <p>{t("about.abp3")}</p>
-                            <p>{t("about.abp4")}
+                            <div style={{textJustify: "none", fontSize: "17px", marginBottom: "20px"}}>{t("about.abp4")}
                                 <a style={{marginLeft: "7px"}}
                                    href={"https://www.facebook.com/SilverLiningIT/"}>facebook</a>
                                 <a style={{marginLeft: "7px"}}
                                    href={"https://www.linkedin.com/company/silverlining-it/?viewAsMember=true"}>LinkedIn</a>
                                 <a style={{marginLeft: "7px"}}
                                    href={"https://www.instagram.com/silver_lining_it/"}>Insta</a>
-                            </p>
+                            </div>
                         </div>
                     </section>
 
@@ -135,17 +136,6 @@ export const AboutContent = () => {
                 <div className={"smPartnersMainWraper"}>
                     <div className={"smL2Wrapper"}><h3
                         style={{marginTop: "50px", marginBottom: "20px"}}>{t("about.abh3h5")}</h3>
-                        <button hidden={!blogPostLoading || !cu} style={{color: "#a9c0bf"}} onClick={(event) => {
-                            event.preventDefault();
-                            imgInputRef.current.click();
-                        }} type="button" className="btn btn-dark">
-                            <input type="file" hidden/>
-                            <IconContext.Provider value={{size: "1.5em"}}>
-                                <AiFillPicture style={{color: "#a9c0bf", marginRight: "10px"}}/>
-                            </IconContext.Provider>
-                            {t("about.addNp")}
-                        </button>
-
                         <input
                             ref={imgInputRef}
                             type={"file"}
@@ -157,6 +147,12 @@ export const AboutContent = () => {
                                 const aFile = e.target.files[0];
                                 uploadNewLogo(aFile);
                             }}/>
+
+                        <div style={{paddingLeft:"50px", paddingRight:"50px", marginTop:"50px"}}>
+                            <p>{t("about.abp5")} {t("about.abp6")}</p>
+                            <div style={{display:"flex", justifyContent:"center"}}><h5>{t("about.abp7")}</h5></div>
+                        </div>
+
                         <div className={"smPartLogosListDiv"}>
                             {listOfLogos && listOfLogos.map((anImageInfo) => {
                                 return (
@@ -180,6 +176,16 @@ export const AboutContent = () => {
                                 );
                             })}
                         </div>
+                        <button hidden={!blogPostLoading || !cu} style={{color: "#a9c0bf", margin:"20px"}} onClick={(event) => {
+                            event.preventDefault();
+                            imgInputRef.current.click();
+                        }} type="button" className="btn btn-dark">
+                            <input type="file" hidden/>
+                            <IconContext.Provider value={{size: "1.5em"}}>
+                                <AiFillPicture style={{color: "#a9c0bf", marginRight: "10px"}}/>
+                            </IconContext.Provider>
+                            {t("about.addNp")}
+                        </button>
                     </div>
                 </div>
                 {/*<hr/>*/}

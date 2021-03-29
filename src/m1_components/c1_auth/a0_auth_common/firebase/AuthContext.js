@@ -204,14 +204,12 @@ export function AuthProvider({children}) {
                 database.ref("blogImages/" + aBlogData.storageImgFolderId).remove().then((r) => { //TODO not working.. maybe loop remove?
                     setIsLogDbActivity(false);
                     showToast(t("blog.removed"), "info");
-                    console.log("////:DELETE______________wIMGs");
                 }).catch((e) => {
                     console.log("////:e ", e);
                 });
             } else {
                 setIsLogDbActivity(false);
                 showToast(t("blog.removed"), "info");
-                console.log("////:DELETE______________no image");
             }
         }).catch((e) => {
             console.log("////:e ", e);
@@ -235,8 +233,6 @@ export function AuthProvider({children}) {
 //fetch user information to local on user sign in or register.
     useEffect(() => {
         auth.onAuthStateChanged((user) => {
-            console.log("////:||||||||||||||||||onAuthChanged: user: ", user);
-            console.log("////:||||||||||||||||||user === null:", user === null);
             if (user !== null) {
                 let userId = user.uid;
                 let userName;

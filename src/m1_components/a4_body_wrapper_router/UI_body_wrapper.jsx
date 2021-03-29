@@ -20,20 +20,13 @@ import {UI_recruitment} from "./p1_home/own/UI_own";
 import {UI_leie} from "./p1_home/leie/UI_leie";
 import {useTranslation} from "react-i18next";
 import {useAuth} from "../c1_auth/a0_auth_common/firebase/AuthContext";
+import {UI_advice} from "./p1_home/advice/UI_advice";
 
 //redirect case user is not admin for particular routes!
-const AdminRoutes = (props) => {
-    return (
-        <Route path={props.path} render={data => props.isAdmin ? (<props.component {...data}/>) : (
-            <Redirect to={{pathname: "/"}}/>)}/>
-    );
-};
-
 export const UI_body_wrapper = (props) => {
 
     const {t, i18n} = useTranslation("SL_languages");
     const {currentUserInfo} = useAuth();
-
 
     return (
         <div className={"body_outer"}>
@@ -46,10 +39,8 @@ export const UI_body_wrapper = (props) => {
                     <Route exact path={"/jobs/jobview/:id"}><UI_Job_Viewer/></Route>
 
                     {/*admin only routes*/}
-                    <AdminRoutes isAdmin={currentUserInfo && currentUserInfo.isAdmin} exact
-                                 path={"/jobs/jobeditor"}><Jobs_form/></AdminRoutes>
-                    <AdminRoutes isAdmin={currentUserInfo && currentUserInfo.isAdmin} exact
-                                 path={"/jobs/jobeditor/:id"}><UI_Job_Viewer/></AdminRoutes>
+                    {currentUserInfo && currentUserInfo[2] && <Route exact path={"/jobs/jobeditor"}><Jobs_form/></Route>}
+                    {currentUserInfo && currentUserInfo[2] && <Route exact path={"/jobs/jobeditor/:id"}><UI_Job_Viewer/></Route>}
 
                     {/*normail pages*/}
                     <Route exact path={"/blog/blogview/:id"}><UI_blog_view/></Route>
@@ -67,7 +58,7 @@ export const UI_body_wrapper = (props) => {
                     <Route exact path={"/service/wecare"}><UI_vibryross/></Route>
                     <Route exact path={"/service/own"}><UI_recruitment/></Route>
                     <Route exact path={"/service/rent"}><UI_leie/></Route>
-                    <Route exact path={"/service/advice"}><UI_leie/></Route>
+                    <Route exact path={"/service/advice"}><UI_advice/></Route>
 
                     <Route path={"/badurl404"}><ErrorPage/></Route>
 

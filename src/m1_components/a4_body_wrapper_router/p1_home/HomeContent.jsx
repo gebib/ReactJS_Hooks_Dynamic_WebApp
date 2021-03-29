@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React from "react";
 import "./HomeContent.scss";
 import {useTranslation} from "react-i18next";
 import apply from "../../../resources/images/apply.png";
@@ -6,8 +6,6 @@ import sl3 from "../../../resources/images/sl3.png";
 import sl4 from "../../../resources/images/sl4.webp";
 import sl5 from "../../../resources/images/sl5.webp";
 import {Link} from "react-router-dom";
-import {IconContext} from "react-icons";
-import {FaArrowRight} from "react-icons/fa";
 import {UI_PullCards} from "./pullcards/UI_PullCards";
 
 export const HomeContent = () => {
@@ -16,7 +14,7 @@ export const HomeContent = () => {
         <main className="mainContainerHome container-12 px-5 mc1">
             <div className={"innerContainer"}>
                 <article>
-                    <section className={"row-12"}>
+                    <section style={{marginBottom:"20px"}} className={"row-12"}>
                         <header className={"wecome_header py-3"}>
                             <h3>{t("home.t1")}</h3>
                         </header>
