@@ -152,9 +152,9 @@ export const UI_nav_bar = (props) => {
                         <div className={"tlf_nr top_elems"}>
                             <div style={{color: "#24818D"}}>+47 98 255 131</div>
                         </div>
-                        <div className={"fb_ico top_elems"}><FaFacebookF/></div>
-                        <div className={"in_ico top_elems"}><ImLinkedin2/></div>
-                        <div className={"insta_ico top_elems"}><FaInstagramSquare/></div>
+                        <a href={"https://www.facebook.com/SilverLiningIT/"}  className={"fb_ico top_elems"}><FaFacebookF/></a>
+                        <a href={"https://www.linkedin.com/company/silverlining-it/?viewAsMember=true"} className={"in_ico top_elems"}><ImLinkedin2/></a>
+                        <a href={"https://www.instagram.com/silver_lining_it/"} className={"insta_ico top_elems"}><FaInstagramSquare/></a>
                         <div className={"sign_in"}>
                             <IconContext.Provider value={{size: "1em"}}>
                                 <div className={"sign_in_lbl"} onClick={() => handleLoginLogout()}

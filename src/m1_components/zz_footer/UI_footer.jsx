@@ -12,6 +12,9 @@ import {useAuth} from "../c1_auth/a0_auth_common/firebase/AuthContext";
 export const UI_footer = () => {
     const {t, i18n} = useTranslation("SL_languages");
     const [latest3Blogs, setLatest3Blogs] = useState();
+    const [isFooter, setIsFooter] = useState(false);
+    const [change, setChange] = useState();
+
     const history = useHistory();
 
     const {
@@ -51,7 +54,6 @@ export const UI_footer = () => {
                             }
                         }
                     }
-
 
                     //trim title if it is too long! max 20 cha, just to limit.
                     if (title.length > 100) {
@@ -95,10 +97,16 @@ export const UI_footer = () => {
         });
     }, [/*deps*/]);
 
+    useEffect(() => {
+        if (isFooter) {
+            history.push("blog/blogview/" + change);
+            setIsFooter(false);
+        }
+    }, [change]);
 
     return (
         <footer className={"UI_footer_wrapper"}>
-            {/*{latest3Blogs && console.log("////:FOOticle", Object.values(latest3Blogs)[0])}*/}
+            {/*{latest3Blogs && console.log("////:RENDER?", change)}*/}
             <div className={"footer_outer"}>
                 <div className={"footer_inner"}>
                     <div className={"left_div footer_common"}>
@@ -134,38 +142,57 @@ export const UI_footer = () => {
                         </ul>
                     </div>
                     <div className={"right_div footer_common"}>
-                        <p>{t("footer.recent_posts")}</p>
-                        <ul>
-                            <li className={"cm_txt"}><MdKeyboardArrowRight/>
-                                <Link className={"lnk_posts"} to={`/router/path`}>
-                                    <strong>{latest3Blogs && Object.values(latest3Blogs)[0].title}</strong>
+                        <p style={{color: "#687f7e"}}>{t("footer.recent_posts")}</p>
+                        {latest3Blogs && <ul>
+                            <li onClick={() => {
+                                setIsFooter(true);
+                                setChange(Object.values(latest3Blogs)[0].blogKey)
+                            }}
+                                className={"cm_txt"}><MdKeyboardArrowRight/>
+                                <Link className={"lnk_posts"}
+                                      to={""}>
+                                    <strong>{Object.values(latest3Blogs)[0].title}</strong>
+                                </Link>
+                            </li>
+
+                            <div
+                                className={"first_line cm_txt"}>{Object.values(latest3Blogs)[0].secondLineText}</div>
+                            <li onClick={() => {
+                                setIsFooter(true);
+                                setChange(Object.values(latest3Blogs)[1].blogKey)
+                            }}
+                                className={"cm_txt"}><MdKeyboardArrowRight/>
+                                <Link className={"lnk_posts"}
+                                      to={""}>
+                                    <strong>{Object(latest3Blogs)[1].title}</strong>
                                 </Link>
                             </li>
                             <div
-                                className={"first_line cm_txt"}>{latest3Blogs && Object.values(latest3Blogs)[0].secondLineText}</div>
-                            <li className={"cm_txt"}><MdKeyboardArrowRight/>
-                                <Link className={"lnk_posts"} to={`/router/path`}>
-                                    <strong>{latest3Blogs && Object.values(latest3Blogs)[1].secondLineText}</strong>
+                                className={"first_line cm_txt"}>{Object.values(latest3Blogs)[1].secondLineText}</div>
+                            <li onClick={() => {
+                                setIsFooter(true);
+                                setChange(Object.values(latest3Blogs)[2].blogKey)
+                            }}
+                                className={"cm_txt"}><MdKeyboardArrowRight/>
+                                <Link className={"lnk_posts"}
+                                      to={""}>
+                                    <strong>{Object(latest3Blogs)[2].title}</strong>
                                 </Link>
                             </li>
                             <div
-                                className={"first_line cm_txt"}>{latest3Blogs && Object.values(latest3Blogs)[1].secondLineText}</div>
-                            <li className={"cm_txt"}><MdKeyboardArrowRight/>
-                                <Link className={"lnk_posts"} to={`/router/path`}>
-                                    <strong>{latest3Blogs && Object.values(latest3Blogs)[2].secondLineText}</strong>
-                                </Link>
-                            </li>
-                            <div
-                                className={"first_line cm_txt"}>{latest3Blogs && Object.values(latest3Blogs)[2].secondLineText}</div>
-                        </ul>
+                                className={"first_line cm_txt"}>{Object.values(latest3Blogs)[2].secondLineText}</div>
+                        </ul>}
                         <div className={"bottom_sm"}>
                             <IconContext.Provider value={{size: "1.5em"}}>
-                                <Link className={"lnk_footer_sm"} to={`/router/path`}><FaFacebookF
-                                    style={{margin: "5px", padding: "2px"}}/></Link>
-                                <Link className={"lnk_footer_sm"} to={`/router/path`}><FaLinkedinIn
-                                    style={{margin: "5px", padding: "2px"}}/></Link>
-                                <Link className={"lnk_footer_sm"} to={`/router/path`}><FaInstagramSquare
-                                    style={{margin: "5px", padding: "2px"}}/></Link>
+                                <a className={"lnk_footer_sm"}
+                                   href={"https://www.facebook.com/SilverLiningIT/"}><FaFacebookF
+                                    style={{margin: "5px", padding: "2px"}}/></a>
+                                <a className={"lnk_footer_sm"}
+                                   href={"https://www.linkedin.com/company/silverlining-it/?viewAsMember=true"}><FaLinkedinIn
+                                    style={{margin: "5px", padding: "2px"}}/></a>
+                                <a className={"lnk_footer_sm"}
+                                   href={"https://www.instagram.com/silver_lining_it/"}><FaInstagramSquare
+                                    style={{margin: "5px", padding: "2px"}}/></a>
                             </IconContext.Provider>
                         </div>
                     </div>
