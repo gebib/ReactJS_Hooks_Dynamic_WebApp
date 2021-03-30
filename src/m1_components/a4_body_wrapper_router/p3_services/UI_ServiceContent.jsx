@@ -50,7 +50,7 @@ export const UI_ServiceContent = () => {
                                             marginTop: "20px",
                                             maxWidth: "250px",
                                             textAlign: "center"
-                                        }}>{t("srv.rp1")}</p>
+                                        }}>{t("srv.rp2")}</p>
                                         <button onClick={() => {
                                             history.push("/service/rent");
                                         }} className={" btn btn-dark readMoreCardBtn"} style={{minWidth: "100%"}}>
