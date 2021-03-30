@@ -28,7 +28,7 @@ export const UI_Job_Viewer = () => {
     const [jobToView, setJobToView] = useState();
     const {read_job_single} = useAuth();
     const {delete_job} = useAuth();
-    const [isAdminSignedIn, setIsAdminSignedIn] = useState(true);/////////////////////
+    const [isAdminSignedIn, setIsAdminSignedIn] = useState(false);/////////////////////
     const [imgToUse, setImgToUse] = useState(null);
     const [jobType, setJobType] = useState(null);
     const [conType, setConType] = useState(null);
@@ -40,6 +40,20 @@ export const UI_Job_Viewer = () => {
     const {handleSubmit, register, errors, watch, formState, setValue} = useForm({mode: "onChange"});
 
     const history = useHistory();
+    const {currentUserInfo} = useAuth();
+
+    useEffect(() => {
+        if (currentUserInfo !== null) {
+            if (currentUserInfo[2]) {
+                setIsAdminSignedIn(true);
+            }
+        } else {
+            setIsAdminSignedIn(false);
+        }
+        // return () => {
+        //     history.push("/");
+        // }
+    }, [currentUserInfo]);
 
     const fetchSingleJobById = async () => {
         return await read_job_single(jobId.id);

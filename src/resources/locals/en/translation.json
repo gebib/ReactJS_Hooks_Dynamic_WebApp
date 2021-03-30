@@ -113,7 +113,9 @@
     "t2": "Get in touch with us!",
     "sort": "Sort by",
     "filter": "Filter by",
-    "noRes": "Sorry no results found!"
+    "noRes": "Sorry no results found!",
+    "postedDate": "Published:",
+    "deadLine": "Deadline"
   },
   "jform": {
     "dld": "Deadline date",

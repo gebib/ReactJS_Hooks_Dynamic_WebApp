@@ -7,6 +7,7 @@ import {FaMapMarkerAlt} from "react-icons/fa";
 import {UI_jlist_card} from "../../../a0_shared_all/job_list_card/UI_jlist_card";
 import {Link, useHistory, useParams} from "react-router-dom";
 import {MdEmail} from "react-icons/md";
+import {RiPlayListAddLine} from "react-icons/ri";
 import {useAuth} from "../../../c1_auth/a0_auth_common/firebase/AuthContext";
 import {showToast, useWindowSize} from "../../../../UI_Main_pages_wrapper";
 import jlcStyle from "../../../a0_shared_all/job_list_card/ST_jlist_card.module.scss";
@@ -18,7 +19,7 @@ export const UI_Jobs = () => {
     const {t, i18n} = useTranslation("SL_languages");
     const history = useHistory();
 
-    const [isAdminSignedIn, setIsAdminSignedIn] = useState(true); //////////////
+    const [isAdminSignedIn, setIsAdminSignedIn] = useState(false); //////////////
     const [loading, setLoading] = useState(false);
     const {read_job} = useAuth();
     const [listOfJobs, setListOfJobs] = useState(null);
@@ -34,6 +35,18 @@ export const UI_Jobs = () => {
     const [totalPageOfCards, setTotalPageOfCards] = useState(1);
 
     const sizeHW = useWindowSize();
+
+    const {currentUserInfo} = useAuth();
+
+    useEffect(() => {
+        if (currentUserInfo !== null) {
+            if (currentUserInfo[2]) {
+                setIsAdminSignedIn(true);
+            }
+        } else {
+            setIsAdminSignedIn(false);
+        }
+    }, [currentUserInfo]);
 
     useEffect(() => {
         if (sizeHW[1] < 650) {
@@ -73,9 +86,9 @@ export const UI_Jobs = () => {
                 }
             }
 
-            if(aListOfPagesOfCards.length > 0){
+            if (aListOfPagesOfCards.length > 0) {
                 setListOfJobAtPagex(aListOfPagesOfCards);
-            }else{
+            } else {
                 setListOfJobAtPagex(null);
             }
         }
@@ -137,14 +150,6 @@ export const UI_Jobs = () => {
         }
     }, [filter]);
 
-    // useEffect(() => {
-    //     if (listOfJobs !== null) {
-    //         console.log("////:filterEXIST???___ ", filteredExist);
-    //         console.log("////:listOfJobs????: ", listOfJobs.length);
-    //         console.log("////:filteredExist:?? ", filteredExist);
-    //     }
-    // }, [setFilteredExist, listOfJobs, filteredExist]);
-
 
     const handleIsIncludedCB = (cbValue, cbName) => {
         let newWhatToFilter = [...filter];
@@ -177,9 +182,6 @@ export const UI_Jobs = () => {
     const handleJobAddition = () => {
         if (isAdminSignedIn) {
             history.push("jobs/jobeditor");
-            // history.push("jobs/jobeditor/123");
-        } else {
-            alert("Get in touch with us!");
         }
     };
 
@@ -230,12 +232,15 @@ export const UI_Jobs = () => {
             <header className={"jobs_header"}>
                 {
                     isAdminSignedIn ? <div className={"manage_job_List"} onClick={handleJobAddition}>
+                        <IconContext.Provider value={{size: "2em"}}>
+                            <RiPlayListAddLine style={{color: "#248C9D", marginRight: "10px"}}/>
+                        </IconContext.Provider>
                         <h3 style={{color: "#248C9D"}}>{t("jobs.t1")}</h3>
                     </div> : <div className={"manage_job_List"} onClick={handleJobAddition}>
-                        <IconContext.Provider value={{size: "3em"}}>
+                        <IconContext.Provider value={{size: "2em"}}>
                             <MdEmail style={{color: "#248C9D", marginRight: "10px"}}/>
                         </IconContext.Provider>
-                        <h3>{t("jobs.t2")}</h3>
+                        <h3 style={{color: "#248C9D"}}>{t("jobs.t2")}</h3>
                     </div>
                 }
             </header>

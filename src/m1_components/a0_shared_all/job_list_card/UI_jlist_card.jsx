@@ -73,7 +73,6 @@ export const UI_jlist_card = (props) => {
     }, [/*for update on change*/]);
 
 
-
     return (
         <div className={"col bmain"} onClick={() => {
             history.push("jobs/jobview/" + props.aJobData.snKey);
@@ -105,14 +104,14 @@ export const UI_jlist_card = (props) => {
                     </div>
 
 
-                        <div className={jlcStyle.type_tag_list + "  d-none d-md-block col-2 "}>
-                            <div hidden={(jobType !== "itdev")}
-                                 className={jlcStyle.job_text + " list_header_textDiv"}>{t("jform.itdev")}</div>
-                            <div hidden={(jobType !== "projM")}
-                                 className={jlcStyle.job_text + " list_header_textDiv"}>{t("jform.projM")}</div>
-                            <div hidden={(jobType !== "arch")}
-                                 className={jlcStyle.job_text + " list_header_textDiv"}>{t("jform.arch")}</div>
-                        </div>
+                    <div className={jlcStyle.type_tag_list + "  d-none d-md-block col-2 "}>
+                        <div hidden={(jobType !== "itdev")}
+                             className={jlcStyle.job_text + " list_header_textDiv"}>{t("jform.itdev")}</div>
+                        <div hidden={(jobType !== "projM")}
+                             className={jlcStyle.job_text + " list_header_textDiv"}>{t("jform.projM")}</div>
+                        <div hidden={(jobType !== "arch")}
+                             className={jlcStyle.job_text + " list_header_textDiv"}>{t("jform.arch")}</div>
+                    </div>
 
 
                     {/*/////////////////////hide for any < xl = 1200px*/}

@@ -50,6 +50,8 @@ export const Jobs_form = () => {
     const [address, setAddress] = useState(null);
     const [loading, setLoading] = useState(false);
 
+    const [isAdminSignedIn, setIsAdminSignedIn] = useState(false)
+
 
     const [imgToUse, setImgToUse] = useState(itDevImg);
 
@@ -61,6 +63,22 @@ export const Jobs_form = () => {
 
 
     let shouldPrompt = false;
+
+    const {currentUserInfo} = useAuth();
+
+    useEffect(() => {
+        if (currentUserInfo !== null) {
+            if (currentUserInfo[2]) {
+                setIsAdminSignedIn(true);
+            }
+        } else {
+            setIsAdminSignedIn(false);
+        }
+        return () => {
+            history.push("/jobs");
+        }
+    }, [currentUserInfo]);
+
 
 
     //////////date picker /////////////////
