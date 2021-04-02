@@ -35,26 +35,14 @@ export const UI_footer = () => {
                     let secondLineText = "";
                     //get first line text as tittle.
                     let txtStartLineNumber = 0;
-                    for (let i = 0; i < raw.blocks.length; i++) {
-                        let textAtLinex = raw.blocks[i].text;
+                    for (let j = 0; j < raw.blocks.length; j++) {
+                        let textAtLinex = raw.blocks[j].text;
                         if (textAtLinex.length > 0) {
                             title = textAtLinex;
-                            txtStartLineNumber = i;
+                            txtStartLineNumber = j;
                             break;
                         }
                     }
-
-                    //get secondline for short display of text on footer
-                    if ((title.length > 0)) {
-                        for (let i = txtStartLineNumber; i < raw.blocks.length; i++) {
-                            let secondLineTxt = raw.blocks[i].text;
-                            if (secondLineTxt.length > 0) {
-                                secondLineText = secondLineTxt;
-                                break;
-                            }
-                        }
-                    }
-
                     //trim title if it is too long! max 20 cha, just to limit.
                     if (title.length > 100) {
                         title = title.substring(0, 100) + ". . .";
@@ -80,13 +68,14 @@ export const UI_footer = () => {
                     };
 
                     let blogIsApproved = aBlogDataes.isBlogApproved;
-                    if (blogIsApproved) {
+                    if (blogIsApproved) { // no more than 3 latest post are needed.
                         approvedBlogs.push(aBlogDataes);
                     }
                     i++;
                 });
+
+                setLatest3Blogs(approvedBlogs.reverse());
             }
-            setLatest3Blogs(approvedBlogs.reverse());
         });
     };
     useEffect(() => {
@@ -143,45 +132,21 @@ export const UI_footer = () => {
                     </div>
                     <div className={"right_div footer_common"}>
                         <p style={{color: "#687f7e"}}>{t("footer.recent_posts")}</p>
-                        {latest3Blogs && <ul>
-                            <li onClick={() => {
-                                setIsFooter(true);
-                                setChange(Object.values(latest3Blogs)[0].blogKey)
-                            }}
-                                className={"cm_txt"}><MdKeyboardArrowRight/>
-                                <Link className={"lnk_posts"}
-                                      to={""}>
-                                    <strong>{Object.values(latest3Blogs)[0].title}</strong>
-                                </Link>
-                            </li>
-
-                            <div
-                                className={"first_line cm_txt"}>{Object.values(latest3Blogs)[0].secondLineText}</div>
-                            <li onClick={() => {
-                                setIsFooter(true);
-                                setChange(Object.values(latest3Blogs)[1].blogKey)
-                            }}
-                                className={"cm_txt"}><MdKeyboardArrowRight/>
-                                <Link className={"lnk_posts"}
-                                      to={""}>
-                                    <strong>{Object(latest3Blogs)[1].title}</strong>
-                                </Link>
-                            </li>
-                            <div
-                                className={"first_line cm_txt"}>{Object.values(latest3Blogs)[1].secondLineText}</div>
-                            <li onClick={() => {
-                                setIsFooter(true);
-                                setChange(Object.values(latest3Blogs)[2].blogKey)
-                            }}
-                                className={"cm_txt"}><MdKeyboardArrowRight/>
-                                <Link className={"lnk_posts"}
-                                      to={""}>
-                                    <strong>{Object(latest3Blogs)[2].title}</strong>
-                                </Link>
-                            </li>
-                            <div
-                                className={"first_line cm_txt"}>{Object.values(latest3Blogs)[2].secondLineText}</div>
-                        </ul>}
+                        {latest3Blogs && latest3Blogs.slice(0, 5).map(aBlog =>
+                            <ul key={aBlog.blogKey}>
+                                <li onClick={() => {
+                                    setIsFooter(true);
+                                    setChange(aBlog.blogKey)
+                                }}
+                                    className={"cm_txt"}><MdKeyboardArrowRight/>
+                                    <Link className={"lnk_posts"}
+                                          to={""}>
+                                        <strong>{aBlog.title}</strong>
+                                    </Link>
+                                </li>
+                                {/*<div className={"first_line cm_txt"}>{aBlog.secondLineText}</div>*/}
+                            </ul>
+                        )}
                         <div className={"bottom_sm"}>
                             <IconContext.Provider value={{size: "1.5em"}}>
                                 <a className={"lnk_footer_sm"}

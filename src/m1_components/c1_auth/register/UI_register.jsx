@@ -32,7 +32,7 @@ export const UI_register = () => {
     const [terms, setTerms] = useState(false);
 
     const {signup} = useAuth();
-    const {getFbStorage} = useAuth();
+    const {getFbStorage, getFbDb} = useAuth();
     // const {currentUser} = useAuth();/////////////////////////////////////////////////////////////current user
     const {addUserDataToList} = useAuth();
 
@@ -85,8 +85,8 @@ export const UI_register = () => {
             await signup(formData.email, formData.password).then(auth => {
                 setLoading(false);
                 showToast(t("register.registeredOk"), "info");
-                //add additional user info etc.
-                addUserDataToList(formData.name, auth); //no need to set profile img url since they use uid.
+
+                //if user have has profile photo selected::
                 if (tempProfileImg) {
                     // console.log("////: attempt adding img");
                     const storage = getFbStorage(); //formData.name, tempProfileImg, auth
@@ -109,6 +109,8 @@ export const UI_register = () => {
                     console.log("////: no image selected");
                     clearRegisteringProcess();
                 }
+                //add additional user info etc.
+                addUserDataToList(formData.name, auth, (tempProfileImg !== null)); //no need to set profile img url since they use uid.
             });
         } catch (e) { // in case signup has failed
             console.log("///Failed some: ", e.message);
@@ -227,7 +229,7 @@ export const UI_register = () => {
     const cropState = (c) => {
         setCompletedCrop(c);
         setCropingDone(true);
-    }
+    };
 
 
     return (

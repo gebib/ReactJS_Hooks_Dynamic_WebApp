@@ -12,9 +12,8 @@ import {useLocation} from 'react-router-dom';
 // toast.warn("toast test: WARNING");
 import {ToastContainer, toast,} from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import {useAuth} from "./m1_components/c1_auth/a0_auth_common/firebase/AuthContext";
-import {UI_PrivacyPolicy} from "./m1_components/z_privacy_policy/UI_PrivacyPolicy";
-import {UI_divider} from "./m1_components/a3_animated_divider/UI_divider";
+
+
 
 
 // custom hook: to add event window event listener once/render and remove on exit.
@@ -91,13 +90,6 @@ export default function UI_Main_pages_wrapper() {
         }
     }, [location.pathname]);
 
-    const {addUserDataToList} = useAuth(); ////////////////////temp
-    const {currentUser} = useAuth();
-
-    // const setWrapper = (bodyWrapperHeight) => {
-    //     setBodyWrapperPageHeight(bodyWrapperHeight);
-    //     console.log("////:from bwr height: ", bodyWrapperHeight);
-    // }
 
     return (
         <div className={"main_wrapper"}

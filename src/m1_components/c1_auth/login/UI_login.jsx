@@ -26,7 +26,11 @@ export const UI_login = () => {
     const checkBoxRef = useRef();
 
 
-    const {login} = useAuth();
+    const {
+        login,
+        loginWithGoogle,
+        loginWithFacebook
+    } = useAuth();
 
     const signInValidUser = async (formData) => {
         try {
@@ -34,16 +38,18 @@ export const UI_login = () => {
             await login(formData.email, formData.password);
             history.goBack();
             console.log("////: loGGED in!");
-        } catch { // in case signup has failed
-            showToast(t("sign_in.try_again"), "error");
+        } catch (e) { // in case signup has failed
+            // showToast(t("sign_in.try_again"), "error");
+            console.log("////:e ", e);
         }
     };
 
-    const handleSMclick = () =>{
-            if(smButtonsDisabled){
-                setShowPrivacyConsentError(true);
-                checkBoxRef.current.focus();
-            }
+    //handle attempt login, without consent.
+    const handleSMclick = () => {
+        if (smButtonsDisabled) {
+            setShowPrivacyConsentError(true);
+            checkBoxRef.current.focus();
+        }
     };
 
     return (
@@ -112,9 +118,10 @@ export const UI_login = () => {
                     </div>
 
                     <div className="mail_login_btn">
-                        <button className={!(formState.isValid || !smButtonsDisabled) ? "btn btn-danger" : "btn btn-success"}
-                                type="submit"
-                                disabled={!smButtonsDisabled || loading}>
+                        <button
+                            className={!(formState.isValid || !smButtonsDisabled) ? "btn btn-danger" : "btn btn-success"}
+                            type="submit"
+                            disabled={!smButtonsDisabled || loading}>
                             {loading ? <span className="spinner-border mx-1 text-info spinner-border-sm" role="status"
                                              aria-hidden="true"/> : null}
                             {t("sign_in.login")}
@@ -135,16 +142,17 @@ export const UI_login = () => {
                                    type="checkbox"/>
                             <label className="form-check-label"
                                    htmlFor="flexCheckIndeterminate">{t("register.i_accept_the")}
-                                {t("register.terms")}  {t("register.and")}
+                                {t("register.terms")} {t("register.and")}
                                 <Link style={{textDecoration: 'none'}}
                                       to={`/privacypolicy`}> {t("register.privacy_policy")} </Link>
                             </label>
                         </div>
-                        <div className={"show_error mb-2"}>{showPrivacyConsentError ? <div>{t("sign_in.sm_consent")}</div> : null}</div>
+                        <div className={"show_error mb-2"}>{showPrivacyConsentError ?
+                            <div>{t("sign_in.sm_consent")}</div> : null}</div>
                     </div>
                     {/*/SocialMedia buttons*/}
                     <UI_sm_buttons handleClick={handleSMclick} isDisabled={smButtonsDisabled}/>
                 </div>
             </form>
         </div>);
-}
+};

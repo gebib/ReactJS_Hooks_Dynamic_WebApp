@@ -3,6 +3,7 @@ import {auth, storage, database} from "./firebase";
 import {showToast} from "../../../../UI_Main_pages_wrapper";
 import {v4 as uuid} from "uuid";
 import {useTranslation} from "react-i18next";
+import {useHistory} from "react-router-dom";
 
 
 const AuthContext = React.createContext();
@@ -20,6 +21,7 @@ export function AuthProvider({children}) {
     const [resetFormFromAuth, setResetFormFromAuth] = useState(false);
     const [isLogDbActivity, setIsLogDbActivity] = useState(false);
 
+    const history = useHistory();
 
     /////////////Auth | sign up | login | forgot /////////////////////
     const signup = (email, password) => {
@@ -29,12 +31,17 @@ export function AuthProvider({children}) {
     const getFbStorage = () => {
         return storage;
     };
+
+    const getFbDb = () => {
+        return database;
+    };
     // firebase.database().ref("users/" + currentAuth.user.uid).push(userInfo).then(err =>
-    const addUserDataToList = (usersName, auth) => {
+    const addUserDataToList = (usersName, auth, hasProfileImage) => {
         const rtDBref = database.ref("users_data/");
         rtDBref.child(auth.user.uid).set({
             name: usersName,
-            isAdmin: false //for all users except administrators.
+            isAdmin: false, //for all users except administrators.
+            hasPimage: hasProfileImage
         }).then(r => {
             // console.log("////: user data set!", r);
         }).catch(err => {
@@ -49,7 +56,8 @@ export function AuthProvider({children}) {
     const loginWithGoogle = (provider) => {
         auth.signInWithRedirect(provider).then(r => {
             //login ok.
-            // console.log("////: sign in with google");
+            console.log("////: sign in with google");
+            history.goBack();
         });
 
     };
@@ -57,7 +65,8 @@ export function AuthProvider({children}) {
     const loginWithFacebook = (provider) => {
         auth.signInWithRedirect(provider).then(r => {
             //login ok.
-            // console.log("////: sign in with facebook");
+            console.log("////: sign in with facebook");
+            history.goBack();
         });
     };
     const resetPassword = (email) => {
@@ -196,12 +205,12 @@ export function AuthProvider({children}) {
         return database.ref("blogs/" + blogKey).once("value");
     };
 
-    //used to delete by adm, or if over limit.
+    //used to delete blog X or/if over limit.
     const delete_blog = (aBlogData) => {
         setIsLogDbActivity(true);
         database.ref("blogs/" + aBlogData.blogKey).remove().then((r) => {
             if (aBlogData.storageImgFolderId !== null) {
-                database.ref("blogImages/" + aBlogData.storageImgFolderId).remove().then((r) => { //TODO not working.. maybe loop remove?
+                database.ref("blogImages/" + aBlogData.storageImgFolderId).remove().then((r) => {
                     setIsLogDbActivity(false);
                     showToast(t("blog.removed"), "info");
                 }).catch((e) => {
@@ -233,33 +242,47 @@ export function AuthProvider({children}) {
 //fetch user information to local on user sign in or register.
     useEffect(() => {
         auth.onAuthStateChanged((user) => {
+            console.log("////:CU______:info: ", user);
             if (user !== null) {
                 let userId = user.uid;
-                let userName;
-                let isAdmin;
-                let profileImgUrl = "https://firebasestorage.googleapis.com/v0/b/silverlining-it-prod.appspot.com/o/avatar.svg?alt=media&token=9c383d82-5f34-474c-9575-08afa5a9e5d4";
+                let userName = user.displayName;
+                let isAdmin = false;
+                let profileImagePhoto = null;
+                let slAvatar = "https://firebasestorage.googleapis.com/v0/b/silverlining-it-prod.appspot.com/o/avatar.svg?alt=media&token=b7b2c4a5-de05-4ca5-a393-e1983975bfa9";
 
-                database.ref("users_data/" + userId).once("value").then((sn) => {
-                    isAdmin = sn.val().isAdmin;
-                    userName = sn.val().name;
-                    storage.ref("profile_imgs/").child(user.uid + "/profile.png").getDownloadURL().then((url) => {
-                        profileImgUrl = (user.photoURL === null) ? url : user.photoURL; //case facebook/google? etc
-                        setCurrentUserInfo([userId, userName, isAdmin, profileImgUrl]);
-                        setLoading(false);
-                    }).catch((e) => {//user has no profile image
-                        setCurrentUserInfo([userId, userName, isAdmin, profileImgUrl]);
-                        setLoading(false);
+                //all sl registered users are not necessarily verified their email, and have display name === null/undefined!.
+                let isSMuser = ((user.displayName !== null) || (user.emailVerified === true));
+
+                if (!isSMuser) {
+                    database.ref("users_data/" + userId).once("value").then((sn) => {
+                        isAdmin = sn.val().isAdmin;
+                        userName = sn.val().name;
+                        if (sn.val().hasPimage) {
+                            storage.ref("profile_imgs/").child(user.uid + "/profile.png").getDownloadURL().then((url) => {
+                                profileImagePhoto = (url !== null) ? url : slAvatar;
+                                setCurrentUserInfo([userId, userName, isAdmin, profileImagePhoto]);
+                                setLoading(false);
+                            }).catch((e) => {//user has no profile image
+                                setCurrentUserInfo([userId, userName, isAdmin, profileImagePhoto]);
+                                setLoading(false);
+                            });
+                        }
+
+                    }).catch((e) => {
+                        // console.log("////:e ", e);
                     });
-                }).catch((e) => {
-                    // console.log("////:e ", e);
-                });
-                setLoading(false);
+                } else if (isSMuser) {
+                    profileImagePhoto = user.photoURL;
+                    setCurrentUserInfo([userId, userName, isAdmin, profileImagePhoto]);
+                    setLoading(false);
+                }
             } else {
                 setCurrentUserInfo(null);
                 setLoading(false);
             }
         });
     }, []);
+
 
     //context values that will be available to all that use the context.
     const value = {
@@ -272,6 +295,7 @@ export function AuthProvider({children}) {
         logout,
         resetPassword,
         getFbStorage,
+        getFbDb,
         addUserDataToList,
         loginWithGoogle,
         loginWithFacebook,

@@ -236,7 +236,9 @@ export const UI_Jobs = () => {
                             <RiPlayListAddLine style={{color: "#248C9D", marginRight: "10px"}}/>
                         </IconContext.Provider>
                         <h3 style={{color: "#248C9D"}}>{t("jobs.t1")}</h3>
-                    </div> : <div className={"manage_job_List"} onClick={handleJobAddition}>
+                    </div> : <div className={"manage_job_List"} onClick={()=>{
+
+                    }}>
                         <IconContext.Provider value={{size: "2em"}}>
                             <MdEmail style={{color: "#248C9D", marginRight: "10px"}}/>
                         </IconContext.Provider>
