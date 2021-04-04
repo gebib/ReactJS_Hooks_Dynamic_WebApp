@@ -242,7 +242,8 @@
   },
   "fof": {
     "ff": "404",
-    "pnf": "Page not found!"
+    "pnf": "Page not found!",
+    "youAreIn": "You are already signed in!"
   },
   "about": {
     "abh3h1": "FOUNDERS",

@@ -12,13 +12,6 @@ import {VerticalTimelineElement} from "react-vertical-timeline-component";
 import {v4 as uuid} from "uuid";
 
 export const UI_carousel = () => {
-    // const [reviews, setReviews] = useState([
-    //     {id: 1, title: 'item #1'},
-    //     {id: 2, title: 'item #2'},
-    //     {id: 3, title: 'item #3'},
-    //     {id: 4, title: 'item #4'},
-    //     {id: 5, title: 'item #5'}
-    // ]);
     const [reviews, setReviews] = useState();
 
     const {t, i18n} = useTranslation("SL_languages");
@@ -31,7 +24,7 @@ export const UI_carousel = () => {
     //fetch articles only selectively..
     const fetchListOfBlogs = async () => {
         await read_blog().then((snapshot) => {
-            // console.log("////:SSSSSNNNNNNN ", snapshot.val());
+            // console.log("////:CARRRRDD ", snapshot.val());
             let chosenReviews = [];
             if (snapshot.val() !== null) {
                 let i = 0;
@@ -71,8 +64,8 @@ export const UI_carousel = () => {
     }, [/*deps*/]);
 
     return (
-        <div hidden={reviews && (reviews.length < 1) } className={"carouselWraper"}>
-            <h4>{t("home.carHeader")}</h4>
+        <div hidden={(reviews === null)} className={"carouselWraper"}>
+            <h4 >{t("home.carHeader")}</h4>
             <Carousel
                 className={"carouselSelf"}
                 autoplay={true}

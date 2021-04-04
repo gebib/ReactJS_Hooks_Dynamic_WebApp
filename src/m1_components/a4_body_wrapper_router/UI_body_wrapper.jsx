@@ -1,6 +1,6 @@
 import React, {Suspense, useEffect, useRef, useState} from 'react';
 import "./ST_body_wrapper.scss";
-import {Redirect, Route, Switch} from "react-router-dom";
+import {Redirect, Route, Switch, useHistory, useLocation} from "react-router-dom";
 import {HomeContent} from "./p1_home/HomeContent";
 import {ErrorPage} from "../../m0_pages_routes/ErrorPage";
 import {JobsContent, UI_Jobs} from "./p2_jobs/job_list_view/UI_Jobs";
@@ -21,12 +21,27 @@ import {UI_leie} from "./p1_home/leie/UI_leie";
 import {useTranslation} from "react-i18next";
 import {useAuth} from "../c1_auth/a0_auth_common/firebase/AuthContext";
 import {UI_advice} from "./p1_home/advice/UI_advice";
+import {showToast} from "../../UI_Main_pages_wrapper";
 
 //redirect case user is not admin for particular routes!
 export const UI_body_wrapper = (props) => {
 
     const {t, i18n} = useTranslation("SL_languages");
     const {currentUserInfo} = useAuth();
+    const location = useLocation();
+    const history = useHistory();
+
+    useEffect(() => {
+        if ((currentUserInfo !== null) && (location.pathname === "/login" ||
+            location.pathname === "/register" ||
+            location.pathname === "/privacypolicy" ||
+            location.pathname === "/forgot_password")) {
+            showToast(t("fof.youAreIn"));
+        }
+        return () => {
+            //cleanup
+        }
+    }, [/*deps*/]);
 
     return (
         <div className={"body_outer"}>
@@ -39,8 +54,10 @@ export const UI_body_wrapper = (props) => {
                     <Route exact path={"/jobs/jobview/:id"}><UI_Job_Viewer/></Route>
 
                     {/*admin only routes*/}
-                    {currentUserInfo && currentUserInfo[2] && <Route exact path={"/jobs/jobeditor"}><Jobs_form/></Route>}
-                    {currentUserInfo && currentUserInfo[2] && <Route exact path={"/jobs/jobeditor/:id"}><UI_Job_Viewer/></Route>}
+                    {currentUserInfo && currentUserInfo[2] &&
+                    <Route exact path={"/jobs/jobeditor"}><Jobs_form/></Route>}
+                    {currentUserInfo && currentUserInfo[2] &&
+                    <Route exact path={"/jobs/jobeditor/:id"}><UI_Job_Viewer/></Route>}
 
                     {/*normail pages*/}
                     <Route exact path={"/blog/blogview/:id"}><UI_blog_view/></Route>
@@ -62,13 +79,17 @@ export const UI_body_wrapper = (props) => {
 
                     <Route path={"/badurl404"}><ErrorPage/></Route>
 
-                    {/*other pages links*/}
                     {(currentUserInfo === null) ? <Suspense fallback={FullPageLoader}>
                         <Route exact path={"/login"}><UI_login/></Route>
                         <Route exact path={"/register"}><UI_register/></Route>
                         <Route exact path={"/forgot_password"}><UI_forgot_password/></Route>
                         <Route path={"*"}><ErrorPage/></Route>
-                    </Suspense> : <Redirect to={{pathname: "/"}}/>}
+                    </Suspense> : (location.pathname === "/login" ||
+                        location.pathname === "/register" ||
+                        location.pathname === "/privacypolicy" ||
+                        location.pathname === "/forgot_password")?<Redirect to={"/"}/>:<Redirect to={"/badurl404"}/>}}
+                    {/*<Redirect to={"/"}/>*/}
+
                     <Route path={"*"}><ErrorPage/></Route>
                 </Switch>
             </div>

@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import "./ST_blog_view.scss";
-import {useParams} from "react-router-dom";
+import {useHistory, useParams} from "react-router-dom";
 import {useAuth} from "../../../c1_auth/a0_auth_common/firebase/AuthContext";
 import ImageGallery from "react-image-gallery";
 import {array} from "prop-types";
@@ -13,6 +13,7 @@ import {UI_PullCards} from "../../p1_home/pullcards/UI_PullCards";
 
 export const UI_blog_view = () => {
     const blogId = useParams();
+    const history = useHistory();
     const [aBlogData, setAblogData] = useState();
 
     const {
@@ -31,6 +32,7 @@ export const UI_blog_view = () => {
             console.log("////: ");
         }).catch((e) => {
             console.log("////:e ", e);
+            history.push("/badurl404");
         });
     };
 

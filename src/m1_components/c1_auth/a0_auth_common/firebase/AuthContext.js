@@ -242,7 +242,7 @@ export function AuthProvider({children}) {
 //fetch user information to local on user sign in or register.
     useEffect(() => {
         auth.onAuthStateChanged((user) => {
-            console.log("////:CU______:info: ", user);
+            // console.log("////:CU______:info: ", user);
             if (user !== null) {
                 let userId = user.uid;
                 let userName = user.displayName;

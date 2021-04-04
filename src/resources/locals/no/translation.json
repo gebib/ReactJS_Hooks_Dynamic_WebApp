@@ -245,7 +245,8 @@
   },
   "fof": {
     "ff": "404",
-    "pnf": "Siden er ikke funnet!"
+    "pnf": "Siden er ikke funnet!",
+    "youAreIn": "Du er allerede logget på!"
   },
   "about": {
     "abh3h1": "GRÜNDERE",
