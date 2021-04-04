@@ -37,7 +37,7 @@ export const UI_login = () => {
             setLoading(true);
             await login(formData.email, formData.password);
             history.goBack();
-            console.log("////: loGGED in!");
+            // console.log("////: loGGED in!");
         } catch (e) { // in case signup has failed
             showToast(t("sign_in.try_again"), "error");
             console.log("////:e ", e);

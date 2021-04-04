@@ -188,7 +188,7 @@ export const UI_Jobs = () => {
     };
 
     const fetchListOfJobs = async () => {
-        console.log("////: FETCHING..");
+        // console.log("////: FETCHING..");
         setLoading(true);
         await read_job().then(snapshot => {
             if (snapshot.val() !== null) {

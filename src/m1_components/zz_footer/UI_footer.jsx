@@ -80,7 +80,7 @@ export const UI_footer = () => {
     };
     useEffect(() => {
         fetchListOfBlogs().then((r) => {
-            console.log("////:Fetched! for footer! ");
+            // console.log("////:Fetched! for footer! ");
         }).catch((e) => {
             console.log("////:e ", e);
         });

@@ -29,7 +29,7 @@ export const UI_blog_view = () => {
         fetchSingleBlog(id).then((aBlogFetched) => {
             // console.log("////:aBlogDATA?", aBlogFetched.val());
             constructAblog(aBlogFetched);
-            console.log("////: ");
+            // console.log("////: ");
         }).catch((e) => {
             console.log("////:e ", e);
             history.push("/badurl404");

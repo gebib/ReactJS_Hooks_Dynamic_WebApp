@@ -56,7 +56,7 @@ export function AuthProvider({children}) {
     const loginWithGoogle = (provider) => {
         auth.signInWithRedirect(provider).then(r => {
             //login ok.
-            console.log("////: sign in with google");
+            // console.log("////: sign in with google");
             history.goBack();
         });
 
@@ -65,7 +65,7 @@ export function AuthProvider({children}) {
     const loginWithFacebook = (provider) => {
         auth.signInWithRedirect(provider).then(r => {
             //login ok.
-            console.log("////: sign in with facebook");
+            // console.log("////: sign in with facebook");
             history.goBack();
         });
     };

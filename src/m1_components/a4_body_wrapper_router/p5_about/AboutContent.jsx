@@ -72,7 +72,7 @@ export const AboutContent = () => {
     };
 
     const uploadNewLogo = (aFile) => {
-        console.log("////:aFile: ", aFile);
+        // console.log("////:aFile: ", aFile);
         if (aFile) {
             addNewPartnerLogo(aFile);
         }

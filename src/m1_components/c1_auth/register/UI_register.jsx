@@ -106,7 +106,7 @@ export const UI_register = () => {
                         }
                     );
                 } else {
-                    console.log("////: no image selected");
+                    // console.log("////: no image selected");
                     clearRegisteringProcess();
                 }
                 //add additional user info etc.
@@ -405,7 +405,6 @@ export const UI_register = () => {
                     {/*<UI_hl_divider middleText={t("register.lbl_or_register_with")}/>*/}
                     {/*/!*SocialMedia buttons*!/*/}
                     {/*<UI_sm_buttons/>*/}
-                    {/*TODO add exception include recaptcha check before registration is valid!*/}
                     <div className={"reCaptcha"}>
                         <ReCAPTCHA
                             theme="dark"

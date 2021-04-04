@@ -87,7 +87,7 @@ export const UI_PullCards = (props) => {
     };
     useEffect(() => {
         fetchListOfBlogs().then((r) => {
-            console.log("////:Fetched! ");
+            // console.log("////:Fetched! ");
         }).catch((e) => {
             console.log("////:e ", e);
         });

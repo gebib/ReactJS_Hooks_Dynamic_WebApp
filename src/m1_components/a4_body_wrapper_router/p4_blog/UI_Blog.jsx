@@ -100,11 +100,11 @@ export const UI_Blog = () => {
         if (currentUserInfo !== null) {
             setIsAdmin(currentUserInfo[2]);
             setCuInfo(currentUserInfo);
-            console.log("////: Yes user");
+            // console.log("////: Yes user");
         } else {
             setIsAdmin(false);
             setCuInfo(null);
-            console.log("////: No user!");
+            // console.log("////: No user!");
         }
         fetchBlog();
     }, [currentUserInfo]);
@@ -242,7 +242,7 @@ export const UI_Blog = () => {
 
     const fetchBlog = () => {
         fetchListOfBlogs().then(() => {
-            console.log("////:Fetch once: SET state:!");
+            // console.log("////:Fetch once: SET state:!");
         }).catch((e) => {
             console.log("////:e ", e);
         });
@@ -385,7 +385,7 @@ export const UI_Blog = () => {
     useEffect(() => {
         if (!isLogDbActivity) {
             fetchBlog();
-            console.log("////:||||||||||||| blog fetch on activity done!");
+            // console.log("////:||||||||||||| blog fetch on activity done!");
         }
     }, [isLogDbActivity]);
 
