@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import "./ST_Jobs.scss";
 import {useTranslation} from "react-i18next";
 import {IconContext} from "react-icons";
@@ -37,6 +37,8 @@ export const UI_Jobs = () => {
     const sizeHW = useWindowSize();
 
     const {currentUserInfo} = useAuth();
+
+    const mailtoRef = useRef();
 
     useEffect(() => {
         if (currentUserInfo !== null) {
@@ -223,9 +225,8 @@ export const UI_Jobs = () => {
 
     const handlePaginationSelect = (activePage) => {
         setSelectedPage(activePage - 1);
-        console.log("////: ", activePage);
+        // console.log("////: ", activePage);
     };
-
 
     return (
         <main className={"jobs_list_main_wrapper "}>
@@ -237,12 +238,13 @@ export const UI_Jobs = () => {
                         </IconContext.Provider>
                         <h3 style={{color: "#248C9D"}}>{t("jobs.t1")}</h3>
                     </div> : <div className={"manage_job_List"} onClick={()=>{
-
+                        mailtoRef.current.click();
                     }}>
                         <IconContext.Provider value={{size: "2em"}}>
                             <MdEmail style={{color: "#248C9D", marginRight: "10px"}}/>
                         </IconContext.Provider>
                         <h3 style={{color: "#248C9D"}}>{t("jobs.t2")}</h3>
+                        <a ref={mailtoRef} style={{color: "#248C9D"}} href="mailto:marianne.haavardstun@silverliningit.no"/>
                     </div>
                 }
             </header>

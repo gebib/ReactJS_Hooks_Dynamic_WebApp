@@ -39,6 +39,44 @@ $slColor: #248c9d;
     }
   }
 
+  .blogTopInfoDiv{
+    background-color: #151515;
+    margin-bottom: 20px;
+    //height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2em;
+    color: #ff00a8;
+    .topInfoInnerWrapper{
+      max-width: 1324px;
+      text-align: center;
+    }
+    .boxBlog {
+      background: #248c9d;
+      padding: 20px;
+      text-align: center;
+      font-weight: 400;
+      color: #bad1d0;
+      position: relative;
+      border-radius: 10px;
+      max-width: 900px;
+    }
+
+
+    .sb2Blog:before {
+      content: "";
+      width: 0px;
+      height: 0px;
+      position: absolute;
+      border-left: 10px solid transparent;
+      border-right: 10px solid #248c9d;
+      border-top: 10px solid #248c9d;
+      border-bottom: 10px solid transparent;
+      left: -19px;
+      top: 6px;
+    }
+  }
 
   .editorWrapper {
     //border: $lineT solid #00ff19;

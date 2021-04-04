@@ -259,20 +259,23 @@ export function AuthProvider({children}) {
                         userName = sn.val().name;
                         if (sn.val().hasPimage) {
                             storage.ref("profile_imgs/").child(user.uid + "/profile.png").getDownloadURL().then((url) => {
-                                profileImagePhoto = (url !== null) ? url : slAvatar;
+                                profileImagePhoto = url;
                                 setCurrentUserInfo([userId, userName, isAdmin, profileImagePhoto]);
                                 setLoading(false);
                             }).catch((e) => {//user has no profile image
-                                setCurrentUserInfo([userId, userName, isAdmin, profileImagePhoto]);
+                                setCurrentUserInfo([userId, userName, isAdmin, slAvatar]);
                                 setLoading(false);
                             });
+                        } else { // user has no profileImg
+                            setCurrentUserInfo([userId, userName, isAdmin, slAvatar]);
+                            setLoading(false);
                         }
 
                     }).catch((e) => {
                         // console.log("////:e ", e);
                     });
                 } else if (isSMuser) {
-                    profileImagePhoto = user.photoURL;
+                    profileImagePhoto = (user.photoURL !== null) ? user.photoURL : slAvatar;
                     setCurrentUserInfo([userId, userName, isAdmin, profileImagePhoto]);
                     setLoading(false);
                 }
@@ -282,6 +285,10 @@ export function AuthProvider({children}) {
             }
         });
     }, []);
+
+    // useEffect(() => {
+    //     console.log("////:Current user info in AUTH: ", currentUserInfo);
+    // }, [currentUserInfo]);
 
 
     //context values that will be available to all that use the context.

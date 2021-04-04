@@ -240,9 +240,6 @@ export const UI_Blog = () => {
     };
 
 
-
-
-
     const fetchBlog = () => {
         fetchListOfBlogs().then(() => {
             console.log("////:Fetch once: SET state:!");
@@ -250,7 +247,6 @@ export const UI_Blog = () => {
             console.log("////:e ", e);
         });
     };
-
 
 
     const handleStagedImgRemove = (clickedId) => {
@@ -267,11 +263,11 @@ export const UI_Blog = () => {
     const whatIsTheBlogType = () => {
         let whatIsIt = "";
         if (isBlogChecked) {
-            whatIsIt = t("blog.isBlog");
+            whatIsIt = "blog";
         } else if (isArticleChecked) {
-            whatIsIt = t("blog.isArticle");
+            whatIsIt = "article";
         } else if (isReviewChecked) {
-            whatIsIt = t("blog.isReview");
+            whatIsIt = "review";
         }
         return whatIsIt;
     };
@@ -400,6 +396,11 @@ export const UI_Blog = () => {
             <div className={"large_sl_logo_container_blog"}>
                 <img className={"large_logo_image_blog"} src={largeSL_logo} alt={"SILVERLINING logo large"}/>
             </div>
+            <div className={"blogTopInfoDiv py-5"}>
+                <div className={"topInfoInnerWrapper boxBlog sb2Blog"}>
+                    {t("blog.topInfo")}
+                </div>
+            </div>
             {/*/////////blog editor///////////*/}
             <div className={"editorWrapper"}>
                 <div className={"editorInnerWrapper"}>
@@ -426,7 +427,6 @@ export const UI_Blog = () => {
                             setEditorState(es);
                             checkShouldPrompt();
                             isEditorChanged();
-
                         }}/>
                     <div className={"blogEditorFooter"}>
                         <div className={"blogPhotos"}>
@@ -513,7 +513,6 @@ export const UI_Blog = () => {
                                            setIsReviewChecked(false);
                                            setIsArticleChecked(false);
                                            setIsBlogChecked(true);
-
                                        }}
                                        type={"checkbox"}
                                        id={"bl"}/>
@@ -530,7 +529,6 @@ export const UI_Blog = () => {
                                            setIsReviewChecked(false);
                                            setIsArticleChecked(true);
                                            setIsBlogChecked(false);
-
                                        }}
                                        type={"checkbox"}
                                        id={"ar"}/>
@@ -645,7 +643,7 @@ export const UI_Blog = () => {
                                 <div className={"typeOfBlog"}>
                                     <div style={{color: "#a9c0bf"}} hidden={!(aBlogData.blogType === "blog")}>
                                         <IconContext.Provider value={{size: "1.5em"}}>
-                                            <SiMicroDotBlog style={{color: "#248c9d", marginRight: "10px"}}/>
+                                            <FaInfo style={{color: "#248c9d", marginRight: "10px"}}/>
                                             {t("blog.iAmBlog")}
                                         </IconContext.Provider>
                                     </div>
