@@ -86,7 +86,7 @@ export const UI_carousel = () => {
                                      alt={"profile image"}
                                      src={item.authorProfileImgUrl}/>
                             </div>
-                            <div className={"nameAndStars"}><h5>{item.authorNameAndId[0]}</h5>
+                            <div className={"nameAndStars"}><h5 style={{textTransform: "capitalize"}}>{item.authorNameAndId[0]}</h5>
                                 <ReactStars
                                     edit={false}
                                     size={23}

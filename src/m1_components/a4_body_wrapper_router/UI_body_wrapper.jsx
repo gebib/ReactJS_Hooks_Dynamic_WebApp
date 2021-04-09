@@ -83,7 +83,10 @@ export const UI_body_wrapper = (props) => {
                         <Route exact path={"/login"}><UI_login/></Route>
                         <Route exact path={"/register"}><UI_register/></Route>
                         <Route exact path={"/forgot_password"}><UI_forgot_password/></Route>
-                        <Route path={"*"}><ErrorPage/></Route>
+                        {(location.pathname !== "/login" ||
+                            location.pathname !== "/register" ||
+                            location.pathname !== "/privacypolicy" ||
+                            location.pathname !== "/forgot_password")&&<Route path={"*"}><ErrorPage/></Route>}
                     </Suspense> : (location.pathname === "/login" ||
                         location.pathname === "/register" ||
                         location.pathname === "/privacypolicy" ||

@@ -25,7 +25,7 @@ export const UI_advice = () => {
                             <h3>{t("adv.advh1h2")}</h3>
                         </header>
                         <div className={"textDivMainWraper"}>
-                            <div className={"vbTextDiv"}>
+                            <div className={"vbTextDiv px-5"}>
                                 <p>{t("adv.adp1")}</p>
                                 <p>{t("adv.adp2")}</p>
 

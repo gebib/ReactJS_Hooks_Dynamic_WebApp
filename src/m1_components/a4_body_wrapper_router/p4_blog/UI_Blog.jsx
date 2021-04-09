@@ -168,6 +168,7 @@ export const UI_Blog = () => {
             }
         } else {
             checkShouldPrompt();
+
         }
     };
 
@@ -234,7 +235,12 @@ export const UI_Blog = () => {
                     i++;
                 });
             }
-            setListOfBlogs(listOfBlogs.reverse());/////
+            let blogList = listOfBlogs.reverse();
+            if (blogList.length >= 100) { // oldest blog is deleted if total blogs are > 100!
+                let anOldestNotDefaultBlog = Object.values(blogList)[listOfBlogs.length - 10];
+                delete_blog(anOldestNotDefaultBlog, true);
+            }
+            setListOfBlogs(blogList);
             setBlogPostLoading(false);
         });
     };
@@ -378,7 +384,7 @@ export const UI_Blog = () => {
 
     const deleteBlog = (aBlogData) => {
         if (window.confirm(t("blog.deleteSure"))) {
-            delete_blog(aBlogData);
+            delete_blog(aBlogData, false);
         }
     };
 
@@ -425,7 +431,7 @@ export const UI_Blog = () => {
                         onEditorStateChange={(es) => {
                             saveTempEditorState("tmpBlogState", draftToHtml(convertToRaw(es.getCurrentContent())));
                             setEditorState(es);
-                            checkShouldPrompt();
+                            // checkShouldPrompt();
                             isEditorChanged();
                         }}/>
                     <div className={"blogEditorFooter"}>
@@ -674,6 +680,7 @@ export const UI_Blog = () => {
                             </div>
                             <div className={"articleArraysWrapper"}>
                                 <div dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(aBlogData.htmlTxt)}}/>
+                                {/*<div className={"readMoreBlog"}/>*/}
                             </div>
                         </div>
 

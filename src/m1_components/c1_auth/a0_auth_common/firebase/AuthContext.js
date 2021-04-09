@@ -104,8 +104,6 @@ export function AuthProvider({children}) {
         setBlogPostLoading(true);
         let storageImgFolderId = (stagedFilesAr.length > 0) ? uuid() : null;
 
-        // console.log("////:CU ", currentUserInfo);
-
         let dataToStore = {
             stringifiedRaw: stringifiedRaw,
             htmlTxt: htmlTxt,
@@ -206,19 +204,31 @@ export function AuthProvider({children}) {
     };
 
     //used to delete blog X or/if over limit.
-    const delete_blog = (aBlogData) => {
+    const delete_blog = (aBlogData, isAuto) => {
         setIsLogDbActivity(true);
         database.ref("blogs/" + aBlogData.blogKey).remove().then((r) => {
             if (aBlogData.storageImgFolderId !== null) {
-                database.ref("blogImages/" + aBlogData.storageImgFolderId).remove().then((r) => {
+                storage.ref("blogImages/" + aBlogData.storageImgFolderId).listAll().then((res) => {
+                    res.items.forEach(anItem => {
+                        storage.ref("blogImages/" + aBlogData.storageImgFolderId + "/").child(anItem.name).delete().then(r => {
+                            // console.log("////:DELETEd", anItem.name);
+                        }).catch((e)=>{
+                            console.log("////:e ",e);
+                        });
+
+                    });
+                    if (!isAuto) {
+                        showToast(t("blog.removed"), "info");
+                    }
                     setIsLogDbActivity(false);
-                    showToast(t("blog.removed"), "info");
                 }).catch((e) => {
                     console.log("////:e ", e);
                 });
             } else {
                 setIsLogDbActivity(false);
-                showToast(t("blog.removed"), "info");
+                if (!isAuto) {
+                    showToast(t("blog.removed"), "info");
+                }
             }
         }).catch((e) => {
             console.log("////:e ", e);
@@ -237,7 +247,6 @@ export function AuthProvider({children}) {
     };
     //////////////////////////blog list///////////////////////////////
 
-    /////////////////////////////////////////////////////////
 
 //fetch user information to local on user sign in or register.
     useEffect(() => {

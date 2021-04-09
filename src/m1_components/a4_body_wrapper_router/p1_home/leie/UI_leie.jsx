@@ -25,7 +25,7 @@ export const UI_leie = () => {
                             <h3>{t("le.lh3h2")}</h3>
                         </header>
                         <div className={"textDivMainWraper"}>
-                            <div className={"vbTextDiv"}>
+                            <div className={"vbTextDiv px-5"}>
                                 <h5 className={"vbTextDiv"}>{t("le.h4h3")}</h5>
                                 <p>{t("le.lep1")}</p>
                                 <p>{t("le.lep2")}</p>

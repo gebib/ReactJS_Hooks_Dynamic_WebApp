@@ -152,7 +152,6 @@ export const AboutContent = () => {
                             <p>{t("about.abp5")} {t("about.abp6")}</p>
                             <div style={{display:"flex", justifyContent:"center"}}><h5>{t("about.abp7")}</h5></div>
                         </div>
-
                         <div className={"smPartLogosListDiv"}>
                             {listOfLogos && listOfLogos.map((anImageInfo) => {
                                 return (
@@ -165,7 +164,7 @@ export const AboutContent = () => {
                                             alt={"what"}
                                             src={anImageInfo.imgUrl}
                                             height={"100px"}/>
-                                        <div id={anImageInfo.imgNameId} className={"overlayIcon"}
+                                        <div hidden={!(currentUserInfo && currentUserInfo[2])} id={anImageInfo.imgNameId} className={"overlayIcon"}
                                              onClick={(e) => {
                                                  e.stopPropagation();
                                                  handleDeleteLogo(anImageInfo.imgNameId);

@@ -92,7 +92,7 @@ export const UI_blog_view = () => {
 
 
     return (
-        <main className={"mainWrapper"}>
+        <main className={"mainWrapper px-5"}>
             {/*{aBlogData && console.log("////:RENDER", getAblogsImages())}*/}
             <div className={"topPosterInfoDiv mx-2"}>
                 <div className={"userImage"}>
