@@ -105,7 +105,7 @@ export const UI_PullCards = (props) => {
                              className="card-img-top"
                              alt="article image"/>
                         <div className="card-body">
-                            <h5 className="card-title d-flex justify-content-center">{randomArticle && randomArticle[0].title}</h5>
+                            {/*<h5 className="card-title d-flex justify-content-center">{randomArticle && randomArticle[0].title}</h5>*/}
                             <div className={"dangerDiv px-2"}
                                  dangerouslySetInnerHTML={randomArticle && {__html: DOMPurify.sanitize(randomArticle[0].htmlTxt)}}/>
                         </div>
@@ -134,7 +134,7 @@ export const UI_PullCards = (props) => {
                              className="card-img-top"
                              alt="article image"/>
                         <div className="card-body">
-                            <h5 className="card-title d-flex justify-content-center">{randomArticle && randomArticle[1].title}</h5>
+                            {/*<h5 className="card-title d-flex justify-content-center">{randomArticle && randomArticle[1].title}</h5>*/}
                             <div className={"dangerDiv px-2"}
                                  dangerouslySetInnerHTML={randomArticle && {__html: DOMPurify.sanitize(randomArticle[1].htmlTxt)}}/>
                         </div>
@@ -163,7 +163,7 @@ export const UI_PullCards = (props) => {
                              className="card-img-top"
                              alt="article image"/>
                         <div className="card-body">
-                            <h5 className="card-title d-flex justify-content-center">{randomArticle && randomArticle[2].title}</h5>
+                            {/*<h5 className="card-title d-flex justify-content-center">{randomArticle && randomArticle[2].title}</h5>*/}
                             <div className={"dangerDiv px-2"}
                                  dangerouslySetInnerHTML={randomArticle && {__html: DOMPurify.sanitize(randomArticle[2].htmlTxt)}}/>
                         </div>

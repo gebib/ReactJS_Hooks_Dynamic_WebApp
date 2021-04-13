@@ -116,7 +116,8 @@ export default function UI_Main_pages_wrapper() {
             <div className={"page_content_wrapper"}>
                 <UI_body_wrapper wrapperHeight={"auto"}/>
             </div>
-            {shouldHideNavEtc ? null : <UI_footer/>}
+            {/*TODO/////////////////////////////////////////////////////////////////////////////////////enable when done*/}
+            {/*{shouldHideNavEtc ? null : <UI_footer/>}*/}
         </div>
     );
 }

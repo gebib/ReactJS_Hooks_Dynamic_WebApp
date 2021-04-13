@@ -19,6 +19,12 @@
     text-align: center;
   }
 
+  //div{
+  //  &:hover{
+  //    box-shadow: 0 0 10px 6px rgba(0, 0, 0, 0.1);
+  //  }
+  //}
+
   .section_with_images {
     .img_with_text {
       //border: $lineT solid #22ff00;
@@ -70,6 +76,24 @@
     &:hover{
       background-color: white;
     }
+  }
+  .candidatTextWrapper{
+    //border: $lineT solid #ffe300;
+    min-height: 437px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+  }
+  .ownTextWrapper{
+    //border: $lineT solid #ffe300;
+    min-height: 437px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
   }
 }
 

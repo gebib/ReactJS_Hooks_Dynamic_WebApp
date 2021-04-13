@@ -1,0 +1,153 @@
+//$lineT: 2px;
+
+.q_main_div {
+  //border: $lineT solid #007eff;
+  display: flex;
+  flex-direction: column;
+
+  .wholeDiv {
+    //border: $lineT solid #00ffbc;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    //border: 2px dashed rgba(147, 112, 219, 0.33);
+    margin-top: 10px;
+  }
+
+  .aDivCtrlPanel_single, .aDivCtrlPanel_dual {
+    border: 2px solid #B3B7BE;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+    min-height: 150px;
+    align-items: center;
+    border-radius: 10px;
+
+    .ctrlPanel {
+      //border: $lineT solid #ffc100;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #d7dce3;
+      margin-top: -2px;
+      border-radius: 0 0 10px 10px;
+    }
+  }
+
+  .dualDiv {
+    //border: $lineT solid #ff00a8;
+    min-width: 100%;
+    display: flex;
+    @media (max-width: 950px) {
+      display: block;
+    }
+
+    .leftDiv {
+      //border: $lineT solid #00ff29;
+      min-width: 50%;
+      border-radius: 10px;
+      border: 2px dashed rgba(147, 112, 219, 0.33);
+      margin: 10px;
+      padding: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      @media (max-width: 950px) {
+        width: 100%;
+      }
+    }
+
+    .rightDiv {
+      //border: $lineT solid #e7b6ff;
+      border: 2px dashed rgba(147, 112, 219, 0.33);
+      margin: 10px;
+      width: 50%;
+      padding: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      @media (max-width: 950px) {
+        width: 100%;
+      }
+    }
+  }
+
+  img {
+    //max-width: 100%;
+    //max-height: 100%;
+  }
+
+  .iconBtn {
+    //color: #248C9D;
+    color: #248C9D;
+    border-radius: 6px;
+    margin: 5px 10px 5px 10px;
+    background-color: white;
+
+    &:hover {
+      background-color: #248C9D;
+      color: #000000;
+      cursor: pointer;
+    }
+
+    &:active {
+      color: #ffc100;
+    }
+  }
+
+  .clearBtn {
+    background-color: rgba(147, 112, 219, 0.45);
+
+    &:hover {
+      background-color: #248C9D;
+      color: #000000;
+      cursor: pointer;
+    }
+
+    &:active {
+      background-color: #ff5b00;
+      cursor: pointer;
+    }
+  }
+
+  .okBtn {
+    min-width: 100px;
+
+    &:active {
+      color: #0aff00;
+      cursor: pointer;
+    }
+  }
+
+  .contentChooseBtn {
+    margin: 10px;
+    color: #7F8A88;
+
+    &:hover {
+      color: #000000;
+      cursor: pointer;
+    }
+
+    &:active {
+      color: #49b361;
+      cursor: pointer;
+    }
+  }
+
+  .noContentDiv {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    background-color: #EFF3FA;
+    .innerNoConWrapper{
+      background-color: #D7DCE3;
+      border-radius: 6px;
+    }
+  }
+}
+
+
+
+

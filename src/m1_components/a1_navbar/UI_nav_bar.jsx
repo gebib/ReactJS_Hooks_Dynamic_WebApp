@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import "./ST_nav_bar.scss";
 import {InView, useInView} from 'react-intersection-observer';
-import silverlining_logo from "../../resources/images/SL_logo.svg";
+import silverlining_logo from "../../m1_components/a2_logo_with_image/sl_logo_big.svg";
 import {Link, useLocation} from "react-router-dom";
 import {useTranslation} from "react-i18next";
 import {useHistory} from "react-router-dom";
