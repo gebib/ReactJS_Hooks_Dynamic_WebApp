@@ -7,31 +7,41 @@
 
   .wholeDiv {
     //border: $lineT solid #00ffbc;
-    display: flex;
-    flex-direction: column;
     width: 100%;
-    //border: 2px dashed rgba(147, 112, 219, 0.33);
-    margin-top: 10px;
+    //display: flex;
+    //flex-direction: column;
+    //justify-content: flex-start;
+    //border: 3px solid #B3B7BE;
+    border-radius: 6px;
+    background-color: #D8DCE3;
+    min-height: 260px;
   }
 
   .aDivCtrlPanel_single, .aDivCtrlPanel_dual {
-    border: 2px solid #B3B7BE;
     width: 100%;
     display: flex;
     flex-direction: column;
-    margin-top: 20px;
-    min-height: 150px;
     align-items: center;
-    border-radius: 10px;
+    margin-top: 50px;
+
+    &::selection {
+      cursor: pointer;
+      background-color: #7F8A88;
+    }
 
     .ctrlPanel {
       //border: $lineT solid #ffc100;
       display: flex;
       justify-content: center;
       align-items: center;
-      background-color: #d7dce3;
-      margin-top: -2px;
-      border-radius: 0 0 10px 10px;
+      background-color: #d8dce3;
+      margin-top: -42px;
+      z-index: 100;
+      position: absolute;
+      border-radius: 6px 6px 0 0;
+      //border-top: 3px solid #B3B7BE;
+      //border-left: 3px solid #B3B7BE;
+      //border-right: 3px solid #B3B7BE;
     }
   }
 
@@ -39,20 +49,23 @@
     //border: $lineT solid #ff00a8;
     min-width: 100%;
     display: flex;
+    //border: 3px solid #B3B7BE;
+    border-radius: 6px 6px 0 0;
+    background-color: #D8DCE3;
+    min-height: 260px;
+
     @media (max-width: 950px) {
       display: block;
     }
 
     .leftDiv {
       //border: $lineT solid #00ff29;
-      min-width: 50%;
-      border-radius: 10px;
-      border: 2px dashed rgba(147, 112, 219, 0.33);
-      margin: 10px;
-      padding: 5px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      width: 50%;
+      //display: flex;
+      //align-items: center;
+      //justify-content: center;
+      //border: 2px dashed rgba(162, 127, 235, 0.33);
+      padding-right: 1px;
       @media (max-width: 950px) {
         width: 100%;
       }
@@ -60,13 +73,12 @@
 
     .rightDiv {
       //border: $lineT solid #e7b6ff;
-      border: 2px dashed rgba(147, 112, 219, 0.33);
-      margin: 10px;
+      //border: 2px dashed rgba(162, 127, 235, 0.33);
       width: 50%;
-      padding: 5px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      //display: flex;
+      //align-items: center;
+      //justify-content: center;
+      padding-left: 1px;
       @media (max-width: 950px) {
         width: 100%;
       }
@@ -83,7 +95,7 @@
     color: #248C9D;
     border-radius: 6px;
     margin: 5px 10px 5px 10px;
-    background-color: white;
+    background-color: #e6eaf1;
 
     &:hover {
       background-color: #248C9D;
@@ -111,14 +123,7 @@
     }
   }
 
-  .okBtn {
-    min-width: 100px;
 
-    &:active {
-      color: #0aff00;
-      cursor: pointer;
-    }
-  }
 
   .contentChooseBtn {
     margin: 10px;
@@ -139,12 +144,27 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 20px;
     background-color: #EFF3FA;
-    .innerNoConWrapper{
+    margin-top: 10px;
+
+    .innerNoConWrapper {
       background-color: #D7DCE3;
       border-radius: 6px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
+  }
+
+  .contentDiv{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .rdw-editor-main{
+    height: 100%;
   }
 }
 

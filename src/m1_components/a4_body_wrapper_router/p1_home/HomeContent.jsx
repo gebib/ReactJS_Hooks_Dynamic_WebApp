@@ -12,8 +12,8 @@ import {UI_quill} from "../../a0_shared_all/quill_html_editor/UI_quill";
 export const HomeContent = () => {
     const {t, i18n} = useTranslation("SL_languages");
     return (
-        <main className="mainContainerHome container-12 px-5 mc1">
-            <div className={"innerContainer"}>
+        <main style={{backgroundColor:"#EFF3FA"}} className="mainContainerHome container-12 px-5 mc1">
+            <div   className={"innerContainer"}>
               <UI_quill/>
 
                 {/*///////////////////////////////////////////////////////////////////////////////////////////////////*/}

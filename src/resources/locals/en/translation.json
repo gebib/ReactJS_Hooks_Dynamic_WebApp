@@ -256,7 +256,6 @@
     "abh6h4": "Call us today, we will be happy to take a coffee with you.\n#WeCare",
     "krInfo": "Partner/Chairman of the Board",
     "mrInfo": "Partner/Daily Manager",
-
     "abh3h5": "Our partners",
     "abp5": "Silver Lining IT has many good partners and customers. We have extensive experience and a wide network of contacts. Silver Lining IT is ready to help you meet your needs.",
     "abp6": "Call us today, we are happy to take a non-committal meeting with you to hear more about your needs.",
@@ -265,5 +264,9 @@
     "logoOk": "New partner added!",
     "pRemoved": "Partner removed!",
     "": ""
+  },
+  "msl": {
+    "save": "Save",
+    "edit": "Edit"
   }
 }

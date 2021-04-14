@@ -268,5 +268,9 @@
     "logoOk": "Ny samarbeider er lagt til!",
     "pRemoved": "Samarbeider fjernet fra listen!",
     "": ""
+  },
+  "msl": {
+    "save": "Lagre",
+    "edit": "Rediger"
   }
 }
