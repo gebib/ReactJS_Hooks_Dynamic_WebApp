@@ -49,6 +49,10 @@ const WysIwyg = (props) => {
     const {t, i18n} = useTranslation("SL_languages");
     const [spellCheck, setSpellCheck] = useState(true);
     const [editorState, setEditorState] = useState(EditorState.createEmpty());
+    // const [editorInited, setShouldInitEditor] = useState(true);
+
+    let editorInited = false;
+
 
     const setResetEditorState = () => {
         let contentBlockBlog;
@@ -70,8 +74,18 @@ const WysIwyg = (props) => {
     };
 
     useEffect(() => {
-        setResetEditorState();
+        if (!editorInited) { //init once!
+            setResetEditorState();
+            editorInited = true;
+        }
     }, []);
+
+    useEffect(() => {
+        let raw = convertToRaw(editorState.getCurrentContent());
+        let htmlTxt = draftToHtml(convertToRaw(editorState.getCurrentContent()));
+        // console.log("////:|||||||||", htmlTxt);
+        props.handleTXTinput(htmlTxt, raw, props.editedBoxId, props.rightOrLeft);
+    }, [editorState]);
 
     return (
         <div style={{width: "100%", backgroundColor: "#EFF3FA", minHeight: "250px"}}>
@@ -104,8 +118,8 @@ const WysIwyg = (props) => {
         </div>
     );
 };
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////                   ///////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////                   /////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 export const UI_quill = () => {
     const {
@@ -153,11 +167,8 @@ export const UI_quill = () => {
 
     // const [pContent, setPContent] = useState([getNewSingleDiv(1), getNewDualDiv(2)]);
     const [pContent, setPContent] = useState([]);
-    const [showWzyWig, setShowWzyWig] = useState(false);
-
 
     const imgInputRef = useRef();
-
     const [isImage, setIsImage] = useState(false);
     const [img, setImg] = useState(false);
 
@@ -212,15 +223,51 @@ export const UI_quill = () => {
     };
 
     useEffect(() => {
-        console.log("////:PC: ", pContent); //TODO remove when done
+        console.log("////:pageContentArraySTATE: ", pContent); //TODO remove when done
     }, [pContent]);
 
-    //handle quills input
-    const handleQll = (quill) => {
-        console.log("////:QLL:: ", quill);
+    //insert changes into the specific obj of editing index.
+    const handleTXTinput = (htmlData, rawData, editedBoxId, rightOrLeft) => {
+        // console.log("////:QLL||||||||||||||||||||||||||:: ", htmlData, " ,,, ", rawData, ",,,", boxId, ",,,,", boxType);
+        let updatedArray = [];
+        if (pContent.length > 0) {
+            for (let i = 0; i < pContent.length; i++) {
+
+                if (Object.values(pContent)[i].divId === editedBoxId) {
+                    let cuBox = Object.values(pContent)[i];
+                    let cuBoxType = Object.values(pContent)[i].boxType;
+                    if (cuBoxType === "singleDiv") {
+                        let updatedSingleDiv = {
+                            divId: cuBox.divId,
+                            boxType: cuBox.boxType,
+                            imageUrl: cuBox.imageUrl,
+                            htmlTxt: htmlData,
+                            contentType: cuBox.contentType
+                        };
+                        updatedArray.push(updatedSingleDiv);
+                    } else if (cuBoxType === "dualDiv") {
+                        let updatedDualDiv = {
+                            divId: cuBox.divId,
+                            boxType: cuBox.boxType,
+                            rImageUrl: cuBox.rImageUrl,
+                            lImageUrl: cuBox.lImageUrl,
+                            rHtmlTxt: (rightOrLeft === "right") ? htmlData : cuBox.rHtmlTxt,
+                            lHtmlTxt: (rightOrLeft === "left") ? htmlData : cuBox.lHtmlTxt,
+                            rContentType: cuBox.rContentType,
+                            lContentType: cuBox.lContentType,
+                        };
+                        updatedArray.push(updatedDualDiv);
+                    }
+                } else {
+                    updatedArray.push(pContent[i]);
+                }
+            }
+        }
+        setPContent(updatedArray);
     };
 
-    const initWholeDivType = (aBoxId) => {
+    const iniSingleWholeDivtToTextBox = (aBoxId) => {
+        console.log("////:iniSingleWholeDivtToTextBox");
         let updatedArray = [];
         if (pContent.length > 0) {
             for (let i = 0; i < pContent.length; i++) {
@@ -244,7 +291,7 @@ export const UI_quill = () => {
         }
         setPContent(updatedArray);
     };
-    const initDualDivType = (aBoxId, rightOrLeft) => {
+    const initLeftOrRightOfDualDivtToTextBox = (aBoxId, rightOrLeft) => {
         let updatedArray = [];
         if (pContent.length > 0) {
             for (let i = 0; i < pContent.length; i++) {
@@ -274,7 +321,6 @@ export const UI_quill = () => {
 
     return (
         <div className={"q_main_div"}>
-
             <div className={"noContentDiv"}>
                 <div className={"innerNoConWrapper"}>
                     <div hidden={(pContent.length > 0)}>
@@ -307,6 +353,8 @@ export const UI_quill = () => {
                 if (aBox.boxType === "singleDiv") {
                     return (
                         <div key={aBox.divId} className={"aDivCtrlPanel_single"}>
+
+                            {/*///////////////////////////////////////////////////////////////////*/}
                             <div className={"ctrlPanel"}>
                                 <IconContext.Provider value={{size: "2em"}}>
                                     <RiAddLine onClick={() => {
@@ -324,18 +372,22 @@ export const UI_quill = () => {
                                     }} className={"iconBtn clearBtn"}/>
                                 </IconContext.Provider>
                             </div>
+                            {/*//////////////////////////////////////////////////////////////////*/}
+
 
                             <div style={{justifyContent: "center", alignItems: "center"}}
-                                 className={"wholeDiv"} key={aBox.divId}>
+                                 className={"wholeDiv"}>
 
                                 <div hidden={!(aBox.contentType === "text")}>
-                                    <WysIwyg handleQll={handleQll}/>
+                                    <WysIwyg rightOrLeft={"center"} editedBoxId={aBox.divId}
+                                             handleTXTinput={handleTXTinput}/>
                                 </div>
 
-                                <div hidden={!(aBox.contentType === "none")} className={"contentDiv"}>
+                                <div hidden={!(aBox.contentType === "none")} style={{minHeight: "230px"}}
+                                     className={"contentDiv"}>
                                     <IconContext.Provider value={{size: "2em"}}>
                                         <BsPencilSquare onClick={() => {
-                                            initWholeDivType(aBox.divId);
+                                            iniSingleWholeDivtToTextBox(aBox.divId);
                                         }} className={"contentChooseBtn"}/>
                                     </IconContext.Provider>
                                     <IconContext.Provider value={{size: "2em"}}>
@@ -363,16 +415,15 @@ export const UI_quill = () => {
                                             }
                                         }}/>
                                 </div>
-
-                                {/*<img hidden={(!setIsImage)} alt={"what"} src={img && img} height={"500px"}/>*/}
-                                {/*<div style={{textAlign: "right"}} className={"wholeDiv_textDiv"}>*/}
-                                {/*    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci amet explicabo id suscipit. Amet autem beatae corporis dolores doloribus eaque explicabo facilis fuga laudantium pariatur perspiciatis, placeat porro quam qui quia quisquam voluptates? Commodi fuga id maxime, molestiae mollitia nam quos reprehenderit voluptatibus! Adipisci alias asperiores beatae consequatur culpa deserunt doloremque doloribus ea esse id illo inventore ipsam iure laudantium magni maxime nemo non optio praesentium quia quibusdam rem repellat, saepe sed sit soluta tempore unde vel velit vero? Ab accusamus aspernatur at beatae dicta dignissimos distinctio doloremque doloribus enim error est id ipsam laudantium nam non, quas quibusdam ratione sed similique sint soluta, sunt unde vel? Fugit, numquam, voluptatem! Ab adipisci aliquid debitis delectus deserunt dolores dolorum ea earum eius, est, et eveniet expedita facere harum hic inventore iure laboriosam magnam natus nemo neque nisi, numquam officiis porro quasi quia quidem quis rem reprehenderit rerum similique suscipit tempore temporibus? Adipisci cumque, ea facere qui tenetur unde. A animi facere fuga id laudantium non rerum ut voluptatibus. Accusamus ea eum hic inventore ipsum optio quasi reprehenderit voluptatum! Autem beatae dolorem doloremque ea eaque, et facere incidunt inventore maiores, nostrum perferendis quae quidem ratione reprehenderit saepe similique suscipit tempore unde veritatis!*/}
-                                {/*</div>*/}
                             </div>
+
+
                         </div>
                     );
                 } else if (aBox.boxType === "dualDiv") {
                     return (
+
+
                         <div key={aBox.divId} className={"aDivCtrlPanel_dual"}>
                             <div className={"ctrlPanel"}>
                                 <IconContext.Provider value={{size: "2em"}}>
@@ -393,18 +444,16 @@ export const UI_quill = () => {
                             </div>
 
                             <div className={"dualDiv"}>
-
                                 <div className={"leftDiv"}>
-
                                     <div hidden={!(aBox.lContentType === "text")}>
-                                        <WysIwyg handleQll={handleQll}/>
+                                        <WysIwyg rightOrLeft={"left"} editedBoxId={aBox.divId}
+                                                 handleTXTinput={handleTXTinput}/>
                                     </div>
-
                                     <div hidden={!(aBox.lContentType === "none")} className={"leftTextDiv"}>
-                                        <div className={"contentDiv"}>
+                                        <div style={{minHeight: "230px"}} className={"contentDiv"}>
                                             <IconContext.Provider value={{size: "2em"}}>
                                                 <BsPencilSquare onClick={() => {
-                                                    initDualDivType(aBox.divId, "left");
+                                                    initLeftOrRightOfDualDivtToTextBox(aBox.divId, "left");
                                                 }} className={"contentChooseBtn"}/>
                                             </IconContext.Provider>
                                             <IconContext.Provider value={{size: "2em"}}>
@@ -415,20 +464,17 @@ export const UI_quill = () => {
                                             </IconContext.Provider>
                                         </div>
                                     </div>
-
                                 </div>
-
                                 <div className={"rightDiv"}>
-
                                     <div hidden={!(aBox.rContentType === "text")}>
-                                        <WysIwyg handleQll={handleQll}/>
+                                        <WysIwyg rightOrLeft={"right"} editedBoxId={aBox.divId}
+                                                 handleTXTinput={handleTXTinput}/>
                                     </div>
-
                                     <div hidden={!(aBox.rContentType === "none")} className={"rightTextDiv"}>
-                                        <div className={"contentDiv"}>
+                                        <div style={{minHeight: "230px"}} className={"contentDiv"}>
                                             <IconContext.Provider value={{size: "2em"}}>
                                                 <BsPencilSquare onClick={() => {
-                                                    initDualDivType(aBox.divId, "right");
+                                                    initLeftOrRightOfDualDivtToTextBox(aBox.divId, "right");
                                                 }} className={"contentChooseBtn"}/>
                                             </IconContext.Provider>
                                             <IconContext.Provider value={{size: "2em"}}>
@@ -441,9 +487,9 @@ export const UI_quill = () => {
                                     </div>
 
                                 </div>
-
                             </div>
                         </div>
+
                     );
                 }
             })}
