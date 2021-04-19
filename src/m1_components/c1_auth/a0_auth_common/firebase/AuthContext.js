@@ -152,7 +152,7 @@ export function AuthProvider({children}) {
 
     };
 
-    //////////partners logo/////////////////
+    //////////aPartner logo/////////////////
     const addNewPartnerLogo = async (aFile) => {
         setIsLogDbActivity(true);
         let logoId = uuid();
@@ -192,6 +192,20 @@ export function AuthProvider({children}) {
     };
     //////////partners logo/////////////////
 
+    /////////aPAGE_EditImages///////////////
+    const addAnImageOfAbox = async (imageFile) => {
+        //save image with its boxId
+        setLoading(true);
+
+
+
+        //return URL to add to the array !
+        //if deleted image/theBox remove image
+    };
+    const removeAnImageOfAbox = (boxId) =>{
+
+    };
+    /////////aPAGE_EditImages///////////////
 
     const read_blog = () => {
         setBlogPostLoading(true);
@@ -212,8 +226,8 @@ export function AuthProvider({children}) {
                     res.items.forEach(anItem => {
                         storage.ref("blogImages/" + aBlogData.storageImgFolderId + "/").child(anItem.name).delete().then(r => {
                             // console.log("////:DELETEd", anItem.name);
-                        }).catch((e)=>{
-                            console.log("////:e ",e);
+                        }).catch((e) => {
+                            console.log("////:e ", e);
                         });
 
                     });
