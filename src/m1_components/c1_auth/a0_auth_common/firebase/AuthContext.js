@@ -259,12 +259,6 @@ export function AuthProvider({children}) {
     };
     //////////////////////////blog list///////////////////////////////
 
-    ////////////////general aPageData to rt DB///////////////////////
-    const updateOrSetApageData = () =>{
-
-    };
-    ////////////////general aPageData to rt DB///////////////////////
-
 
 //fetch user information to local on user sign in or register.
     useEffect(() => {
@@ -354,7 +348,7 @@ export function AuthProvider({children}) {
         isLogDbActivity,
         //aPageData posting
         isPageUpdateLoading,
-        updateOrSetApageData
+        updateApageEditInDB
 
     };
 

@@ -145,7 +145,8 @@ export const UI_quill = (props) => {
         const {
             currentUserInfo,
             updateOrSetApageData,
-            isPageUpdateLoading
+            isPageUpdateLoading,
+            updateApageEditInDB
         } = useAuth();
 
         const {t, i18n} = useTranslation("SL_languages");
@@ -231,8 +232,7 @@ export const UI_quill = (props) => {
         };
 
         const saveChangesToDb = () => {
-            let pageRtRootRefName = props.dbRef;
-
+            updateApageEditInDB(props.dbRef, pContent);
         };
 
         const toggleEditModOnOff = () => {
@@ -283,7 +283,8 @@ export const UI_quill = (props) => {
 
         //initiate/update
         const updateImageAndBoxContentType = (e, aBox, rightOrLeft) => {
-            const maxInnerWidth = 1344; //pixel
+            const singleDivFullWidth = 1344; //pixel
+            const dualDivLeftOrRightWidth = 672; //pixel right or left container
             const imgFile = e.target.files[0];
             let imgUrl = URL.createObjectURL(imgFile);
 
@@ -292,50 +293,48 @@ export const UI_quill = (props) => {
             img.onload = () => {
                 let imageWidth = img.width;
                 let imageHeight = img.height;
-                let newHeightInPixel = 0;
-                if (imageWidth > maxInnerWidth) {
-                    let widthOverflowInPercent = (imageWidth - maxInnerWidth) / (imageWidth / 100);
-                    newHeightInPixel = (imageHeight - ((imageHeight / 100) * widthOverflowInPercent));
-                } else {
-                    newHeightInPixel = imageHeight;
-                }
-                // setMaxImageDivHeigh(newHeightInPixel);
-                // setDynamicSliderValue(newHeightInPixel);
+
+
+                // setMaxImageDivHeigh(newWholeHeightInPixel);
+                // setDynamicSliderValue(newWholeHeightInPixel);
                 if (aBox.boxType === "singleDiv") {
+                    //single div
+                    let newWholeHeightInPixel = 0;
+                    if (imageWidth > singleDivFullWidth) {
+                        let singleDivWidthOverflowInPercent = (imageWidth - singleDivFullWidth) / (imageWidth / 100);
+                        newWholeHeightInPixel = (imageHeight - ((imageHeight / 100) * singleDivWidthOverflowInPercent));
+                    } else {
+                        newWholeHeightInPixel = imageHeight;
+                    }
                     aBox.contentType = "image";
                     aBox.imgFile = URL.createObjectURL(imgFile);
-                    aBox.dynamicSliderValue = newHeightInPixel;
-                    aBox.maxImageDivHeight = newHeightInPixel;
+                    aBox.dynamicSliderValue = newWholeHeightInPixel;
+                    aBox.maxImageDivHeight = newWholeHeightInPixel;
                 } else if (aBox.boxType === "dualDiv") {
+                    let newDualDivHeightInPixel = 0;
+                    if (imageWidth > dualDivLeftOrRightWidth) {
+                        let singleDivWidthOverflowInPercent = (imageWidth - dualDivLeftOrRightWidth) / (imageWidth / 100);
+                        newDualDivHeightInPixel = (imageHeight - ((imageHeight / 100) * singleDivWidthOverflowInPercent));
+                    } else {
+                        newDualDivHeightInPixel = imageHeight;
+                    }
                     if (rightOrLeft === "right") {
                         aBox.rContentType = "image";
                         aBox.rImageFile = URL.createObjectURL(imgFile);
-                        if (imageWidth > maxInnerWidth) {
-                            aBox.rDynamicSliderValue = newHeightInPixel / 2;
-                            aBox.rMaxImageDivHeight = newHeightInPixel / 2;
-                        } else {
-                            aBox.rDynamicSliderValue = newHeightInPixel;
-                            aBox.rMaxImageDivHeight = newHeightInPixel;
-                        }
+                        aBox.rDynamicSliderValue = newDualDivHeightInPixel;
+                        aBox.rMaxImageDivHeight = newDualDivHeightInPixel;
                     } else if (rightOrLeft === "left") {
                         aBox.lContentType = "image";
                         aBox.lImageFile = URL.createObjectURL(imgFile);
-                        if (imageWidth > maxInnerWidth) {
-                            aBox.lDynamicSliderValue = newHeightInPixel / 2;
-                            aBox.lMaxImageDivHeight = newHeightInPixel / 2;
-                        } else {
-                            aBox.lDynamicSliderValue = newHeightInPixel;
-                            aBox.lMaxImageDivHeight = newHeightInPixel;
-                        }
+                        aBox.lDynamicSliderValue = newDualDivHeightInPixel;
+                        aBox.lMaxImageDivHeight = newDualDivHeightInPixel;
                     }
+
                 }
                 forceUpdate();
             };
         };
 
-        const setDualLeftOrRightDivImage = (e, boxId) => {
-            const imgFile = e.target.files;
-        };
 
         const updateElementRefInBoxObj = (inputRef, aBox, rightOrLeft) => {
             if (aBox.boxType === "singleDiv") {
@@ -350,11 +349,9 @@ export const UI_quill = (props) => {
             forceUpdate();
         };
 
-
         useEffect(() => {
             console.log("////:pageContentArraySTATE: ", pContent); //TODO remove when done
         }, [pContent]);
-
 
         return (
             <div className={"q_main_div"}>
@@ -386,10 +383,6 @@ export const UI_quill = (props) => {
                     </div>
                 </div>
 
-                {/*<div style={{ width: "100%", height: "100%" }}>*/}
-                {/*    <div ref={quillRef} />*/}
-                {/*</div>*/}
-
                 {(pContent.length > 0) && pContent.map((aBox) => {
                     if (aBox.boxType === "singleDiv") {
                         return (
@@ -413,7 +406,6 @@ export const UI_quill = (props) => {
                                     </IconContext.Provider>
                                 </div>
                                 {/*/////////////////////////////////////////////////////////////////////////////*/}
-
 
                                 <div style={{height: aBox.dynamicSliderValue + "px"}} className={"wholeDiv"}>
                                     <div style={{minWidth: "100%"}} hidden={!(aBox.contentType === "text")}>

@@ -1,4 +1,4 @@
-//$lineT: 5px;
+//$lineT: 3px;
 
 .q_main_div {
   //border: $lineT solid #007eff;
@@ -139,11 +139,14 @@
   }
 
   .noContentDiv {
+    //border: $lineT solid #007eff;
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
     align-items: center;
     background-color: #EFF3FA;
     margin-top: 10px;
+    max-width: 500px;
+    position: absolute;
 
     .innerNoConWrapper {
       background-color: #D7DCE3;
