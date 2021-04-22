@@ -1,4 +1,4 @@
-//$lineT: 2px;
+//$lineT: 5px;
 
 .q_main_div {
   //border: $lineT solid #007eff;
@@ -11,6 +11,7 @@
     display: flex;
     border-radius: 6px;
     background-color: #D8DCE3;
+    //height: 200px;
   }
 
   .aDivCtrlPanel_single, .aDivCtrlPanel_dual {
@@ -164,24 +165,28 @@
   .rdw-editor-main{
     height: 100%;
   }
-  //////////DISCARDED/////////
-  //.imgCtrl{
-  //  //background-color: #151515;
-  //  background-color: rgba(21, 21, 21, 0.5);
-  //  min-height: 50px;
-  //  display: flex;
-  //  justify-content: flex-start;
-  //  align-items: center;
-  //  position: relative;
-  //  margin-bottom: -50px;
-  //  z-index: 100;
-  //  color: white;
-  //  //opacity: 0.1;
-  //}
-  //////////DISCARDED/////////
-  .imageWrapper{
+
+  .imgCtrl{
+    //background-color: #151515;
+    background-color: rgba(21, 21, 21, 0.65);
+    border-radius: 0 0 10px 10px;
+    min-height: 40px;
+    padding-left: 10px;
+    padding-right: 10px;
     display: flex;
     justify-content: center;
+    align-items: center;
+    position: relative;
+    margin-bottom: -40px;
+    z-index: 100;
+    color: white;
+  }
+
+  .imageWrapper{
+    //border: $lineT solid #e7b6ff;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
     align-items: center;
     min-height: 100%;
     min-width: 100%;
@@ -190,6 +195,9 @@
   .aPageImageSelf{
     max-width:100%;
     max-height:100%;
+  }
+  #saveChangeBtn{
+    min-width: 95px;
   }
 }
 

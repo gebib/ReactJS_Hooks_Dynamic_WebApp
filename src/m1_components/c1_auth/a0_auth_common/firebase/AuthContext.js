@@ -20,6 +20,7 @@ export function AuthProvider({children}) {
     const [blogPostLoading, setBlogPostLoading] = useState(false);
     const [resetFormFromAuth, setResetFormFromAuth] = useState(false);
     const [isLogDbActivity, setIsLogDbActivity] = useState(false);
+    const [isPageUpdateLoading, setIsPageUpdateLoading] = useState(false);
 
     const history = useHistory();
 
@@ -192,8 +193,8 @@ export function AuthProvider({children}) {
     };
     //////////partners logo/////////////////
 
-    /////////aPAGE_EditImages///////////////
-    const addAnImageOfAbox = async (imageFile) => {
+    /////////common aPAGE_Edit handler///////////////
+    const updateApageEditInDB = async (dbRootRef, aPageContent) => {
         //save image with its boxId
         setLoading(true);
 
@@ -201,9 +202,6 @@ export function AuthProvider({children}) {
 
         //return URL to add to the array !
         //if deleted image/theBox remove image
-    };
-    const removeAnImageOfAbox = (boxId) =>{
-
     };
     /////////aPAGE_EditImages///////////////
 
@@ -260,6 +258,12 @@ export function AuthProvider({children}) {
         });
     };
     //////////////////////////blog list///////////////////////////////
+
+    ////////////////general aPageData to rt DB///////////////////////
+    const updateOrSetApageData = () =>{
+
+    };
+    ////////////////general aPageData to rt DB///////////////////////
 
 
 //fetch user information to local on user sign in or register.
@@ -347,7 +351,10 @@ export function AuthProvider({children}) {
         addNewPartnerLogo,
         getAllPartnersLogo,
         removeApartnersLogo,
-        isLogDbActivity
+        isLogDbActivity,
+        //aPageData posting
+        isPageUpdateLoading,
+        updateOrSetApageData
 
     };
 

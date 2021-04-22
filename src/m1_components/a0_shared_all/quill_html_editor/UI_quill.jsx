@@ -34,16 +34,9 @@ let blogDefaultTextN = `
 `;
 const WysIwyg = (props) => {
     const {
-        create_blog,
-        blogPostLoading,
-        setBlogPostLoading,
-        read_blog,
-        resetFormFromAuth,
-        setResetFormFromAuth,
         currentUserInfo,
-        delete_blog,
-        approve_blog,
-        isLogDbActivity
+        updateOrSetApageData,
+        isPageUpdateLoading
     } = useAuth();
 
     const {t, i18n} = useTranslation("SL_languages");
@@ -91,7 +84,7 @@ const WysIwyg = (props) => {
         <div style={{width: "100%", backgroundColor: "#EFF3FA"}}>
             <Editor
                 style={{zIndex: "100"}}
-                readOnly={blogPostLoading}
+                readOnly={isPageUpdateLoading}
                 editorStyle={{backgroundColor: "#fdfdfd", zIndex: "100"}}
                 toolbarClassName={"mainToolBarWrapper"}
                 wrapperClassName={"toolWrapper"}
@@ -142,22 +135,19 @@ export const ImageInput = (props) => {
         </div>
     );
 };
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////                   /////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-export const UI_quill = () => {
+
+/////////////////
+// //////////////////////
+// //////////////////////
+// ///////////////////////
+// ////////////////////////////////////////////////////////////////////////////
+export const UI_quill = (props) => {
         const {
-            create_blog,
-            blogPostLoading,
-            setBlogPostLoading,
-            read_blog,
-            resetFormFromAuth,
-            setResetFormFromAuth,
             currentUserInfo,
-            delete_blog,
-            approve_blog,
-            isLogDbActivity
+            updateOrSetApageData,
+            isPageUpdateLoading
         } = useAuth();
+
         const {t, i18n} = useTranslation("SL_languages");
 
         const getNewDualDiv = (id) => {
@@ -175,7 +165,13 @@ export const UI_quill = () => {
                 lContentType: "none",
 
                 rInputRef: null, //useRef objects input reference.
-                lInputRef: null
+                lInputRef: null,
+
+                lDynamicSliderValue: "auto",
+                lMaxImageDivHeight: "auto",
+
+                rDynamicSliderValue: "auto",
+                rMaxImageDivHeight: "auto"
             };
         };
 
@@ -186,7 +182,9 @@ export const UI_quill = () => {
                 imgFile: "", //image url
                 htmlTxt: "<p>single html content</p>", //txt html
                 contentType: "none",//image | text
-                inputRef: null
+                inputRef: null,
+                dynamicSliderValue: "auto",
+                maxImageDivHeight: "auto"
             };
         };
 
@@ -197,6 +195,11 @@ export const UI_quill = () => {
         const [pContent, setPContent] = useState([]);
         //for update component on demand.
         const [, forceUpdate] = useReducer(x => x + 1, 0);
+
+        // let maxHValue = 500;
+
+        // const [dynamicSliderValue, setDynamicSliderValue] = useState(50);
+        // const [maxImageDivHeight, setMaxImageDivHeigh] = useState(0);
 
 
         const addNewBox = (currentBoxId, boxType) => {
@@ -228,7 +231,8 @@ export const UI_quill = () => {
         };
 
         const saveChangesToDb = () => {
-            console.log("////:SAVEtoDb id: ");
+            let pageRtRootRefName = props.dbRef;
+
         };
 
         const toggleEditModOnOff = () => {
@@ -277,21 +281,56 @@ export const UI_quill = () => {
             forceUpdate();
         };
 
+        //initiate/update
         const updateImageAndBoxContentType = (e, aBox, rightOrLeft) => {
+            const maxInnerWidth = 1344; //pixel
             const imgFile = e.target.files[0];
-            if (aBox.boxType === "singleDiv") {
-                aBox.contentType = "image";
-                aBox.imgFile = URL.createObjectURL(imgFile);
-            } else if (aBox.boxType === "dualDiv") {
-                if (rightOrLeft === "right") {
-                    aBox.rContentType = "image";
-                    aBox.rImageFile = URL.createObjectURL(imgFile);
-                } else if (rightOrLeft === "left") {
-                    aBox.lContentType = "image";
-                    aBox.lImageFile = URL.createObjectURL(imgFile);
+            let imgUrl = URL.createObjectURL(imgFile);
+
+            let img = new Image();
+            img.src = imgUrl;
+            img.onload = () => {
+                let imageWidth = img.width;
+                let imageHeight = img.height;
+                let newHeightInPixel = 0;
+                if (imageWidth > maxInnerWidth) {
+                    let widthOverflowInPercent = (imageWidth - maxInnerWidth) / (imageWidth / 100);
+                    newHeightInPixel = (imageHeight - ((imageHeight / 100) * widthOverflowInPercent));
+                } else {
+                    newHeightInPixel = imageHeight;
                 }
-            }
-            forceUpdate();
+                // setMaxImageDivHeigh(newHeightInPixel);
+                // setDynamicSliderValue(newHeightInPixel);
+                if (aBox.boxType === "singleDiv") {
+                    aBox.contentType = "image";
+                    aBox.imgFile = URL.createObjectURL(imgFile);
+                    aBox.dynamicSliderValue = newHeightInPixel;
+                    aBox.maxImageDivHeight = newHeightInPixel;
+                } else if (aBox.boxType === "dualDiv") {
+                    if (rightOrLeft === "right") {
+                        aBox.rContentType = "image";
+                        aBox.rImageFile = URL.createObjectURL(imgFile);
+                        if (imageWidth > maxInnerWidth) {
+                            aBox.rDynamicSliderValue = newHeightInPixel / 2;
+                            aBox.rMaxImageDivHeight = newHeightInPixel / 2;
+                        } else {
+                            aBox.rDynamicSliderValue = newHeightInPixel;
+                            aBox.rMaxImageDivHeight = newHeightInPixel;
+                        }
+                    } else if (rightOrLeft === "left") {
+                        aBox.lContentType = "image";
+                        aBox.lImageFile = URL.createObjectURL(imgFile);
+                        if (imageWidth > maxInnerWidth) {
+                            aBox.lDynamicSliderValue = newHeightInPixel / 2;
+                            aBox.lMaxImageDivHeight = newHeightInPixel / 2;
+                        } else {
+                            aBox.lDynamicSliderValue = newHeightInPixel;
+                            aBox.lMaxImageDivHeight = newHeightInPixel;
+                        }
+                    }
+                }
+                forceUpdate();
+            };
         };
 
         const setDualLeftOrRightDivImage = (e, boxId) => {
@@ -337,7 +376,10 @@ export const UI_quill = () => {
 
                         <button onClick={() => {
                             saveChangesToDb();
-                        }} type="button" className="btn btn-success mx-1">{t("msl.save")}</button>
+                        }} type="button" id={"saveChangeBtn"} className="btn btn-success mx-1">{t("msl.save")}<span
+                            hidden={!isPageUpdateLoading}
+                            className="spinner-border mx-1 text-info spinner-border-sm" role="status"
+                            aria-hidden="true"/></button>
                         <button onClick={() => {
                             toggleEditModOnOff();
                         }} type="button" className="btn btn-dark mx-1">{t("msl.edit")}</button>
@@ -373,22 +415,34 @@ export const UI_quill = () => {
                                 {/*/////////////////////////////////////////////////////////////////////////////*/}
 
 
-                                <div className={"wholeDiv"}>
+                                <div style={{height: aBox.dynamicSliderValue + "px"}} className={"wholeDiv"}>
                                     <div style={{minWidth: "100%"}} hidden={!(aBox.contentType === "text")}>
-                                        <WysIwyg  rightOrLeft={"center"} aBox={aBox}
+                                        <WysIwyg rightOrLeft={"center"} aBox={aBox}
                                                  handleTXTinput={handleTXTinput}/>
                                     </div>
-                                    <div className={"imageWrapper"}  hidden={!(aBox.contentType === "image")}>
-                                        {/*<div className={"imgCtrl"}>*/}
-                                        {/*   sadf*/}
-                                        {/*</div>*/}
-                                        <img hidden={!(aBox.contentType === "image")} className={"aPageImageSelf"}
+
+                                    <div className={"imageWrapper"} hidden={!(aBox.contentType === "image")}>
+                                        <div className={"imgCtrl"}>
+                                            <label htmlFor="customRange1" className="form-label"/>
+                                            <input onChange={(e) => {
+                                                // setDynamicSliderValue(e.target.value);
+                                                aBox.dynamicSliderValue = e.target.value;
+                                                forceUpdate();
+                                            }} type="range" className="form-range" id="customRange1"
+                                                   min={50}
+                                                   value={aBox.dynamicSliderValue}
+                                                   max={aBox.maxImageDivHeight}/>
+                                        </div>
+                                        <img style={{maxWidth: "100%", maxHeight: "100%"}}
+                                             hidden={!(aBox.contentType === "image")} className={"aPageImageSelf"}
                                              src={aBox.imgFile} alt={"image belonging to a page"}/>
                                         <ImageInput righOrLeft={"center"}
                                                     updateImageAndBoxContentType={updateImageAndBoxContentType}
                                                     theBox={aBox}
                                                     updateElementRefInBoxObj={updateElementRefInBoxObj}/>
                                     </div>
+
+
                                     <div hidden={!(aBox.contentType === "none")}
                                          className={"contentDiv"}>
                                         <IconContext.Provider value={{size: "2em"}}>
@@ -430,16 +484,25 @@ export const UI_quill = () => {
                                 {/*//////////////////////////////////////////////////////////////////////////////*/}
 
                                 <div className={"dualDiv"}>
-                                    <div className={"leftDiv"}>
+                                    <div style={{height: aBox.lDynamicSliderValue + "px"}} className={"leftDiv"}>
                                         <div hidden={!(aBox.lContentType === "text")}>
                                             <WysIwyg rightOrLeft={"left"} aBox={aBox}
                                                      handleTXTinput={handleTXTinput}/>
                                         </div>
-                                        <div className={"imageWrapper"} hidden={!(aBox.lContentType === "image")}>
-                                            {/*<div className={"imgCtrl"}>*/}
-                                            {/*   sadf*/}
-                                            {/*</div>*/}
-                                            <img hidden={!(aBox.lContentType === "image")} className={"aPageImageSelf"}
+                                        <div className={"imageWrapper"} style={{height: aBox.lDynamicSliderValue + "px"}}
+                                             hidden={!(aBox.lContentType === "image")}>
+                                            <div className={"imgCtrl"}>
+                                                <label htmlFor="customRange1" className="form-label"/>
+                                                <input onChange={(e) => {
+                                                    aBox.lDynamicSliderValue = e.target.value;
+                                                    forceUpdate();
+                                                }} type="range" className="form-range" id="customRange1"
+                                                       min={50}
+                                                       value={aBox.lDynamicSliderValue}
+                                                       max={aBox.lMaxImageDivHeight}/>
+                                            </div>
+                                            <img style={{maxWidth: "100%"}}
+                                                 hidden={!(aBox.lContentType === "image")} className={"aPageImageSelf"}
                                                  src={aBox.lImageFile} alt={"image belonging to a page"}/>
                                             <ImageInput righOrLeft={"left"}
                                                         updateImageAndBoxContentType={updateImageAndBoxContentType}
@@ -462,16 +525,25 @@ export const UI_quill = () => {
                                             </div>
                                         </div>
                                     </div>
-                                    <div className={"rightDiv"}>
+                                    <div style={{height: aBox.rDynamicSliderValue + "px"}} className={"rightDiv"}>
                                         <div hidden={!(aBox.rContentType === "text")}>
                                             <WysIwyg rightOrLeft={"right"} aBox={aBox}
                                                      handleTXTinput={handleTXTinput}/>
                                         </div>
-                                        <div className={"imageWrapper"} hidden={!(aBox.rContentType === "image")}>
-                                            {/*<div className={"imgCtrl"}>*/}
-                                            {/*   sadf*/}
-                                            {/*</div>*/}
-                                            <img hidden={!(aBox.rContentType === "image")} className={"aPageImageSelf"}
+                                        <div className={"imageWrapper"} style={{height: aBox.rDynamicSliderValue + "px"}}
+                                             hidden={!(aBox.rContentType === "image")}>
+                                            <div className={"imgCtrl"}>
+                                                <label htmlFor="customRange1" className="form-label"/>
+                                                <input onChange={(e) => {
+                                                    aBox.rDynamicSliderValue = e.target.value;
+                                                    forceUpdate();
+                                                }} type="range" className="form-range" id="customRange1"
+                                                       min={50}
+                                                       value={aBox.rDynamicSliderValue}
+                                                       max={aBox.rMaxImageDivHeight}/>
+                                            </div>
+                                            <img style={{maxWidth: "100%"}}
+                                                 hidden={!(aBox.rContentType === "image")} className={"aPageImageSelf"}
                                                  src={aBox.rImageFile} alt={"image belonging to a page"}/>
                                             <ImageInput righOrLeft={"right"}
                                                         updateImageAndBoxContentType={updateImageAndBoxContentType}

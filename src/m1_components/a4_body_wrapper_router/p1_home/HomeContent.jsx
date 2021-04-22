@@ -14,7 +14,7 @@ export const HomeContent = () => {
     return (
         <main style={{backgroundColor:"#EFF3FA"}} className="mainContainerHome container-12 px-5 mc1">
             <div   className={"innerContainer"}>
-              <UI_quill/>
+              <UI_quill dbRef={"homePageData"}/>
 
                 {/*///////////////////////////////////////////////////////////////////////////////////////////////////*/}
                 {/*<article>*/}
