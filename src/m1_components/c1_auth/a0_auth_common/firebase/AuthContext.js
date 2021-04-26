@@ -194,14 +194,11 @@ export function AuthProvider({children}) {
     //////////partners logo/////////////////
 
     /////////common aPAGE_Edit handler///////////////
-    const updateApageEditInDB = async (dbRootRef, aPageContent) => {
-        //save image with its boxId
-        setLoading(true);
+    const updateApageEditInDB = async (dbRootRef, aPageContent) => {// aPageContent contains list of aBox
 
+        aPageContent.forEach((aBox) =>{
 
-
-        //return URL to add to the array !
-        //if deleted image/theBox remove image
+        });
     };
     /////////aPAGE_EditImages///////////////
 

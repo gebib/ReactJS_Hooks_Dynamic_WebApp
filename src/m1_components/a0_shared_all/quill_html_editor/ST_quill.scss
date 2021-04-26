@@ -1,9 +1,11 @@
 //$lineT: 3px;
 
+
 .q_main_div {
   //border: $lineT solid #007eff;
   display: flex;
   flex-direction: column;
+  margin-top: 55px;
 
   .wholeDiv {
     //border: $lineT solid #00ffbc;
@@ -19,12 +21,12 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 50px;
-
-    &::selection {
-      cursor: pointer;
-      background-color: #7F8A88;
+    margin-top: 60px;
+    border: 2px dashed #cbd6d4;
+    &:hover {
+      border: 2px solid #fbba00;
     }
+
 
     .ctrlPanel {
       //border: $lineT solid #ffc100;
@@ -36,9 +38,6 @@
       z-index: 100;
       position: absolute;
       border-radius: 6px 6px 0 0;
-      //border-top: 3px solid #B3B7BE;
-      //border-left: 3px solid #B3B7BE;
-      //border-right: 3px solid #B3B7BE;
     }
   }
 
@@ -47,40 +46,44 @@
     min-width: 100%;
     display: flex;
     //border: 3px solid #B3B7BE;
-    border-radius: 6px 6px 0 0;
+    //border-radius: 6px 6px 0 0;
     background-color: #D8DCE3;
 
     @media (max-width: 950px) {
       display: block;
     }
 
-    .leftDiv {
+    .leftDiv, .rightDiv {
       //border: $lineT solid #00ff29;
       width: 50%;
       //display: flex;
       //align-items: center;
       //justify-content: center;
       //border: 2px dashed rgba(162, 127, 235, 0.33);
-      border-right: 1px solid #c6cad1;
+      //border-right: 2px dashed #b1bcba;
       padding-right: 1px;
       @media (max-width: 950px) {
         width: 100%;
       }
     }
-
     .rightDiv {
-      //border: $lineT solid #e7b6ff;
-      //border: 2px dashed rgba(162, 127, 235, 0.33);
-      border-left: 1px solid #c6cad1;
-      width: 50%;
-      //display: flex;
-      //align-items: center;
-      //justify-content: center;
-      padding-left: 1px;
-      @media (max-width: 950px) {
-        width: 100%;
-      }
+      border-left: 2px dashed #a4afad;
     }
+
+
+    //.rightDiv {
+    ////  border: $lineT solid #e7b6ff;
+    //  //border: 2px dashed rgba(162, 127, 235, 0.33);
+    //  border-left: 1px solid #c6cad1;
+    //  width: 50%;
+    //  //display: flex;
+    //  //align-items: center;
+    //  //justify-content: center;
+    //  padding-left: 1px;
+    //  @media (max-width: 950px) {
+    //    width: 100%;
+    //  }
+    //}
   }
 
   img {
@@ -122,7 +125,6 @@
   }
 
 
-
   .contentChooseBtn {
     margin: 10px;
     color: #7F8A88;
@@ -144,20 +146,22 @@
     justify-content: flex-end;
     align-items: center;
     background-color: #EFF3FA;
-    margin-top: 10px;
+    //margin-top: -55px;
     max-width: 500px;
     position: absolute;
+    margin-top: -40px;
 
     .innerNoConWrapper {
+      //border: $lineT solid #03ffbb;
       background-color: #D7DCE3;
-      border-radius: 6px;
+      //border-radius: 6px;
       display: flex;
       justify-content: center;
       align-items: center;
     }
   }
 
-  .contentDiv{
+  .contentDiv {
     width: 100%;
     display: flex;
     justify-content: center;
@@ -165,11 +169,11 @@
     justify-self: flex-start;
   }
 
-  .rdw-editor-main{
+  .rdw-editor-main {
     height: 100%;
   }
 
-  .imgCtrl{
+  .imgCtrl {
     //background-color: #151515;
     background-color: rgba(21, 21, 21, 0.65);
     border-radius: 0 0 10px 10px;
@@ -181,11 +185,11 @@
     align-items: center;
     position: relative;
     margin-bottom: -40px;
-    z-index: 100;
     color: white;
+
   }
 
-  .imageWrapper{
+  .imageWrapper {
     //border: $lineT solid #e7b6ff;
     display: flex;
     flex-direction: column;
@@ -195,15 +199,58 @@
     min-width: 100%;
   }
 
-  .aPageImageSelf{
-    max-width:100%;
-    max-height:100%;
+  .aPageImageSelf {
+    max-width: 100%;
+    max-height: 100%;
   }
-  #saveChangeBtn{
+
+  #saveChangeBtn {
     min-width: 95px;
   }
 }
 
+/////////////////////////////////////____PREVIEW____///////////
+
+.aDivCtrlPanel_singlePrev, .aDivCtrlPanel_dualPrev {
+  //border: $lineT solid #ff08d1;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2px;
+  padding: 20px 60px;
+  border-radius: 6px;
+
+  background-color: white;
+  @media (max-width: 950px) {
+    flex-direction: column;
+  }
+
+  &::selection {
+    cursor: pointer;
+    background-color: #7F8A88;
+  }
+
+  .textViewerDivPrev {
+    //border: $lineT solid #a6a200;
+    width: 100%;
+  }
+
+  .leftPrev, .rightPrev{
+    //border: $lineT solid #00efff;
+
+    width: 50%;
+    @media (max-width: 950px) {
+      width: 100%;
+    }
+    .imageViewerDiv{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+}
 
 
 
