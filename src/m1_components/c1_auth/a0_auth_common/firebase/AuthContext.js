@@ -194,20 +194,152 @@ export function AuthProvider({children}) {
     //////////partners logo/////////////////
 
     /////////common aPAGE_Edit handler///////////////
-    const updateApageEditInDB = async (dbRootRef, aPageContent) => {// aPageContent contains list of aBox
+    const updateApageEditInDB = async (pageName, aPageContent) => {// aPageContent contains list of aBox
+        setIsPageUpdateLoading(true);
+        let uploadedImagesUrlList = []; //
+        let nrOfImagesUploaded = 0;
+        let nrOfImages = countNrOfImages(aPageContent);
+        console.log("////:nr of pics: ", nrOfImages);
 
-        aPageContent.forEach((aBox) =>{
+        for (const aBox of aPageContent) {
+            if ((aBox.boxType === "singleDiv") && (aBox.contentType === "image")) {
 
+                if (aBox.imageDbUrl === "") { //upload only if image does not have been uploaded before!.
+                    await storage.ref("pages_images").child("s_" + aBox.divId).put(aBox.imgFile).then(() => {
+                        storage.ref("pages_images").child("s_" + aBox.divId).getDownloadURL().then((url) => {
+                            aBox.imageDbUrl = url;
+                            nrOfImagesUploaded++;
+                            if (nrOfImagesUploaded === nrOfImages) {
+                                uplloadReadyDataToRtDb(pageName, aPageContent);
+                            }
+                            // console.log("////:DONE sImageupload");
+                        }).catch((e) => {
+                            console.log("////:upload singleDiv img: e: ", e);
+                        });
+                    }).catch((e) => {
+                        console.log("////:storage singleDiv: e: ", e);
+                    });
+                } else {
+                    nrOfImagesUploaded++;
+                    if (nrOfImagesUploaded === nrOfImages) {
+                        uplloadReadyDataToRtDb(pageName, aPageContent);
+                    }
+                }
+
+            } else if ((aBox.boxType === "dualDiv") && ((aBox.rContentType === "image") || (aBox.lContentType === "image"))) {
+                if (aBox.rContentType === "image") {
+
+                    if (aBox.rImageDbUrl === "") {
+                        await storage.ref("pages_images").child("r_" + aBox.divId).put(aBox.rImageFile).then(() => {
+                            storage.ref("pages_images").child("r_" + aBox.divId).getDownloadURL().then((url) => {
+                                aBox.rImageDbUrl = url;
+                                nrOfImagesUploaded++;
+                                if (nrOfImagesUploaded === nrOfImages) {
+                                    uplloadReadyDataToRtDb(pageName, aPageContent);
+                                }
+                                // console.log("////:DONE rImageupload");
+                            }).catch((e) => {
+                                console.log("////:upload dualDiv r B: e: ", e);
+                            });
+                        }).catch((e) => {
+                            console.log("////:storage dualDiv r A: e: ", e);
+                        });
+                    } else {
+                        nrOfImagesUploaded++;
+                        if (nrOfImagesUploaded === nrOfImages) {
+                            uplloadReadyDataToRtDb(pageName, aPageContent);
+                        }
+                    }
+                }
+
+                if (aBox.lContentType === "image") {
+
+                    if (aBox.lImageDbUrl === "") {
+                        await storage.ref("pages_images").child("l_" + aBox.divId).put(aBox.lImageFile).then(() => {
+                            storage.ref("pages_images").child("l_" + aBox.divId).getDownloadURL().then((url) => {
+                                aBox.lImageDbUrl = url;
+                                nrOfImagesUploaded++;
+                                if (nrOfImagesUploaded === nrOfImages) {
+                                    uplloadReadyDataToRtDb(pageName, aPageContent);
+                                }
+                                // console.log("////:DONE lImageupload");
+                            }).catch((e) => {
+                                console.log("////:upload dualDiv l B: e: ", e);
+                            });
+                        }).catch((e) => {
+                            console.log("////:storage dualDiv l A: e: ", e);
+                        });
+                    } else {
+                        nrOfImagesUploaded++;
+                        if (nrOfImagesUploaded === nrOfImages) {
+                            uplloadReadyDataToRtDb(pageName, aPageContent);
+                        }
+                    }
+                }
+            }
+        }//end for
+        if (nrOfImages === 0) {
+            uplloadReadyDataToRtDb(pageName, aPageContent);
+        }
+    };
+
+    //ready page data uploader to rtDb.
+    const uplloadReadyDataToRtDb = (pageName, aPageContent) => {
+        //clean out local File ref and prev
+        aPageContent.forEach((aBox) => {
+            if (aBox.boxType === "singleDiv") {
+                aBox.imgFile = "";
+                aBox.imgFilePrev = "";
+                aBox.inputRef = "";
+            } else if (aBox.boxType === "dualDiv") {
+                aBox.lImageFile = "";
+                aBox.lImageFilePrev = "";
+                aBox.lInputRef = "";
+
+                aBox.rImageFile = "";
+                aBox.rImageFilePrev = "";
+                aBox.rInputRef = "";
+            }
+        });
+        database.ref("/pages_data/" + pageName).set(aPageContent).then(() => {
+            setIsPageUpdateLoading(false);
+            showToast(t("msl.homePageUpdated"));
+        }).catch((e) => {
+            console.log("////:e ", e);
         });
     };
-    /////////aPAGE_EditImages///////////////
 
+    // //helper function:
+    const countNrOfImages = (aPageContent) => {
+        let result = 0;
+        for (const aBox of aPageContent) {
+            if ((aBox.boxType === "singleDiv") && (aBox.contentType === "image")) {
+                result++;
+            } else if (aBox.boxType === "dualDiv") {
+                if ((aBox.rContentType === "image") && aBox.lContentType === "image") {
+                    result += 2;
+                } else if (aBox.rContentType === "image") {
+                    result++;
+                } else if (aBox.lContentType === "image") {
+                    result++;
+                }
+            }
+        }
+        return result;
+    };
+
+    //get aPageData from rtDb
+    const getApageData = async (pageName) => {
+        return await database.ref("/pages_data/" + pageName).once("value");
+    };
+    /////////aPAGE_Edit end///////////////
+
+    //read single blog
     const read_blog = () => {
         setBlogPostLoading(true);
         return database.ref("/blogs").once("value");
     };
 
-    //read single blog
     const read_blog_single = (blogKey) => {
         return database.ref("blogs/" + blogKey).once("value");
     };
@@ -345,7 +477,8 @@ export function AuthProvider({children}) {
         isLogDbActivity,
         //aPageData posting
         isPageUpdateLoading,
-        updateApageEditInDB
+        updateApageEditInDB,
+        getApageData
 
     };
 

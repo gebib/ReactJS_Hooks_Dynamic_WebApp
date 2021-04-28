@@ -267,6 +267,8 @@
   },
   "msl": {
     "save": "Save",
-    "edit": "Edit"
+    "edit": "Edit",
+    "noCt": "Nothing to upload!",
+    "homePageUpdated": "Update successful"
   }
 }

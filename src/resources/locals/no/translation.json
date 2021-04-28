@@ -271,6 +271,8 @@
   },
   "msl": {
     "save": "Lagre",
-    "edit": "Rediger"
+    "edit": "Rediger",
+    "noCt": "Vennligst legg til innhold først!",
+    "homePageUpdated": "Oppdatering vellykket!"
   }
 }

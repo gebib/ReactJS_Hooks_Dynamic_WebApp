@@ -22,6 +22,7 @@ import {ContentState, convertToRaw, EditorState} from "draft-js";
 import htmlToDraft from "html-to-draftjs";
 import {AiOutlineArrowLeft} from "react-icons/ai";
 import DOMPurify from "dompurify";
+import {showToast} from "../../../UI_Main_pages_wrapper";
 
 
 //WYSIWYG component
@@ -57,6 +58,10 @@ const WysIwyg = (props) => {
 
     const setResetEditorState = () => {
         let contentBlockBlog;
+        if (props.editorTextHtmlData.length > 0) {
+            blogDefaultTextE = props.editorTextHtmlData;
+            blogDefaultTextN = props.editorTextHtmlData;
+        }
         if (i18n.language === "en") {
             contentBlockBlog = htmlToDraft(blogDefaultTextE);
             setSpellCheck(true);//spell check available for English.
@@ -144,17 +149,20 @@ export const ImageInput = (props) => {
     );
 };
 
-/////////////////
-// //////////////////////
-// //////////////////////
-// ///////////////////////
-// ////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 export const UI_quill = (props) => {
     const {
         currentUserInfo,
         updateOrSetApageData,
         isPageUpdateLoading,
-        updateApageEditInDB
+        updateApageEditInDB,
+        getApageData
     } = useAuth();
 
     const {t, i18n} = useTranslation("SL_languages");
@@ -164,11 +172,17 @@ export const UI_quill = (props) => {
             divId: id,
             boxType: "dualDiv", //dualDiv,singleDiv
 
+            rImageFilePrev: "", //image url
+            lImageFilePrev: "",
+
             rImageFile: "", //image url
             lImageFile: "",
 
-            rHtmlTxt: "<p>right html content</p>", //txt html
-            lHtmlTxt: "<p>left html content</p>",
+            rImageDbUrl: "",
+            lImageDbUrl: "",
+
+            rHtmlTxt: "<p/>", //txt html
+            lHtmlTxt: "<p/>",
 
             rContentType: "none",//image | text
             lContentType: "none",
@@ -188,8 +202,10 @@ export const UI_quill = (props) => {
         return {
             divId: id,
             boxType: "singleDiv", //dualDiv,singleDiv
-            imgFile: "", //image url
-            htmlTxt: "<p>single html content</p>", //txt html
+            imgFilePrev: "", //image url
+            imgFile: "", //to be uploaded when editing
+            imageDbUrl: "", //filled inn at updating/posting.
+            htmlTxt: "<p/>", //txt html
             contentType: "none",//image | text
             inputRef: null,
             dynamicSliderValue: "auto",
@@ -231,15 +247,11 @@ export const UI_quill = (props) => {
         setPContent(updatedArray);
     };
 
-    //fetch pContent from db on mount
-    useEffect(() => {
-        //   todo fetch
-        setPContentFromDb([]);
-    }, [/*deps*/]);
-
     const saveChangesToDb = () => {
         if (pContent.length > 0) {
-            updateApageEditInDB(props.pageRootNameAtDb, pContent);
+            updateApageEditInDB(props.editablePageName, pContent);
+        } else {
+            showToast(t("msl.noCt"));
         }
     };
 
@@ -311,7 +323,8 @@ export const UI_quill = (props) => {
                     newWholeHeightInPixel = imageHeight;
                 }
                 aBox.contentType = "image";
-                aBox.imgFile = URL.createObjectURL(imgFile);
+                aBox.imgFilePrev = URL.createObjectURL(imgFile);
+                aBox.imgFile = imgFile;
                 aBox.dynamicSliderValue = newWholeHeightInPixel;
                 aBox.maxImageDivHeight = newWholeHeightInPixel;
             } else if (aBox.boxType === "dualDiv") {
@@ -324,16 +337,17 @@ export const UI_quill = (props) => {
                 }
                 if (rightOrLeft === "right") {
                     aBox.rContentType = "image";
-                    aBox.rImageFile = URL.createObjectURL(imgFile);
+                    aBox.rImageFilePrev = URL.createObjectURL(imgFile);
+                    aBox.rImageFile = imgFile;
                     aBox.rDynamicSliderValue = newDualDivHeightInPixel;
                     aBox.rMaxImageDivHeight = newDualDivHeightInPixel;
                 } else if (rightOrLeft === "left") {
                     aBox.lContentType = "image";
-                    aBox.lImageFile = URL.createObjectURL(imgFile);
+                    aBox.lImageFilePrev = URL.createObjectURL(imgFile);
+                    aBox.lImageFile = imgFile;
                     aBox.lDynamicSliderValue = newDualDivHeightInPixel;
                     aBox.lMaxImageDivHeight = newDualDivHeightInPixel;
                 }
-
             }
             forceUpdate();
         };
@@ -353,10 +367,40 @@ export const UI_quill = (props) => {
         forceUpdate();
     };
 
+//fetch a page data from db
     useEffect(() => {
-        console.log("////:pageContentArraySTATE: ", pContent); //TODO remove when done
-    }, [pContent]);
+        getApageData(props.editablePageName).then((sn) => {
+            if (sn.val()) {
+                console.log("////:Fetch HOME: ", sn.val());
+                setPContentFromDb(sn.val());
+            }
+        }).catch((e) => {
+            console.log("////:e ", e);
+        });
+    }, []);
 
+    useEffect(() => {
+        console.log("////:pContentFromDb state: ", pContentFromDb);
+    }, [pContentFromDb]); //TODO remove when done!
+
+    const buildEditableMode = () => {
+        pContentFromDb.forEach((aBoxFromDb) => {
+            if (aBoxFromDb.boxType === "singleDiv") {
+                if (aBoxFromDb.contentType === "image") {
+                    aBoxFromDb.imgFilePrev = aBoxFromDb.imageDbUrl;
+                }
+            } else if (aBoxFromDb.boxType === "dualDiv") {
+                if (aBoxFromDb.lContentType === "image") {
+                    aBoxFromDb.lImageFilePrev = aBoxFromDb.lImageDbUrl;
+                }
+                if (aBoxFromDb.rContentType === "image") {
+                    aBoxFromDb.rImageFilePrev = aBoxFromDb.rImageDbUrl;
+                }
+            }
+        });
+        setPContent(pContentFromDb);
+        setViewMode("EDIT");
+    };
 
     return (
         <div className={"q_main_div"}>
@@ -424,8 +468,10 @@ export const UI_quill = (props) => {
 
                                 <div style={{height: aBox.dynamicSliderValue + "px"}} className={"wholeDiv"}>
                                     <div style={{minWidth: "100%"}} hidden={!(aBox.contentType === "text")}>
-                                        <WysIwyg rightOrLeft={"center"} aBox={aBox}
-                                                 handleTXTinput={handleTXTinput}/>
+                                        <WysIwyg
+                                            editorTextHtmlData={aBox.htmlTxt}//_____________________________________________________________
+                                            rightOrLeft={"center"} aBox={aBox}
+                                            handleTXTinput={handleTXTinput}/>
                                     </div>
 
                                     <div className={"imageWrapper"} hidden={!(aBox.contentType === "image")}>
@@ -442,7 +488,7 @@ export const UI_quill = (props) => {
                                         </div>
                                         <img style={{maxWidth: "100%", maxHeight: "100%"}}
                                              hidden={!(aBox.contentType === "image")} className={"aPageImageSelf"}
-                                             src={aBox.imgFile} alt={"image belonging to a page"}/>
+                                             src={aBox.imgFilePrev} alt={"image belonging to a page"}/>
                                         <ImageInput righOrLeft={"center"}
                                                     updateImageAndBoxContentType={updateImageAndBoxContentType}
                                                     theBox={aBox}
@@ -493,8 +539,10 @@ export const UI_quill = (props) => {
                                 <div className={"dualDiv"}>
                                     <div style={{height: aBox.lDynamicSliderValue + "px"}} className={"leftDiv"}>
                                         <div hidden={!(aBox.lContentType === "text")}>
-                                            <WysIwyg rightOrLeft={"left"} aBox={aBox}
-                                                     handleTXTinput={handleTXTinput}/>
+                                            <WysIwyg
+                                                editorTextHtmlData={aBox.lHtmlTxt}//_____________________________________________________________
+                                                rightOrLeft={"left"} aBox={aBox}
+                                                handleTXTinput={handleTXTinput}/>
                                         </div>
                                         <div className={"imageWrapper"}
                                              style={{height: aBox.lDynamicSliderValue + "px"}}
@@ -512,7 +560,7 @@ export const UI_quill = (props) => {
                                             <img style={{maxWidth: "100%"}}
                                                  hidden={!(aBox.lContentType === "image")}
                                                  className={"aPageImageSelf"}
-                                                 src={aBox.lImageFile} alt={"image belonging to a page"}/>
+                                                 src={aBox.lImageFilePrev} alt={"image belonging to a page"}/>
                                             <ImageInput righOrLeft={"left"}
                                                         updateImageAndBoxContentType={updateImageAndBoxContentType}
                                                         theBox={aBox}
@@ -536,8 +584,10 @@ export const UI_quill = (props) => {
                                     </div>
                                     <div style={{height: aBox.rDynamicSliderValue + "px"}} className={"rightDiv"}>
                                         <div hidden={!(aBox.rContentType === "text")}>
-                                            <WysIwyg rightOrLeft={"right"} aBox={aBox}
-                                                     handleTXTinput={handleTXTinput}/>
+                                            <WysIwyg
+                                                editorTextHtmlData={aBox.rHtmlTxt}//_____________________________________________________________
+                                                rightOrLeft={"right"} aBox={aBox}
+                                                handleTXTinput={handleTXTinput}/>
                                         </div>
                                         <div className={"imageWrapper"}
                                              style={{height: aBox.rDynamicSliderValue + "px"}}
@@ -555,7 +605,7 @@ export const UI_quill = (props) => {
                                             <img style={{maxWidth: "100%"}}
                                                  hidden={!(aBox.rContentType === "image")}
                                                  className={"aPageImageSelf"}
-                                                 src={aBox.rImageFile} alt={"image belonging to a page"}/>
+                                                 src={aBox.rImageFilePrev} alt={"image belonging to a page"}/>
                                             <ImageInput righOrLeft={"right"}
                                                         updateImageAndBoxContentType={updateImageAndBoxContentType}
                                                         theBox={aBox}
@@ -601,8 +651,8 @@ export const UI_quill = (props) => {
                     if (aBoxPrev.boxType === "singleDiv") {
                         return (
                             <div key={aBoxPrev.divId} className={"aDivCtrlPanel_singlePrev"}>
-                                {(aBoxPrev.imgFile === "") ?
-                                    <div className={"textViewerDivPrev"} dangerouslySetInnerHTML={{
+                                {(aBoxPrev.imgFilePrev === "") ?
+                                    <div className={"textViewerDivPrev p-4"} dangerouslySetInnerHTML={{
                                         __html: DOMPurify.sanitize(aBoxPrev.htmlTxt),
                                     }}>
                                     </div> :
@@ -612,7 +662,7 @@ export const UI_quill = (props) => {
                                                 style={{
                                                     maxHeight: aBoxPrev.dynamicSliderValue + "px",
                                                     maxWidth: "100%"
-                                                }} src={aBoxPrev.imgFile}
+                                                }} src={aBoxPrev.imgFilePrev}
                                                 alt={"article page image"}/>
                                         </div>
                                     </div>}
@@ -622,8 +672,8 @@ export const UI_quill = (props) => {
                         return (
                             <div key={aBoxPrev.divId} className={"aDivCtrlPanel_dualPrev"}>
                                 <div className={"leftPrev"}>
-                                    {(aBoxPrev.lImageFile === "") ?
-                                        <div className={"textViewerDivPrev"} dangerouslySetInnerHTML={{
+                                    {(aBoxPrev.lImageFilePrev === "") ?
+                                        <div className={"textViewerDivPrev p-4"} dangerouslySetInnerHTML={{
                                             __html: DOMPurify.sanitize(aBoxPrev.lHtmlTxt),
                                         }}>
                                         </div> :
@@ -633,14 +683,14 @@ export const UI_quill = (props) => {
                                                     style={{
                                                         maxHeight: aBoxPrev.lDynamicSliderValue + "px",
                                                         maxWidth: "100%"
-                                                    }} src={aBoxPrev.lImageFile}
+                                                    }} src={aBoxPrev.lImageFilePrev}
                                                     alt={"article page image"}/>
                                             </div>
                                         </div>}
                                 </div>
                                 <div className={"rightPrev"}>
-                                    {(aBoxPrev.rImageFile === "") ?
-                                        <div className={"textViewerDivPrev"} dangerouslySetInnerHTML={{
+                                    {(aBoxPrev.rImageFilePrev === "") ?
+                                        <div className={"textViewerDivPrev p-4"} dangerouslySetInnerHTML={{
                                             __html: DOMPurify.sanitize(aBoxPrev.rHtmlTxt),
                                         }}>
                                         </div> :
@@ -650,7 +700,7 @@ export const UI_quill = (props) => {
                                                 style={{
                                                     maxHeight: aBoxPrev.rDynamicSliderValue + "px",
                                                     maxWidth: "100%"
-                                                }} src={aBoxPrev.rImageFile}
+                                                }} src={aBoxPrev.rImageFilePrev}
                                                 alt={"article page image"}/>
                                         </div>}
                                 </div>
@@ -664,7 +714,11 @@ export const UI_quill = (props) => {
                 <div className={"noContentDiv"}>
                     <div className={"innerNoConWrapper"}>
                         <button onClick={() => {
-                            setViewMode("EDIT");
+                            if (pContentFromDb.length < 1) {
+                                setViewMode("EDIT");
+                            } else {
+                                buildEditableMode();
+                            }
                         }} type="button" className="btn btn-primary mx-1">
                             <IconContext.Provider value={{size: "2em"}}>
                                 <AiTwotoneEdit/>
@@ -673,22 +727,68 @@ export const UI_quill = (props) => {
                     </div>
                 </div>
                 {/*___________________________________*/}
+                {(pContentFromDb.length > 0) && pContentFromDb.map((aBoxRender) => {
+                    if (aBoxRender.boxType === "singleDiv") {
+                        return (
+                            <div key={aBoxRender.divId} className={"aDivCtrlPanel_singlePrev"}>
+                                {(aBoxRender.imageDbUrl === "") ?
+                                    <div className={"textViewerDivPrev p-4"} dangerouslySetInnerHTML={{
+                                        __html: DOMPurify.sanitize(aBoxRender.htmlTxt),
+                                    }}>
+                                    </div> :
+                                    <div className={"imageViewerDiv"}>
+                                        <div>
+                                            <img
+                                                style={{
+                                                    maxHeight: aBoxRender.dynamicSliderValue + "px",
+                                                    maxWidth: "100%"
+                                                }} src={aBoxRender.imageDbUrl}
+                                                alt={"article page image"}/>
+                                        </div>
+                                    </div>}
+                            </div>
+                        );
+                    } else if (aBoxRender.boxType === "dualDiv") {
+                        return (
+                            <div key={aBoxRender.divId} className={"aDivCtrlPanel_dualPrev"}>
+                                <div className={"leftPrev"}>
+                                    {(aBoxRender.lImageDbUrl === "") ?
+                                        <div className={"textViewerDivPrev p-4"} dangerouslySetInnerHTML={{
+                                            __html: DOMPurify.sanitize(aBoxRender.lHtmlTxt),
+                                        }}>
+                                        </div> :
+                                        <div className={"imageViewerDiv"}>
+                                            <div>
+                                                <img
+                                                    style={{
+                                                        maxHeight: aBoxRender.lDynamicSliderValue + "px",
+                                                        maxWidth: "100%"
+                                                    }} src={aBoxRender.lImageDbUrl}
+                                                    alt={"article page image"}/>
+                                            </div>
+                                        </div>}
+                                </div>
+                                <div className={"rightPrev"}>
+                                    {(aBoxRender.rImageDbUrl === "") ?
+                                        <div className={"textViewerDivPrev p-4"} dangerouslySetInnerHTML={{
+                                            __html: DOMPurify.sanitize(aBoxRender.rHtmlTxt),
+                                        }}>
+                                        </div> :
+                                        <div
+                                            className={"imageViewerDiv"}>
+                                            <img
+                                                style={{
+                                                    maxHeight: aBoxRender.rDynamicSliderValue + "px",
+                                                    maxWidth: "100%"
+                                                }} src={aBoxRender.rImageDbUrl}
+                                                alt={"article page image"}/>
+                                        </div>}
+                                </div>
+                            </div>
+                        );
+                    }
+                })}
             </div>
-            {(pContentFromDb.length > 0) && pContentFromDb.map((aBoxRender) => {
-                if (aBoxRender.boxType === "singleDiv") {
-                    return (
-                        <div key={aBoxRender.divId} className={"aDivCtrlPanel_single"}>
-                            SINGLE div render
-                        </div>
-                    );
-                } else if (aBoxRender.boxType === "dualDiv") {
-                    return (
-                        <div key={aBoxRender.divId} className={"aDivCtrlPanel_dual"}>
-                            DUAL div render
-                        </div>
-                    );
-                }
-            })}
         </div>
     );
 };
