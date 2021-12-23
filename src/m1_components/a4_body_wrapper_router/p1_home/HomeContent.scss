@@ -1,0 +1,99 @@
+//$lineT: 2px;
+
+
+.mc1 {
+  //border: $lineT solid #08ff00;
+  display: flex;
+  justify-content: center;
+
+  .innerContainer {
+    //border: $lineT solid #ff3300;
+    //display: flex;
+    //flex-direction: column;
+    //max-width: 1440px;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .wecome_header {
+    text-align: center;
+  }
+
+  //div{
+  //  &:hover{
+  //    box-shadow: 0 0 10px 6px rgba(0, 0, 0, 0.1);
+  //  }
+  //}
+
+  .section_with_images {
+    .img_with_text {
+      //border: $lineT solid #22ff00;
+      figure {
+        //border: $lineT solid #ff0063;
+        width: 100%;
+
+        img {
+          width: 100%;
+        }
+      }
+    }
+  }
+
+  .img_txt_header {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+
+    .x_p {
+      display: flex;
+      flex-direction: row;
+    }
+  }
+
+
+  .iframe {
+    box-shadow: 0 0 10px 6px rgba(0, 0, 0, 0.1);
+
+  }
+
+  .can_w_h_you {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #151515;
+    margin-top: -6px;
+
+    font-size: 17px;
+    color: #248C9D;
+    font-weight: 700;
+
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+
+  .homeLinks{
+    &:hover{
+      background-color: white;
+    }
+  }
+  .candidatTextWrapper{
+    //border: $lineT solid #ffe300;
+    min-height: 437px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+  }
+  .ownTextWrapper{
+    //border: $lineT solid #ffe300;
+    min-height: 437px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+  }
+}
+

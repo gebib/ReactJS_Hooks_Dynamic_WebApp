@@ -1,0 +1,37 @@
+//$lineT: 3px;
+
+.leie_mainContainerHome {
+  display: flex;
+  justify-content: center;
+}
+
+.leie_innerContainer {
+  //border: $lineT solid #00ff45;
+  .karianneImgWrap {
+    display: flex;
+    justify-content: center;
+    img {
+      //border: $lineT solid #00baff;
+      max-width: 100%;
+      justify-self: center;
+    }
+  }
+}
+
+.leie_wecome_header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.textDivMainWraper{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  .vbTextDiv {
+    //border: $lineT solid #ba00ff;
+    max-width: 700px;
+
+  }
+}
+

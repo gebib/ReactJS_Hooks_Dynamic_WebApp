@@ -1,0 +1,125 @@
+//$lineT: 1px;
+////////////////job list card stuff//////////////
+.top_bar_list {
+  //border: $lineT solid #615ce5;
+  height: 130px;
+  overflow: hidden;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  background-color: #ffffff;
+  border-bottom: 1px solid #eaeaea;
+  //box-shadow: 0px 0px 10px 6px rgba(0, 0, 0, 0.1);
+
+  //overflow: hidden;
+  //text-overflow: ellipsis;
+  //display: -webkit-box;
+  //-webkit-line-clamp: 2; /* number of lines to show */
+  //-webkit-box-orient: vertical;
+
+  .noResult{
+    background-color: #7F8A88;
+    color: #2f2f35;
+  }
+
+
+
+  .job_text {
+    //border: $lineT solid #00ffcc;
+    font-size: 16px;
+    color: #2f2f35;
+    font-weight: 500;
+    padding-top: 10px;
+    text-align: center;
+
+    //background-color: #9da9bb;
+  }
+
+  &:hover {
+    background-color: #EAFAF3;
+    cursor: pointer;
+  }
+
+  &:active {
+    background-color: #F3F4F7;
+  }
+
+
+  @media (max-width: 1200px) {
+    border-radius: 0;
+  }
+
+  .job_names_list {
+    //border: $lineT solid #16501d;
+    //height: 100px;
+    display: flex;
+    flex-direction: column;
+
+    ////////////////////////////////////////////////////////////
+
+    .title {
+      //border: $lineT solid #ffc400;
+      font-size: 16px;
+      color: #2f2f35;
+      font-weight: 500;
+      min-height: 70px;
+      padding-top: 2px;
+      padding-bottom: 5px;
+      border-right: solid 1px #e6e6e6;
+    }
+
+    .footerTxt {
+      //border: $lineT solid #d400ff;
+      align-self: flex-start;
+      justify-self: flex-end;
+      font-weight: 600;
+      color: #a0a0a0;
+      //margin-top: 10px;
+      font-size: 13px;
+      padding-right: 5px;
+      border-radius: 0 6px 0 0;
+      border-top: solid 1px #e6e6e6;
+      border-right: solid 1px #e6e6e6;
+      background-color: #fffcf8;
+      .published {
+        margin-right: 10px;
+      }
+
+      .deadline {
+        margin-left: 10px;
+      }
+    }
+
+  }
+
+  .job_icon_div {
+    //border: $lineT solid #002aff;
+    width: 150px;/////////////////////////////only one to hold the size up!
+    //height: 100px;
+
+
+    .job_cards_img_self {
+      height: 100%;
+      width: 100%;
+    }
+  }
+
+  .type_tag_list {
+    //border: $lineT solid #ff0000;
+    //font-weight: 500;
+    //font-size: 17px;
+    //color: #2f2f35;
+    //text-align: center;
+    //min-width: 140px;
+    //height: 100px;
+    //background-color: #b1d3ff;
+
+
+
+  }
+
+}
+
+

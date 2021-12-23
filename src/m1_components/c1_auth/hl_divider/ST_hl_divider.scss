@@ -1,0 +1,99 @@
+$light_gray: #9da9bb;
+///////////////////////hr divider line/////////////////////////////////
+@mixin hr-line {
+  flex: 1;
+  background: #c7c7c7;
+  content: "";
+  height: 1px;
+}
+
+$padding: 15px;
+
+.text-hr {
+  grid-area: hr_centered;
+  color: $light_gray;
+  ////////
+  display: flex;
+  align-items: center;
+  font-family: sans-serif;
+  width: 100%;
+  margin: 15px auto;
+  font-size: 13px;
+  //color: #444;
+  &__text {
+    padding-right: $padding;
+
+    &:not(:first-child) {
+      display: none;
+    }
+  }
+
+  &::after {
+    @include hr-line;
+  }
+
+  &--right {
+    .text-hr__text {
+      order: 1;
+      padding: 0 0 0 $padding;
+    }
+  }
+
+  &--double {
+    .text-hr__text {
+      &:nth-child(2) {
+        order: 1;
+        display: inline;
+        padding: 0 0 0 $padding;
+      }
+    }
+  }
+
+  &--center {
+    &::before {
+      @include hr-line;
+    }
+
+    .text-hr__text {
+      padding: 0 $padding;
+    }
+  }
+
+  // Added 2016-07-09
+  &--triple {
+    .text-hr__text {
+      &:nth-child(2) {
+        order: 2;
+        display: inline;
+        padding: 0 $padding;
+      }
+
+      &:nth-child(3) {
+        order: 4;
+        display: inline;
+        padding: 0 0 0 $padding;
+      }
+    }
+
+    &::after {
+      order: 3;
+    }
+
+    &::before {
+      @include hr-line;
+      order: 1;
+    }
+  }
+
+  &--loud {
+    .text-hr__text {
+      font-size: 36px;
+      font-weight: bold;
+
+      &:nth-child(2) {
+        font-size: 12px;
+        font-weight: normal;
+      }
+    }
+  }
+}

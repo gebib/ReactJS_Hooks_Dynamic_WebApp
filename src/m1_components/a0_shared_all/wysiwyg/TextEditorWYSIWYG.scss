@@ -1,0 +1,39 @@
+$lineT: 0px;
+$uiBg: #151515;
+$slColor: #ffffff;
+
+//@import '~react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+//
+//
+.mainToolBarWrapper{
+  background-color: $slColor !important;
+  border-radius: 6px 6px 0 0 !important;
+}
+
+.rdw-option-wrapper{
+  color: black !important;
+  height: 30px !important;
+  background-color: #ffffff !important;
+  margin-top: 2px !important;
+}
+//
+.rdw-dropdown-selectedtext{
+  color: black !important;
+  text-decoration: none !important;
+  background-color: #ffffff !important;
+  height: 100% !important;
+}
+
+.rdw-dropdown-wrapper{
+  height: 30px !important;
+  margin-top: 2px !important;
+}
+
+.editor{
+  background-color: white;
+  margin-top: -5px;
+  padding-left: 20px;
+  padding-right: 20px;
+
+
+}

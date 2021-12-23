@@ -1,0 +1,277 @@
+//$lineT: 3px;
+
+$light_gray: #9da9bb;
+$lightest_gray: #B6C1D2;
+$dark_gray: #5E6E82;
+$darkest_gray: #344050;
+
+$neu-shadow: 9px 9px 16px rgba(163, 177, 198, 0.6), -9px -9px 16px rgba(255, 255, 255, 0.5);
+$new-shadow-active: 0px 0px 10px 6px rgba(0, 0, 0, 0.1);
+
+.long_logo_container {
+  grid-area: logo_svg;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+  max-width: 400px;
+
+  #logo_image {
+    width: 60%;
+  }
+}
+
+.register_page_container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  min-height: 900px;
+}
+
+.register-main-container {
+  //grid layout
+  display: grid;
+  grid-template-columns: auto auto; // i need 2 columns 1fraction each
+  grid-template-rows: auto auto auto auto auto auto auto 19px auto auto; // i need 10 rows 1fraction each
+  align-items: center;
+  //grid-column-gap: 5px;
+  grid-row-gap: 17px;
+  border-radius: 6px;
+  padding: 25px;
+  //background-image: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  background: white;
+  max-width: 454px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+
+  grid-template-areas:
+  "lbl_register lbl_have_acc"
+  "pPic pPic"
+  "input_name input_name"
+  "input_mail input_mail"
+  "input_pass input_pass"
+  "cb_register cb_register"
+  "btn_register btn_register"
+  //"hr_centered hr_centered"
+  //"sm_buttons sm_buttons"
+  "prog_bar prog_bar"
+  "reCap reCap";
+
+  .input_wrappers { //by default no text!
+    //border: $lineT solid #00e1ff;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+
+    .show_error {
+      //border: $lineT solid #73ff00;
+      color: #FF7A7A;
+      width: 100%;
+      font-size: 14px;
+    }
+  }
+
+
+  .profilePic {
+    //border: $lineT solid #ff0000;
+    grid-area: pPic;
+    display: grid;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+
+    .avatar_image_or_canvas {
+      //border: $lineT solid #006aff;
+      border-radius: 35px;
+      background-color: #000000;
+      max-width: 150px;
+      max-height: 150px;
+      min-width: 150px;
+      min-height: 150px;
+
+      &:hover {
+        background-color: #248c9d;
+        transition: 0.5s;
+      }
+
+      .avat_image_self {
+        width: 100%;
+        height: 100%;
+      }
+    }
+  }
+
+  .terms_indv {
+    grid-area: cb_register;
+    //border: $lineT solid #ff00aa;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+
+    .show_error {
+      //border: $lineT solid #73ff00;
+      color: #FF7A7A;
+      width: 100%;
+      font-size: 14px;
+    }
+  }
+
+
+  .label_register {
+    grid-area: lbl_register;
+    color: $darkest_gray;
+    font-family: 'Poppins', sans-serif;
+    font-size: 19px;
+    line-height: 23px;
+  }
+
+  .right_items {
+    place-self: end;
+    align-self: center;
+  }
+
+  .label_or {
+    grid-area: lbl_have_acc;
+    color: $dark_gray;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 13px;
+    line-height: 20px;
+  }
+
+  .input_name {
+    grid-area: input_name;
+    text-transform: capitalize;
+
+    &::placeholder {
+      font-family: 'Poppins', sans-serif;
+      color: $lightest_gray;
+      letter-spacing: 0.5px;
+    }
+  }
+
+  .input_mail {
+    grid-area: input_mail;
+
+    &::placeholder {
+      font-family: 'Poppins', sans-serif;
+      color: $lightest_gray;
+      letter-spacing: 0.5px;
+    }
+  }
+
+  .register_pass {
+    grid-area: input_pass;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    grid-column-gap: 5px;
+    grid-row-gap: 15px;
+
+    .input_pass1 {
+
+      &::placeholder {
+        font-family: 'Poppins', sans-serif;
+        color: $lightest_gray;
+        letter-spacing: 0.5px;
+      }
+    }
+
+    .input_pass2 {
+
+      &::placeholder {
+        font-family: 'Poppins', sans-serif;
+        color: $lightest_gray;
+        letter-spacing: 0.5px;
+      }
+    }
+  }
+
+
+  .register_cb {
+    grid-area: cb_register;
+    color: $dark_gray;
+  }
+
+  .lbl_forgot_ps {
+    grid-area: lbl_forgot;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 13px;
+    line-height: 20px;
+  }
+
+  .mail_register_btn {
+    grid-area: btn_register;
+  }
+
+  .btn {
+    width: 100%;
+    transition: 1s;
+  }
+
+  ////////////////////////////////////imge/////////
+  .fileInput {
+    //border: $lineT solid #ffaa00;
+    width: 150px;
+    height: 150px;
+    //position: absolute;
+    border-radius: 35px;
+  }
+
+  .progress_wrapper{
+    grid-area: prog_bar;
+    .progress-bar {
+
+    }
+  }
+}
+
+.editorL1Container {
+  //position: absolute;
+  //border: $lineT solid #b300ff;
+  //overflow: hidden;
+  //max-height: 90%;
+  .ReactCrop__image {
+    //width: 500px;
+  }
+
+}
+
+
+.imageEdit {
+  position: absolute;
+  //border: $lineT solid #ffcc00;
+  max-width: 800px;
+  max-height: 750px;
+  width: 100%;
+  height: 100%;
+  background-color: #edf2f9;
+  margin-top: 40%;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  border-radius: 6px;
+  min-width: 250px;
+  ////////////////
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+///////////////////////////////////
+input[type="file"] {
+  display: none;
+}
+
+.reCaptcha{
+  grid-area: reCap;
+  //background-color: #D3D3D3;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+

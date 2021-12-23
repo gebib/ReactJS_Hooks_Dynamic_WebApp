@@ -1,0 +1,45 @@
+//$lineT: 3px;
+
+.main_wrapper {
+  //border: $lineT solid #ff0000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  //min-width: 100%;
+  min-height: 100vh;
+
+
+  .page_content_wrapper {
+    max-width: 1440px;
+    width: 100%;
+    //border: $lineT solid #ff00a9;
+    flex-grow: 1;
+    background-color: #EFF3FA;
+    //opacity: 0.98;
+  }
+
+  .custom-shape-divider-top-1612728068 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    overflow: hidden;
+    line-height: 0;
+  }
+
+  .good_toast{
+    &:hover{
+      cursor: default;
+    }
+  }
+
+}
+.videoBgv{
+  //border: $lineT solid #00ff62;
+background-color: #0a53be;
+}
+
+
+
+
+
