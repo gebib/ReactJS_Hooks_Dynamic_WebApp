@@ -11,7 +11,8 @@ import {MdExposurePlus2} from "react-icons/md";
 import {MdCheck} from "react-icons/md";
 import {BsImageFill} from "react-icons/bs";
 import {BsPencilSquare} from "react-icons/bs";
-import {ImEye} from "react-icons/im";
+import {ImEye, ImExit} from "react-icons/im";
+
 import {FaCloudUploadAlt} from "react-icons/fa";
 
 
@@ -219,6 +220,8 @@ export const UI_quill = (props) => {
     const [, forceUpdate] = useReducer(x => x + 1, 0);
     const [viewMode, setViewMode] = useState("RENDER"); //RENDER, EDIT, PREVIEW
 
+    const [isAdmin, setIsAdmin] = useState(false);
+
     const addNewBox = (currentBoxId, boxType) => {
         let updatedArray = [];
         if (boxType === "newSingle") {
@@ -402,12 +405,21 @@ export const UI_quill = (props) => {
         setViewMode("EDIT");
     };
 
+    //monitor current user change in auth! if signed out etc..
+    useEffect(() => {
+        if (currentUserInfo !== null) {
+            setIsAdmin(currentUserInfo[2]);
+        } else {
+            setIsAdmin(false);
+        }
+    }, [currentUserInfo]);
+
     return (
-        <div className={"q_main_div"}>
+        <div style={{marginBottom: "20px"}} className={"q_main_div"}>
             {/*//////////////////////EDIT VIEW///////////////////////////*/}
             {console.log("////:_______________________RENDER")}
             <div hidden={!(viewMode === "EDIT")} className={"editWrapper"}>
-                <div className={"noContentDiv"}>
+                <div hidden={!isAdmin} className={"noContentDiv"}>
                     <div className={"innerNoConWrapper"}>
                         <div hidden={(pContent.length > 0)}>
                             <IconContext.Provider value={{size: "2em"}}>
@@ -438,6 +450,13 @@ export const UI_quill = (props) => {
                         }} type="button" className="btn btn-info mx-1">
                             <IconContext.Provider value={{size: "2em"}}>
                                 <ImEye/>
+                            </IconContext.Provider>
+                        </button>
+                        <button onClick={() => {
+                            window.location.reload();
+                        }} type="button" className="btn btn-danger mx-1">
+                            <IconContext.Provider value={{size: "2em"}}>
+                                <ImExit/>
                             </IconContext.Provider>
                         </button>
                     </div>
@@ -635,7 +654,7 @@ export const UI_quill = (props) => {
             </div>
             {/*//////////////////////PREVIEW///////////////////////////*/}
             <div hidden={!(viewMode === "PREVIEW")} className={"previewWrapper"}>
-                <div className={"noContentDiv"}>
+                <div hidden={!isAdmin} className={"noContentDiv"}>
                     <div className={"innerNoConWrapper"}>
                         <button onClick={() => {
                             setViewMode("EDIT");
@@ -711,7 +730,7 @@ export const UI_quill = (props) => {
             </div>
             {/*//////////////////////RENDER///////////////////////////*/}
             <div hidden={!(viewMode === "RENDER")} className={"renderWrapper"}>
-                <div className={"noContentDiv"}>
+                <div hidden={!isAdmin} className={"noContentDiv"}>
                     <div className={"innerNoConWrapper"}>
                         <button onClick={() => {
                             if (pContentFromDb.length < 1) {

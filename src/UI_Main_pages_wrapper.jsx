@@ -117,7 +117,7 @@ export default function UI_Main_pages_wrapper() {
                 <UI_body_wrapper wrapperHeight={"auto"}/>
             </div>
             {/*TODO/////////////////////////////////////////////////////////////////////////////////////enable when done*/}
-            {/*{shouldHideNavEtc ? null : <UI_footer/>}*/}
+            {shouldHideNavEtc ? null : <UI_footer/>}
         </div>
     );
 }

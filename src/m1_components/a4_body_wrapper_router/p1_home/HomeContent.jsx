@@ -19,7 +19,7 @@ export const HomeContent = () => {
             <div className={"innerContainer"}>
                 <UI_quill editablePageName={"homePage"}/>
 
-                {/*<UI_PullCards getNewblog={null}/>*/}
+                <UI_PullCards getNewblog={null}/>
 
                 {/*TODO delete?*/}
                 {/*<footer className={"google_map"}>*/}

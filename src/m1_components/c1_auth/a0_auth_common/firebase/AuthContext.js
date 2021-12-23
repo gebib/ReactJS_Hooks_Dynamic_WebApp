@@ -303,7 +303,8 @@ export function AuthProvider({children}) {
         });
         database.ref("/pages_data/" + pageName).set(aPageContent).then(() => {
             setIsPageUpdateLoading(false);
-            showToast(t("msl.homePageUpdated"));
+            window.location.reload();
+            // showToast(t("msl.homePageUpdated"));
         }).catch((e) => {
             console.log("////:e ", e);
         });
@@ -479,7 +480,6 @@ export function AuthProvider({children}) {
         isPageUpdateLoading,
         updateApageEditInDB,
         getApageData
-
     };
 
     return (

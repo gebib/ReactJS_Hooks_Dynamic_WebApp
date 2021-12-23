@@ -16,7 +16,7 @@ import {AuthProvider} from "./m1_components/c1_auth/a0_auth_common/firebase/Auth
 //i18next init
 i18next.init({
     interpolation: {escapeValue: false}, // React already does escaping
-    lng: 'en',                             // language to use
+    lng: 'no',                             // language to use
     resources: {
         en: {
             SL_languages: language_en
